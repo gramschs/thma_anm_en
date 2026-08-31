@@ -1,0 +1,453 @@
+---
+kernelspec:
+  name: python3
+  display_name: 'Python 3'
+---
+
+# 2.3 Diagrams with Matplotlib
+
+In chapters 2.1 and 2.2 we computed measurement series as NumPy arrays and
+printed them with `print()`. A column of two hundred numbers, however, tells
+us little about how a quantity behaves. On the test rig of an electric motor,
+for example, we want to see at a glance how torque, power and efficiency
+depend on the rotational speed. In this chapter we introduce **Matplotlib**,
+the standard library for diagrams in Python, and turn our number material
+into meaningful graphics.
+
+As a running example, we follow a test-rig run in which the rotational speed
+of an electric motor is slowly ramped up from zero to the no-load speed. From
+the rotational speed we compute the remaining characteristic quantities and
+plot them step by step.
+
+## Learning objectives
+
+```{admonition} Learning objectives
+:class: attention
+* [ ] You know the relationship between **Figure** and **Axes** and create
+  both with `plt.subplots()`.
+* [ ] You create **line plots** with `ax.plot()`, draw several curves in one
+  diagram and add axis labels, title, legend and grid.
+* [ ] You save a diagram with `fig.savefig()`.
+* [ ] You create several drawing areas with `plt.subplots(nrows, ncols)`,
+  address them via `ax[i]` and align them with `plt.tight_layout()`.
+* [ ] You plot measured points with `ax.scatter()` and add measurement
+  uncertainties with `ax.errorbar()`.
+```
+
+## Drawing a characteristic curve as a line plot
+
+We start straight away with an example. From the rotational speed we compute
+the torque of the motor. A simple model assumes that the torque decreases
+linearly with the rotational speed: at standstill it is largest, at no-load
+speed it drops to zero.
+
+```{code-cell} python
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.style as style
+style.use('seaborn-v0_8')
+
+rpm = np.linspace(0, 3000, 200)      # 1/min
+no_load_rpm = 3000.0
+torque_standstill = 8.0              # Nm at standstill
+
+torque = torque_standstill * (1 - rpm / no_load_rpm)
+
+fig, ax = plt.subplots()
+ax.plot(rpm, torque)
+plt.show()
+```
+
+The lines with `import` load NumPy and Matplotlib. `import matplotlib.pyplot
+as plt` is the fixed convention for accessing Matplotlib, just like `np` for
+NumPy. The two lines with `style` are optional and only make the diagrams
+look a little more appealing.
+
+`plt.subplots()` creates two objects. The **Figure** is the entire
+illustration, that is, the window or the image file. The **Axes** is the
+drawing area within it, with an x-axis, y-axis and all curves. The pattern
+`fig, ax = plt.subplots()` stands at the beginning of every diagram in these
+lecture notes.
+
+`ax.plot(rpm, torque)` draws a line through the points `(rpm[0], torque[0])`,
+`(rpm[1], torque[1])` and so on. The first argument is always the x-axis, the
+second the y-axis. `plt.show()` displays the finished diagram.
+
+A diagram without labeled axes is worthless in engineering practice. We
+therefore add axis labels with units, a title and a grid.
+
+```{code-cell} python
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.plot(rpm, torque)
+
+ax.set_xlabel('Rotational speed in 1/min')
+ax.set_ylabel('Torque in Nm')
+ax.set_title('Torque characteristic of the electric motor')
+ax.grid(True)
+
+plt.show()
+```
+
+`figsize=(7, 4)` sets the width and height of the Figure in inches.
+`set_xlabel()` and `set_ylabel()` label the axes, `set_title()` sets a title
+and `grid(True)` places a grid over the drawing area.
+
+Often we want to compare several curves. For this we simply call `ax.plot()`
+several times. We compare our motor with a weaker variant that delivers only
+6 Nm at standstill. Each curve gets a `label` that then appears in the
+legend.
+
+```{code-cell} python
+torque_weak = 6.0 * (1 - rpm / no_load_rpm)
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.plot(rpm, torque, label='Standard motor (8 Nm)')
+ax.plot(rpm, torque_weak, linestyle='dashed',
+        label='Weak variant (6 Nm)')
+
+ax.set_xlabel('Rotational speed in 1/min')
+ax.set_ylabel('Torque in Nm')
+ax.set_title('Two motor variants compared')
+ax.legend()
+ax.grid(True)
+
+plt.show()
+```
+
+Matplotlib automatically gives each curve its own color. With `linestyle` we
+change the line style; possible values are `'solid'`, `'dashed'`, `'dotted'`
+and `'dashdot'`. The call `ax.legend()` without arguments collects all
+`label` entries and shows them as a legend. This is cleaner than passing a
+list of texts to `ax.legend()`, because the label is written directly at the
+respective `ax.plot()` call.
+
+In practice we want not only to look at a diagram, but also to insert it into
+a report. `fig.savefig()` saves the Figure as a file. We call it in the same
+code cell in which we create the diagram, directly before `plt.show()`.
+
+```{code-cell} python
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.plot(rpm, torque, label='Standard motor (8 Nm)')
+ax.plot(rpm, torque_weak, linestyle='dashed',
+        label='Weak variant (6 Nm)')
+ax.set_xlabel('Rotational speed in 1/min')
+ax.set_ylabel('Torque in Nm')
+ax.set_title('Two motor variants compared')
+ax.legend()
+ax.grid(True)
+
+fig.savefig('torque_curve.png', dpi=150, bbox_inches='tight')
+plt.show()
+```
+
+`dpi=150` sets the resolution; for reports, 150 to 300 dpi are common.
+`bbox_inches='tight'` prevents labels at the edge from being cut off.
+Matplotlib recognizes the file format from the extension, `.png` for raster
+graphics, `.pdf` or `.svg` for vector graphics.
+
+```{admonition} Mini-exercise (✩)
+:class: tip
+Draw the **angular velocity** of the motor over the rotational speed.
+`angular_velocity = 2 * np.pi * rpm / 60` in rad/s holds.
+
+1. Create a line plot with the rotational speed on the x-axis and the angular
+   velocity on the y-axis.
+2. Label both axes with units and assign a title.
+3. Add a grid.
+4. Answer without code: you call `ax.plot()` once and then `ax.legend()`,
+   without having set a `label` in the `plot()` call. What does the legend
+   then show?
+```
+
+```{code-cell} python
+# code cell
+```
+
+````{admonition} Solution
+:class: tip
+:class: dropdown
+```python
+angular_velocity = 2 * np.pi * rpm / 60
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(rpm, angular_velocity)
+ax.set_xlabel('Rotational speed in 1/min')
+ax.set_ylabel('Angular velocity in rad/s')
+ax.set_title('Angular velocity of the electric motor')
+ax.grid(True)
+plt.show()
+```
+The angular velocity rises linearly with the rotational speed; at 3000 1/min
+it reaches about 314 rad/s. If we call `ax.legend()` without having set a
+`label`, the legend stays empty and Matplotlib additionally prints a warning.
+A legend only makes sense if at least one curve has a `label`.
+````
+
+## Showing torque, power and efficiency together
+
+From the torque and angular velocity we compute the delivered power, and for
+the efficiency we use a model that has its maximum near the rated speed.
+
+```{code-cell} python
+angular_velocity = 2 * np.pi * rpm / 60
+power = torque * angular_velocity
+efficiency = 0.9 * np.exp(-((rpm - 2200) / 900)**2)
+```
+
+*Why don't we simply draw these three quantities in a single diagram?*
+Because they have completely different value ranges and units: the torque
+lies between 0 and 8 Nm, the power at a few hundred watts and the efficiency
+between 0 and 1. In a common coordinate system, the torque and efficiency
+would no longer be recognizable as flat lines at the bottom edge. The
+solution is **subplots**: several drawing areas in a common Figure.
+
+```{code-cell} python
+fig, ax = plt.subplots(nrows=3, ncols=1, figsize=(7, 8))
+
+ax[0].plot(rpm, torque)
+ax[0].set_ylabel('Torque in Nm')
+
+ax[1].plot(rpm, power)
+ax[1].set_ylabel('Power in W')
+
+ax[2].plot(rpm, efficiency)
+ax[2].set_ylabel('Efficiency')
+
+for single_axis in ax:
+    single_axis.set_xlabel('Rotational speed in 1/min')
+    single_axis.grid(True)
+
+ax[0].set_title('Characteristic map of the electric motor')
+
+plt.tight_layout()
+plt.show()
+```
+
+`plt.subplots(nrows=3, ncols=1)` creates three drawing areas one below the
+other and returns them as an array `ax`. We address the top one with `ax[0]`,
+the middle one with `ax[1]` and the bottom one with `ax[2]`, just as with a
+NumPy array.
+
+For the x-axis label and the grid we write a `for` loop over `ax`, because
+these two settings are the same for all three subplots. The loop variable
+`single_axis` is one of the three drawing areas on each pass. Everything that
+differs between the subplots, that is, the y-label and the title, we set
+individually via `ax[0]`, `ax[1]` and `ax[2]`.
+
+`plt.tight_layout()` increases the spacing between the subplots so that
+labels do not overlap. We always call it directly before `plt.show()`.
+
+Sometimes we want to set the visible range of an axis instead of leaving it
+to Matplotlib. For the efficiency, the natural range is 0 to 1; we make this
+visible with `set_ylim()`.
+
+```{code-cell} python
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.plot(rpm, efficiency)
+ax.set_ylim(0, 1)
+ax.set_xlabel('Rotational speed in 1/min')
+ax.set_ylabel('Efficiency')
+ax.set_title('Efficiency with a fixed y-axis from 0 to 1')
+ax.grid(True)
+
+plt.show()
+```
+
+Without `set_ylim()`, Matplotlib automatically scales the y-axis to the
+actual value range of the data, here about 0 to 0.9. With `set_ylim(0, 1)` we
+force the full scale and immediately see how much distance still remains to
+the ideal efficiency of 1.
+
+```{admonition} Mini-exercise (✩)
+:class: tip
+Create two subplots side by side (`nrows=1, ncols=2`).
+
+1. Left: power over the rotational speed.
+2. Right: efficiency over the rotational speed, with `set_ylim(0, 1)`.
+3. Label both subplots with axes and title, add a grid and align the Figure
+   with `plt.tight_layout()`.
+4. Answer without further code: at which rotational speed is the power
+   maximal? Is that the same rotational speed at which the efficiency is
+   maximal? Justify with a look at the two curves.
+```
+
+```{code-cell} python
+# code cell
+```
+
+````{admonition} Solution
+:class: tip
+:class: dropdown
+```python
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(12, 4))
+
+ax[0].plot(rpm, power)
+ax[0].set_xlabel('Rotational speed in 1/min')
+ax[0].set_ylabel('Power in W')
+ax[0].set_title('Power')
+ax[0].grid(True)
+
+ax[1].plot(rpm, efficiency)
+ax[1].set_ylim(0, 1)
+ax[1].set_xlabel('Rotational speed in 1/min')
+ax[1].set_ylabel('Efficiency')
+ax[1].set_title('Efficiency')
+ax[1].grid(True)
+
+plt.tight_layout()
+plt.show()
+```
+The power is maximal at about 1500 1/min, that is, at half the no-load speed.
+There the product of the still fairly high torque and the already fairly high
+angular velocity is largest. The efficiency reaches its maximum only at about
+2200 1/min. A motor therefore does not deliver its highest power at the
+rotational speed at which it works most efficiently.
+````
+
+## Measured points with scatter and uncertainty
+
+So far we have drawn computed curves. On the real test rig we measure the
+efficiency only at individual rotational speeds, and each measurement
+scatters. We do not connect such individual measured values with a line, but
+plot them as individual points. This is called a **scatter plot**, created
+with `ax.scatter()`.
+
+```{code-cell} python
+measured_rpm = np.array([300, 600, 900, 1200, 1500, 1800, 2100, 2400, 2700])
+measured_efficiency = np.array([0.02, 0.05, 0.10, 0.28, 0.47, 0.75, 0.87, 0.88, 0.55])
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.scatter(measured_rpm, measured_efficiency)
+
+ax.set_xlabel('Rotational speed in 1/min')
+ax.set_ylabel('Efficiency')
+ax.set_title('Measured efficiency at nine rotational speeds')
+ax.grid(True)
+
+plt.show()
+```
+
+Like `ax.plot()`, `ax.scatter()` expects the x-values first, then the
+y-values, but draws only points without a connecting line. This is exactly
+right when no continuous curve was measured between the measured points.
+
+Each measured point is the mean of several repeat measurements and has an
+uncertainty. We represent this with **error bars**. The appropriate function
+is `ax.errorbar()`.
+
+```{code-cell} python
+measurement_uncertainty = np.array([0.02, 0.02, 0.03, 0.03, 0.04, 0.03, 0.02, 0.03, 0.05])
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.errorbar(measured_rpm, measured_efficiency, yerr=measurement_uncertainty,
+            fmt='o', capsize=4)
+
+ax.set_xlabel('Rotational speed in 1/min')
+ax.set_ylabel('Efficiency')
+ax.set_title('Measured efficiency with measurement uncertainty')
+ax.grid(True)
+
+plt.show()
+```
+
+`yerr` passes the uncertainty in the y-direction as an array. `fmt='o'` draws
+the measured points as circles, `capsize=4` gives the caps at the ends of the
+error bars a width of 4 points so that they are easier to read.
+
+Finally, we compare the measurement with our model from the last section. We
+draw the measured points with error bars and the model curve in the same
+diagram.
+
+```{code-cell} python
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.errorbar(measured_rpm, measured_efficiency, yerr=measurement_uncertainty,
+            fmt='o', capsize=4, label='Measurement')
+ax.plot(rpm, efficiency, label='Model')
+
+ax.set_xlabel('Rotational speed in 1/min')
+ax.set_ylabel('Efficiency')
+ax.set_title('Measurement and model compared')
+ax.legend()
+ax.grid(True)
+
+plt.show()
+```
+
+Measured points as symbols, model or regression as a solid line: this
+pattern appears in almost every quantitative engineering report. The model
+curve runs through almost all error bars, so the model describes the
+measurement well. Only the point at 2700 1/min lies clearly below the curve;
+a closer look is worthwhile there.
+
+````{admonition} Mini-exercise (✩)
+:class: tip
+On the same test rig, the torque is measured at five rotational speeds:
+
+```python
+measured_rpm_torque = np.array([500, 1000, 1500, 2000, 2500])
+measured_torque = np.array([6.5, 5.6, 3.9, 2.8, 1.5])
+measurement_uncertainty_torque = np.array([0.3, 0.4, 0.3, 0.5, 0.4])
+```
+
+1. Plot the measured points with `ax.errorbar()` and error bars in the
+   y-direction.
+2. Draw the model curve `torque` over `rpm` in the same diagram.
+3. Label the axes, assign a title and a legend.
+4. Answer without code: why do we plot the five measured points with
+   `ax.errorbar()` instead of `ax.plot()`?
+````
+
+```{code-cell} python
+# code cell
+```
+
+````{admonition} Solution
+:class: tip
+:class: dropdown
+```python
+measured_rpm_torque = np.array([500, 1000, 1500, 2000, 2500])
+measured_torque = np.array([6.5, 5.6, 3.9, 2.8, 1.5])
+measurement_uncertainty_torque = np.array([0.3, 0.4, 0.3, 0.5, 0.4])
+
+fig, ax = plt.subplots(figsize=(7, 4))
+
+ax.errorbar(measured_rpm_torque, measured_torque, yerr=measurement_uncertainty_torque,
+            fmt='o', capsize=4, label='Measurement')
+ax.plot(rpm, torque, label='Model')
+
+ax.set_xlabel('Rotational speed in 1/min')
+ax.set_ylabel('Torque in Nm')
+ax.set_title('Measured and modeled torque')
+ax.legend()
+ax.grid(True)
+
+plt.show()
+```
+The model line runs through all error bars, so the linear assumption for the
+torque fits the measurement. We use `ax.errorbar()` instead of `ax.plot()`
+because nothing was measured between the five rotational speeds. A connecting
+line would feign a continuous measured curve that does not exist. The model
+curve, on the other hand, is actually computed for every rotational speed and
+may be drawn as a line.
+````
+
+## Summary and outlook
+
+We have got to know Matplotlib as a tool for visualising measurement data.
+The pattern `fig, ax = plt.subplots()` stands at the beginning of every
+diagram. With `ax.plot()` we draw lines, with `set_xlabel()`, `set_ylabel()`,
+`set_title()`, `legend()` and `grid()` we label and design the diagram, with
+`fig.savefig()` we save it. We create several drawing areas with
+`plt.subplots(nrows, ncols)` and address them via `ax[i]`;
+`plt.tight_layout()` aligns them neatly. We plot individual measured points
+with `ax.scatter()`, their uncertainty with `ax.errorbar()`.
+
+In the next chapter we apply NumPy and Matplotlib together in a coherent
+project and analyze the measurement data of a complete test-rig run.

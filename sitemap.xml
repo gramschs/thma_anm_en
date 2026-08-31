@@ -4,4 +4,40 @@
   <url>
     <loc>http://localhost:3000</loc>
   </url>
+  <url>
+    <loc>http://localhost:3000/chapter01-sec00</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter01-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter01-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter01-sec03</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter01-sec04</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter01-sec05</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter01-sec06</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter02-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter02-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter02-sec03</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter02-sec04</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter02-sec05</loc>
+  </url>
 </urlset>

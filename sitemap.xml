@@ -5,6 +5,9 @@
     <loc>http://localhost:3000</loc>
   </url>
   <url>
+    <loc>http://localhost:3000/toc</loc>
+  </url>
+  <url>
     <loc>http://localhost:3000/chapter01-sec00</loc>
   </url>
   <url>

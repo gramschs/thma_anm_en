@@ -33,14 +33,14 @@ project:
       - file: chapter02/chapter02_sec02.md
       - file: chapter02/chapter02_sec03.md
       - file: chapter02/chapter02_sec04.md
-      - file: chapter02/chapter02_sec05.md
+#      - file: chapter02/chapter02_sec05.md
     - title: 3. Linear Systems of Equations - Part 1
       children:
       - file: chapter03/chapter03_sec01.md
       - file: chapter03/chapter03_sec02.md
       - file: chapter03/chapter03_sec03.md
       - file: chapter03/chapter03_sec04.md
-      - file: chapter03/chapter03_sec05.md
+#      - file: chapter03/chapter03_sec05.md
       - file: chapter03/chapter03_sec06.md
       - file: chapter03/chapter03_sec07.md
 

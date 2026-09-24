@@ -20,7 +20,7 @@ project:
     - file: toc.md
     - title: 1. Crashkurs Python
       children:
-      - file: chapter01/chapter01_sec00.md
+#      - file: chapter01/chapter01_sec00.md
       - file: chapter01/chapter01_sec01.md
       - file: chapter01/chapter01_sec02.md
       - file: chapter01/chapter01_sec03.md
@@ -41,8 +41,8 @@ project:
       - file: chapter03/chapter03_sec03.md
       - file: chapter03/chapter03_sec04.md
 #      - file: chapter03/chapter03_sec05.md
-      - file: chapter03/chapter03_sec06.md
-      - file: chapter03/chapter03_sec07.md
+#      - file: chapter03/chapter03_sec06.md
+#      - file: chapter03/chapter03_sec07.md
 
 site:
   template: book-theme

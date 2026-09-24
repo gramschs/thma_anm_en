@@ -8,9 +8,6 @@
     <loc>http://localhost:3000/toc</loc>
   </url>
   <url>
-    <loc>http://localhost:3000/chapter01-sec00</loc>
-  </url>
-  <url>
     <loc>http://localhost:3000/chapter01-sec01</loc>
   </url>
   <url>
@@ -51,11 +48,5 @@
   </url>
   <url>
     <loc>http://localhost:3000/chapter03-sec04</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter03-sec06</loc>
-  </url>
-  <url>
-    <loc>http://localhost:3000/chapter03-sec07</loc>
   </url>
 </urlset>

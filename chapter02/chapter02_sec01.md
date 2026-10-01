@@ -12,8 +12,8 @@ An acceleration sensor monitoring a vibrating machine, for example, delivers
 Python lists, we need loops over thousands of elements: tedious to write and
 slow to run. In this chapter we introduce NumPy, a library built for exactly
 such tasks. Its central data type, the **array**, allows us to apply
-mathematical operations and statistical measures directly to whole number
-series, without writing a single loop.
+mathematical operations and statistical measures directly to entire
+series of numbers, without writing a single loop.
 
 ## Learning objectives
 
@@ -51,8 +51,8 @@ so widespread in the Python world that practically every piece of NumPy code
 uses it.
 
 The central data type of NumPy is the **array**. It allows us to apply
-mathematical operations directly to whole number series, without writing a
-single loop, as we will see below.
+mathematical operations directly to entire series of numbers, without
+writing a single loop, as we will see below.
 
 The difference between a list and an array is seen most quickly with an
 example. A sensor delivers five acceleration values in m/s^2:
@@ -86,11 +86,11 @@ t = np.linspace(0, 2, 5)    # 5 values between 0 and 2 seconds
 print(t)
 ```
 
-In the output there is a point after each whole number, that is, `0.` instead
+In the output there is a point after each integer, that is, `0.` instead
 of `0`. `np.linspace()` always generates the values as floating-point
 numbers, even if we specify integer bounds. This is intentional, because the
-evenly distributed intermediate values of an axis are generally not whole
-numbers.
+evenly distributed intermediate values of an axis are generally not
+integers.
 
 `np.zeros(count)` generates an array of all zeros. This is useful for
 creating an array as a placeholder that is filled with values later:
@@ -129,7 +129,7 @@ A temperature sensor delivers four measured values in °C: `18.5`, `19.2`,
 4. Create an array `calibration_values` with four zeros that is to serve
    later as a placeholder for calibration factors.
 5. Answer without running: which data type does `time.dtype` return, even
-   though you only specified the whole numbers 0 and 3 as bounds in
+   though you only specified the integers 0 and 3 as bounds in
    `np.linspace()`? Justify your answer.
 ```
 
@@ -164,8 +164,8 @@ point in the output `[0. 1. 2. 3.]`.
 
 In the last section we created arrays and looked at their structure with
 `.shape` and `.dtype`. Now we see what really makes arrays useful:
-arithmetic operations that act on whole number series, without writing a
-single loop.
+arithmetic operations that act on entire series of numbers, without writing
+a single loop.
 
 Suppose we want to compute the acting force from the acceleration values.
 $F = m \cdot a$ holds, where the mass is $m = 5\,\mathrm{kg}$. With a Python
@@ -188,8 +188,8 @@ print(forces_array)
 ```
 
 The multiplication by the scalar `5.0` is automatically applied to **every
-element** of `measurements_array`. We call such operations on whole number
-series **vector operations**. They avoid explicit loops and are therefore
+element** of `measurements_array`. We call such operations on entire
+arrays **vector operations**. They avoid explicit loops and are therefore
 usually considerably more efficient for large measurement series.
 
 *Is this difference noticeable at all with five measured values?* With five

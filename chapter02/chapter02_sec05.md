@@ -69,7 +69,7 @@ float64
 `t` contains five evenly distributed values from 0 to 10, `t.shape` is
 `(5,)`, that is, one dimension with five elements. `np.zeros()` and
 `np.linspace()` always generate floating-point numbers. `counter` contains
-only whole numbers, so NumPy chooses `int64`. In `measurement`, the single
+only integers, so NumPy chooses `int64`. In `measurement`, the single
 decimal number `6.0` forces all values to be stored as `float64`, because an
 array has exactly one data type.
 ````

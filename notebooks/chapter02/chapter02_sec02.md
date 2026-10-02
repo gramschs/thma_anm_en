@@ -62,8 +62,11 @@ the points in time from `time`.
 
 ## Part 4: Electrical power
 
-Compute the electrical power actually delivered, `electrical_power`, from
-`rotor_power` and `efficiency`.
+The generator does not convert the entire rotor power into electrical power.
+The efficiency states which fraction of the rotor power arrives as electrical
+power; the rest is lost as heat. Compute the electrical power actually
+delivered, `electrical_power`, at each point in time. Check your result: the
+electrical power must never be larger than the rotor power.
 
 ```{code-cell} python
 # code cell
@@ -84,8 +87,8 @@ Answer in your own words, without further code:
 
 1. The wind speed in the test run only fluctuates between about 3 and 8 m/s.
    Why does the rotor power nevertheless fluctuate so much more strongly?
-2. What does the large scatter of the electrical power mean for the operation
-   of the turbine? Name one practical consequence.
+2. What does the strong fluctuation of the electrical power mean for the
+   operation of the turbine? Name one practical consequence.
 
 ## Bonus exercise: Second site (✩✩✩)
 

@@ -111,8 +111,11 @@ and a half time constants, about 97 percent of this limit value is reached.
 
 ```{admonition} Part 4: Electrical power
 :class: tip
-Compute the electrical power actually delivered, `electrical_power`, from
-`rotor_power` and `efficiency`.
+The generator does not convert the entire rotor power into electrical power.
+The efficiency states which fraction of the rotor power arrives as electrical
+power; the rest is lost as heat. Compute the electrical power actually
+delivered, `electrical_power`, at each point in time. Check your result: the
+electrical power must never be larger than the rotor power.
 ```
 
 ```{code-cell} python
@@ -149,16 +152,16 @@ scatter of the power around the mean.
 mean_power = np.mean(electrical_power)
 min_power = np.min(electrical_power)
 max_power = np.max(electrical_power)
-spread = np.std(electrical_power)
+std_power = np.std(electrical_power)
 
-print(f"Mean:    {mean_power:.1f} W")
-print(f"Minimum: {min_power:.1f} W")
-print(f"Maximum: {max_power:.1f} W")
-print(f"Spread:  {spread:.1f} W")
+print(f"Mean:               {mean_power:.1f} W")
+print(f"Minimum:            {min_power:.1f} W")
+print(f"Maximum:            {max_power:.1f} W")
+print(f"Standard deviation: {std_power:.1f} W")
 ```
 The minimum of 0 W comes from the first point in time, at which the generator
-is still at rest. The scatter is of the same order of magnitude as the mean,
-so the test run delivers a very uneven power. This is due both to the
+is still at rest. The standard deviation is of the same order of magnitude as
+the mean, so the test run delivers a very uneven power. This is due both to the
 start-up phase of the generator and to the fluctuating wind speed.
 ````
 
@@ -168,8 +171,8 @@ Answer in your own words, without further code:
 
 1. The wind speed in the test run only fluctuates between about 3 and 8 m/s.
    Why does the rotor power nevertheless fluctuate so much more strongly?
-2. What does the large scatter of the electrical power mean for the operation
-   of the turbine? Name one practical consequence.
+2. What does the strong fluctuation of the electrical power mean for the
+   operation of the turbine? Name one practical consequence.
 ```
 
 ````{admonition} Solution closing question
@@ -216,17 +219,17 @@ rotor_power_2 = k * wind_speed_2**3
 electrical_power_2 = rotor_power_2 * efficiency
 
 mean_power_2 = np.mean(electrical_power_2)
-spread_2 = np.std(electrical_power_2)
+std_power_2 = np.std(electrical_power_2)
 
-print(f"Site 1: {mean_power:.1f} W (spread {spread:.1f} W)")
-print(f"Site 2: {mean_power_2:.1f} W (spread {spread_2:.1f} W)")
+print(f"Site 1: {mean_power:.1f} W (standard deviation {std_power:.1f} W)")
+print(f"Site 2: {mean_power_2:.1f} W (standard deviation {std_power_2:.1f} W)")
 
-print(f"Spread/mean site 1: {spread / mean_power:.2f}")
-print(f"Spread/mean site 2: {spread_2 / mean_power_2:.2f}")
+print(f"Standard deviation/mean site 1: {std_power / mean_power:.2f}")
+print(f"Standard deviation/mean site 2: {std_power_2 / mean_power_2:.2f}")
 ```
 Site 2 delivers a considerably higher mean power, because the wind speeds are
-consistently higher and the power grows with the third power. The absolute
-scatter is also larger at site 2. More meaningful is the ratio of scatter to
-mean: this value is smaller at site 2, so the power there is more even in
-relative terms.
+consistently higher and the power grows with the third power. The standard
+deviation is also larger at site 2. More meaningful is the ratio of standard
+deviation to mean: this value is smaller at site 2, so the power there is more
+even in relative terms.
 ````

@@ -372,13 +372,13 @@ torques = np.array([45.2, 44.8, 46.1, 45.5, 44.9,
 
 1. Determine the mean tightening torque and store it in `mean_torque`.
 2. Determine how much the values scatter around this mean on average, and
-   store the result in `spread`.
+   store the result in `std_torque`.
 3. Determine the smallest and the largest measured torque and store them in
    `min_torque` and `max_torque`.
 4. Compute the range of the measurement (difference between the largest and
    smallest value) from `min_torque` and `max_torque` and store it in
    `span`.
-5. Estimate before running: is `spread` closer to 0.6 Nm or closer to 6 Nm?
+5. Estimate before running: is `std_torque` closer to 0.6 Nm or closer to 6 Nm?
    Justify with a look at the ten measured values.
 ````
 
@@ -396,18 +396,18 @@ torques = np.array([45.2, 44.8, 46.1, 45.5, 44.9,
                     45.8, 46.3, 44.6, 45.1, 45.9])
 
 mean_torque = np.mean(torques)
-print(f"Mean:    {mean_torque:.2f} Nm")
+print(f"Mean:               {mean_torque:.2f} Nm")
 
-spread = np.std(torques)
-print(f"Spread:  {spread:.3f} Nm")
+std_torque = np.std(torques)
+print(f"Standard deviation: {std_torque:.3f} Nm")
 
 min_torque = np.min(torques)
 max_torque = np.max(torques)
-print(f"Minimum: {min_torque:.2f} Nm")
-print(f"Maximum: {max_torque:.2f} Nm")
+print(f"Minimum:            {min_torque:.2f} Nm")
+print(f"Maximum:            {max_torque:.2f} Nm")
 
 span = max_torque - min_torque
-print(f"Span:    {span:.2f} Nm")
+print(f"Span:               {span:.2f} Nm")
 ```
 All measured values lie close together between 44.6 Nm and 46.3 Nm, that is,
 in a band only about 1.7 Nm wide. The standard deviation measures the average

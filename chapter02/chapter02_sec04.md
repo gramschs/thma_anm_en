@@ -139,13 +139,13 @@ rpm_max_power = rpm[np.argmax(p_mech)]
 rpm_max_efficiency = rpm[np.argmax(efficiency)]
 
 mean_power = np.mean(p_mech)
-power_spread = np.std(p_mech)
+power_std = np.std(p_mech)
 max_power = np.max(p_mech)
 
 print(f"Largest mechanical power at {rpm_max_power} 1/min")
 print(f"Best efficiency at {rpm_max_efficiency} 1/min")
 print(f"Mechanical power: mean {mean_power:.0f} W, "
-      f"spread {power_spread:.0f} W, maximum {max_power:.0f} W")
+      f"standard deviation {power_std:.0f} W, maximum {max_power:.0f} W")
 ```
 The mechanical power is largest at about 644 W at 1500 1/min, the efficiency
 at 0.84 only at 2000 1/min. The motor therefore does not deliver its highest
@@ -226,7 +226,7 @@ Answer in your own words, without further code:
    efficiency must be deliberately accepted.
 2. The relative uncertainty is the quotient of `efficiency_std` and
    `efficiency`. It is largest at the low rotational speeds, because the
-   efficiency itself is small there, while the absolute scatter stays
+   efficiency itself is small there, while the absolute uncertainty stays
    similar. At 250 1/min it is over ten percent. For further measurements it
    is worth taking more repeats in the lower rotational-speed range or using
    a more accurate measurement method. The well-measured range around

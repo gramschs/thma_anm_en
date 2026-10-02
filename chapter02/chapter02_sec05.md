@@ -277,14 +277,14 @@ upper_limit = 840
 
 # Processing
 mean = np.mean(force_n)
-spread = np.std(force_n)
+force_std = np.std(force_n)
 force_min = np.min(force_n)
 force_max = np.max(force_n)
 force_kn = force_n / 1000
 
 # Output
 print(f"Mean:               {mean:.1f} N")
-print(f"Standard deviation: {spread:.1f} N")
+print(f"Standard deviation: {force_std:.1f} N")
 print(f"Minimum:            {force_min} N")
 print(f"Maximum:            {force_max} N")
 
@@ -549,7 +549,7 @@ efficiency = p_hydraulic / power_input
 
 flow_rate_best_efficiency = flow_rate[np.argmax(efficiency)]
 mean_power = np.mean(p_hydraulic)
-power_spread = np.std(p_hydraulic)
+power_std = np.std(p_hydraulic)
 max_power = np.max(p_hydraulic)
 
 # Output: scatter plot
@@ -585,13 +585,13 @@ plt.show()
 # Output: text report
 print(f"Best efficiency at {flow_rate_best_efficiency} l/s")
 print(f"Hydraulic power: mean {mean_power:.0f} W, "
-      f"spread {power_spread:.0f} W, maximum {max_power:.0f} W")
+      f"standard deviation {power_std:.0f} W, maximum {max_power:.0f} W")
 ```
 Output:
 ```
 (8,) (8,) (8,)
 Best efficiency at 10 l/s
-Hydraulic power: mean 2842 W, spread 952 W, maximum 3885 W
+Hydraulic power: mean 2842 W, standard deviation 952 W, maximum 3885 W
 ```
 The best efficiency of about 0.75 is at 10 l/s, the largest hydraulic power
 of about 3885 W only at 12 l/s.

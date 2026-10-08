@@ -116,13 +116,13 @@ print(speed_ms)
 Python knows the usual arithmetic operators: `+` for addition, `-` for
 subtraction, `*` for multiplication, `/` for division and `**` for
 exponentiation. With these operators we compute, for example, the kinetic
-energy of a vehicle.
+energy $E_\text{kin} = \frac{1}{2} m v^2$ of a vehicle.
 
 ```{code-cell} python
 mass = 1200        # kg
 speed_ms = 27.8    # m/s
 
-# TODO: ???   compute the kinetic energy 0.5 * mass * speed_ms**2
+# TODO: ???   compute the kinetic energy and store it in kinetic_energy
 print(f'Kinetic energy: {kinetic_energy:.1f} joules')
 ```
 
@@ -135,10 +135,12 @@ value**, that is, either `True` or `False`.
 ```{code-cell} python
 speed_limit_ms = 33.3   # corresponds to 120 km/h
 
-# TODO: ???   print speed_ms > speed_limit_ms and speed_ms == speed_limit_ms
+# TODO: ???   print whether speed_ms is greater than speed_limit_ms
+# TODO: ???   print whether speed_ms is equal to speed_limit_ms
 ```
 
 **Caution: = is not the same as ==**
+
 The single equals sign `=` is the assignment operator and stores a value in
 a variable. The double equals sign `==` compares two values and returns
 `True` or `False`. This mix-up is one of the most common beginner mistakes
@@ -151,7 +153,7 @@ With `and` both conditions must be true, with `or` one is enough.
 is_fast = speed_ms > 25
 is_within_limit = speed_ms <= speed_limit_ms
 
-# TODO: ???   print is_fast and is_within_limit combined with 'and'
+# TODO: ???   print whether both conditions are true at the same time
 ```
 
 With the `not` operator we invert a truth value: `True` becomes `False` and

@@ -39,14 +39,16 @@ mathematical operations directly to entire series of numbers, without
 writing a single loop, as we will see below.
 
 The difference between a list and an array is seen most quickly with an
-example. A sensor delivers five acceleration values in m/s^2:
+example. A sensor delivers five acceleration values in m/s^2, which we store
+once as a list and once as an array. We create the array with `np.array()`
+from a list of numbers.
 
 ```{code-cell} python
 # accelerations in m/s^2 as a Python list
 measurements_list = [0.3, 1.2, 2.5, 1.8, 0.7]
 
 # accelerations in m/s^2 as a NumPy array
-# TODO: ???   measurements_array = np.array of the same values
+# TODO: ???   create a NumPy array with the same values and store it in measurements_array
 
 print(measurements_list)
 print(measurements_array)
@@ -66,7 +68,7 @@ between `start` and `stop`. The end value `stop` is included by default. This
 is suitable, for example, for time axes:
 
 ```{code-cell} python
-# TODO: ???   t = np.linspace with 5 values between 0 and 2 seconds
+# TODO: ???   create a time axis with 5 evenly spaced values between 0 and 2 seconds and store it in t
 print(t)
 ```
 
@@ -89,10 +91,11 @@ we already cover most cases in which we need to create a new array: from
 existing values, as an evenly distributed axis or as a placeholder.
 
 Before we continue computing with the arrays we have created, we check their
-basic properties: size and data type.
+basic properties: size and data type. We read them with `.shape` and
+`.dtype`, written directly after the array name, without parentheses.
 
 ```{code-cell} python
-# TODO: ???   print measurements_array.shape and .dtype
+# TODO: ???   print the size and the data type of measurements_array
 ```
 
 `.shape` returns the dimensions of the array as a tuple. `(5,)` means: one
@@ -115,7 +118,7 @@ list we need a loop for this:
 # with the list: a manual loop is necessary
 forces_list = []
 for a in measurements_list:
-    pass   # TODO: ???   append 5.0 * a to forces_list
+    pass   # TODO: ???   append the force for acceleration a to forces_list
 
 print(forces_list)
 ```
@@ -123,7 +126,7 @@ print(forces_list)
 With the NumPy array a single line is enough:
 
 ```{code-cell} python
-# TODO: ???   forces_array = 5.0 * measurements_array, no loop needed
+# TODO: ???   compute all forces at once, without a loop, and store them in forces_array
 print(forces_array)
 ```
 
@@ -145,7 +148,7 @@ elements are added pairwise:
 sensor_a = np.array([0.3, 1.2, 2.5, 1.8, 0.7])
 sensor_b = np.array([0.1, 0.2, 0.3, 0.1, 0.2])
 
-# TODO: ???   total = sensor_a + sensor_b, added element by element
+# TODO: ???   add the readings of both sensors and store the result in total
 print(total)
 ```
 
@@ -166,7 +169,7 @@ functions.
 
 ```{code-cell} python
 angle = np.linspace(0, 2 * np.pi, 5)
-# TODO: ???   print np.sin(angle)
+# TODO: ???   print the sine of all angles
 ```
 
 `np.sin()` applies the sine to each element of `angle` individually and
@@ -213,9 +216,9 @@ number of elements, just like computing a mean by hand, only without a loop.
 respectively.
 
 ```{code-cell} python
-# TODO: ???   print the mean with np.mean(peak_values)
-# TODO: ???   print the minimum with np.min(peak_values)
-# TODO: ???   print the maximum with np.max(peak_values)
+# TODO: ???   print the mean of the peak values
+# TODO: ???   print the smallest peak value
+# TODO: ???   print the largest peak value
 ```
 
 The standard deviation describes how much the individual values deviate from
@@ -225,7 +228,7 @@ machine reacts noticeably differently from run to run. The standard deviation
 is computed with `np.std()`.
 
 ```{code-cell} python
-# TODO: ???   print the standard deviation with np.std(peak_values)
+# TODO: ???   print the standard deviation of the peak values
 ```
 
 `np.mean()`, `np.std()`, `np.min()` and `np.max()` can also be called
@@ -272,7 +275,6 @@ A temperature sensor delivers four measured values in °C: `18.5`, `19.2`,
    though you only specified the integers 0 and 3 as bounds in
    `np.linspace()`? Justify your answer.
 
-
 ```{code-cell} python
 # code cell
 ```
@@ -305,7 +307,6 @@ rope_2 = np.array([80.0, 75.0, 82.0, 78.0])
    vertical component at each point in time larger or smaller than the total
    force in the rope?
 
-
 ```{code-cell} python
 # code cell
 ```
@@ -331,8 +332,6 @@ torques = np.array([45.2, 44.8, 46.1, 45.5, 44.9,
 5. Estimate before running: is `std_torque` closer to 0.6 Nm or closer to 6 Nm?
    Justify with a look at the ten measured values.
 
-
 ```{code-cell} python
 # code cell
 ```
-

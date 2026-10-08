@@ -191,7 +191,7 @@ print(speed_ms)
 Python knows the usual arithmetic operators: `+` for addition, `-` for
 subtraction, `*` for multiplication, `/` for division and `**` for
 exponentiation. With these operators we compute, for example, the kinetic
-energy of a vehicle.
+energy $E_\text{kin} = \frac{1}{2} m v^2$ of a vehicle.
 
 ```{code-cell} python
 mass = 1200        # kg

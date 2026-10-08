@@ -39,7 +39,8 @@ plot them step by step.
 We start straight away with an example. From the rotational speed we compute
 the torque of the motor. A simple model assumes that the torque decreases
 linearly with the rotational speed: at standstill it is largest, at no-load
-speed it drops to zero.
+speed it drops to zero. We draw the curve with `ax.plot()`, which takes the
+x-values as first and the y-values as second argument.
 
 ```{code-cell} python
 import numpy as np
@@ -70,11 +71,13 @@ drawing area within it, with an x-axis, y-axis and all curves. The pattern
 lecture notes.
 
 `ax.plot(rpm, torque)` draws a line through the points `(rpm[0], torque[0])`,
-`(rpm[1], torque[1])` and so on. The first argument is always the x-axis, the
-second the y-axis. `plt.show()` displays the finished diagram.
+`(rpm[1], torque[1])` and so on. `plt.show()` displays the finished diagram.
 
 A diagram without labeled axes is worthless in engineering practice. We
-therefore add axis labels with units, a title and a grid.
+therefore add axis labels with units, a title and a grid. Like `plot()`,
+these methods are called on `ax`: `set_xlabel()` and `set_ylabel()` label the
+axes, `set_title()` sets a title and `grid(True)` places a grid over the
+drawing area.
 
 ```{code-cell} python
 fig, ax = plt.subplots(figsize=(7, 4))
@@ -90,13 +93,12 @@ plt.show()
 ```
 
 `figsize=(7, 4)` sets the width and height of the Figure in inches.
-`set_xlabel()` and `set_ylabel()` label the axes, `set_title()` sets a title
-and `grid(True)` places a grid over the drawing area.
 
 Often we want to compare several curves. For this we simply call `ax.plot()`
 several times. We compare our motor with a weaker variant that delivers only
 6 Nm at standstill. Each curve gets a `label` that then appears in the
-legend.
+legend. The call `ax.legend()` without arguments collects all `label`
+entries and shows them as a legend.
 
 ```{code-cell} python
 torque_weak = 6.0 * (1 - rpm / no_load_rpm)
@@ -118,10 +120,8 @@ plt.show()
 
 Matplotlib automatically gives each curve its own color. With `linestyle` we
 change the line style; possible values are `'solid'`, `'dashed'`, `'dotted'`
-and `'dashdot'`. The call `ax.legend()` without arguments collects all
-`label` entries and shows them as a legend. This is cleaner than passing a
-list of texts to `ax.legend()`, because the label is written directly at the
-respective `ax.plot()` call.
+and `'dashdot'`. Writing the `label` directly at the respective `ax.plot()`
+call is cleaner than passing a list of texts to `ax.legend()`.
 
 In practice we want not only to look at a diagram, but also to insert it into
 a report. `fig.savefig()` saves the Figure as a file. We call it in the same
@@ -204,6 +204,17 @@ between 0 and 1. In a common coordinate system, the torque and efficiency
 would no longer be recognizable as flat lines at the bottom edge. The
 solution is **subplots**: several drawing areas in a common Figure.
 
+`plt.subplots(nrows=3, ncols=1)` creates three drawing areas one below the
+other and returns them as an array `ax`. We address the top one with `ax[0]`,
+the middle one with `ax[1]` and the bottom one with `ax[2]`, just as with a
+NumPy array.
+
+For the x-axis label and the grid we write a `for` loop over `ax`, because
+these two settings are the same for all three subplots. The loop variable
+`single_axis` is one of the three drawing areas on each pass. Everything that
+differs between the subplots, that is, the y-label and the title, we set
+individually via `ax[0]`, `ax[1]` and `ax[2]`.
+
 ```{code-cell} python
 fig, ax = plt.subplots(nrows=3, ncols=1, figsize=(7, 8))
 
@@ -225,17 +236,6 @@ ax[0].set_title('Characteristic map of the electric motor')
 plt.tight_layout()
 plt.show()
 ```
-
-`plt.subplots(nrows=3, ncols=1)` creates three drawing areas one below the
-other and returns them as an array `ax`. We address the top one with `ax[0]`,
-the middle one with `ax[1]` and the bottom one with `ax[2]`, just as with a
-NumPy array.
-
-For the x-axis label and the grid we write a `for` loop over `ax`, because
-these two settings are the same for all three subplots. The loop variable
-`single_axis` is one of the three drawing areas on each pass. Everything that
-differs between the subplots, that is, the y-label and the title, we set
-individually via `ax[0]`, `ax[1]` and `ax[2]`.
 
 `plt.tight_layout()` increases the spacing between the subplots so that
 labels do not overlap. We always call it directly before `plt.show()`.
@@ -338,7 +338,11 @@ right when no continuous curve was measured between the measured points.
 
 Each measured point is the mean of several repeat measurements and has an
 uncertainty. We represent this with **error bars**. The appropriate function
-is `ax.errorbar()`.
+is `ax.errorbar()`, which, like `ax.scatter()`, expects the x-values first,
+then the y-values. `yerr` passes the uncertainty in the y-direction as an
+array. `fmt='o'` draws the measured points as circles, `capsize=4` gives the
+caps at the ends of the error bars a width of 4 points so that they are
+easier to read.
 
 ```{code-cell} python
 measurement_uncertainty = np.array([0.02, 0.02, 0.03, 0.03, 0.04, 0.03, 0.02, 0.03, 0.05])
@@ -355,10 +359,6 @@ ax.grid(True)
 
 plt.show()
 ```
-
-`yerr` passes the uncertainty in the y-direction as an array. `fmt='o'` draws
-the measured points as circles, `capsize=4` gives the caps at the ends of the
-error bars a width of 4 points so that they are easier to read.
 
 Finally, we compare the measurement with our model from the last section. We
 draw the measured points with error bars and the model curve in the same

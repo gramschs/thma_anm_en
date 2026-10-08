@@ -49,8 +49,9 @@ num_measurements = len(speeds_kmh)
 print(f'Number of measurements: {num_measurements}')
 ```
 
-We access individual elements via the **index**. Python starts counting at 0.
-With the index `-1` we conveniently access the last element.
+We access individual elements via the **index** in square brackets. Python
+starts counting at 0. With the index `-1` we conveniently access the last
+element.
 
 ```{code-cell} python
 first_measurement = speeds_kmh[0]
@@ -60,7 +61,7 @@ print(f'Last measurement: {last_measurement} km/h')
 ```
 
 To add a new measurement at the end of the list, we use the `append()`
-method.
+method, which we write with a dot directly after the list name.
 
 ```{code-cell} python
 speeds_kmh.append(75)
@@ -205,6 +206,11 @@ to m/s by hand several times. With our own **function** we encapsulate this
 calculation, so that we only define it once and can reuse it as often as we
 like.
 
+A function begins with the keyword `def`, followed by the function name and
+the **parameters** in parentheses. Here too, the header ends with a colon `:`
+and the function body is indented. The keyword `return` determines which
+value is returned to the caller.
+
 ```{code-cell} python
 def kmh_to_ms(speed_kmh):
     speed_ms = speed_kmh / 3.6
@@ -214,12 +220,8 @@ speed_ms = kmh_to_ms(95)
 print(speed_ms)
 ```
 
-A function begins with the keyword `def`, followed by the function name and
-the **parameters** in parentheses. Here too, the header ends with a colon `:`
-and the function body is indented. The keyword `return` determines which
-value is returned to the caller. Once the function is defined, we
-call it as often as we like with different arguments, for example for every
-measured value in our list.
+Once the function is defined, we call it as often as we like with different
+arguments, for example for every measured value in our list.
 
 ```{code-cell} python
 for speed in speeds_kmh:
@@ -228,7 +230,9 @@ for speed in speeds_kmh:
 
 A function can have several parameters. If we write an `=` with a value after
 a parameter, that is a **default value**: if we call the function without
-this argument, Python automatically uses the default value.
+this argument, Python automatically uses the default value. If we want a
+different value, we pass it like any other argument, or by name with
+`parameter=value`.
 
 ```{code-cell} python
 def kinetic_energy(speed_ms, mass=1200):

@@ -17,7 +17,8 @@ fast does the runtime grow with the system size, and where does
 For the timing measurements we need test problems: matrices and
 right-hand sides of any size that form a uniquely solvable system. A random
 matrix is almost always solvable. We make sure of that by strengthening the
-diagonal.
+diagonal: we add $n$ times the identity matrix, which NumPy creates with
+`np.eye(n)`.
 
 ```{code-cell} python
 import numpy as np
@@ -34,8 +35,8 @@ def generate_lse(n, seed=0):
     Returns: matrix A and right-hand side b
     """
     rng = np.random.default_rng(seed)
-    # TODO: ???   A = rng.standard_normal((n, n))
-    # TODO: ???   A = A + n * np.eye(n), strengthen the diagonal -> always solvable
+    A = rng.standard_normal((n, n))
+    # TODO: ???   strengthen the diagonal: add n times the identity matrix to A
     b = rng.standard_normal(n)
     return A, b
 
@@ -44,8 +45,7 @@ print('Shape of A:  ', A.shape)
 print('Determinant:', round(float(np.linalg.det(A)), 1))
 ```
 
-We add $n$ times the identity matrix, so that each diagonal element grows
-by $n$. The factor $n$ matters: the typical row sum of an $n \times n$
+Each diagonal element thus grows by $n$. The factor $n$ matters: the typical row sum of an $n \times n$
 random matrix grows with $\sqrt{n}$, and a fixed increment would no longer
 be enough to make the diagonal dominant for large $n$.
 
@@ -59,9 +59,9 @@ between two calls is the elapsed time. We measure how long
 def measure_runtime(n):
     """Generates an n x n system, solves it, and returns the runtime in s."""
     A, b = generate_lse(n)
-    # TODO: ???   start = time.perf_counter()
+    # TODO: ???   store the current time in start
     np.linalg.solve(A, b)
-    # TODO: ???   return the elapsed time.perf_counter() - start
+    # TODO: ???   return the elapsed time
 
 n_values = np.array([100, 200, 400, 700, 1000, 1500, 2000])
 t_values = np.zeros(len(n_values))
@@ -75,14 +75,15 @@ The absolute times depend on the hardware and fluctuate somewhat from run
 to run. To study the scaling, we plot the times against the system size
 using `ax.loglog`: both axes are logarithmic. A power law
 $t \propto n^\alpha$ then appears as a straight line whose slope is the
-exponent $\alpha$.
+exponent $\alpha$. With `marker='o'` each measured point is additionally
+marked with a circle.
 
 ```{code-cell} python
 # reference line for O(n^3), fitted to the first data point
 t_reference = t_values[0] * (n_values / n_values[0])**3
 
 fig, ax = plt.subplots(figsize=(7, 4))
-# TODO: ???   ax.loglog(n_values, t_values, marker='o', label='measured')
+# TODO: ???   plot the measured runtimes over n on log-log axes, with circle markers and the label 'measured'
 ax.loglog(n_values, t_reference, linestyle='dashed', label='slope 3 (O(n³))')
 ax.set_xlabel('System size n')
 ax.set_ylabel('Runtime in s')
@@ -105,8 +106,9 @@ log_t = np.log(t_values)
 # np.polyfit(x, y, 1) fits a line through the points and returns
 # [slope, intercept]. We use only the upper half of the data points,
 # since for small n the fixed overhead distorts the measurement.
+# log_n[middle:] selects the entries from index middle to the end.
 middle = len(n_values) // 2
-# TODO: ???   slope = np.polyfit(log_n[middle:], log_t[middle:], 1)[0]
+# TODO: ???   fit a line through the upper half of the points and store its slope in slope
 
 print(f'estimated exponent: {slope:.2f}')
 print('theoretical value:  3.00')
@@ -139,7 +141,6 @@ mechanical engineering problem: the deformation of a truss.
 2. Answer without code: why does it make sense, when measuring runtimes,
    to always use the same `seed`?
 
-
 ```{code-cell} python
 # code cell
 ```
@@ -149,7 +150,6 @@ mechanical engineering problem: the deformation of a truss.
 1. Plot the same data additionally with `ax.plot` instead of `ax.loglog`.
 2. Answer without code: in which of the two plots is the scaling exponent
    easier to read off, and why?
-
 
 ```{code-cell} python
 # code cell
@@ -164,8 +164,6 @@ mechanical engineering problem: the deformation of a truss.
    $n = 10^6$ unknowns. Is `np.linalg.solve` suitable for that? Look up the
    terms *sparse matrix* and *iterative solver*.
 
-
 ```{code-cell} python
 # code cell
 ```
-

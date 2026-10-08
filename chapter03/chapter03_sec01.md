@@ -112,7 +112,8 @@ print('Shape (rows, columns):', A.shape)
 ```
 
 `A.shape` returns `(3, 3)`, i.e. three rows and three columns. We access a
-single entry with two indices: first the row, then the column.
+single entry with two indices in square brackets, `A[row, column]`: first
+the row, then the column.
 
 ```{code-cell} python
 print('Row 0, column 2:', A[0, 2])   # clementines on day 1
@@ -182,8 +183,9 @@ Not every LSE has exactly one solution. Three cases are possible:
 * infinitely many solutions (one equation carries no new information)
 
 For square systems, i.e. as many equations as unknowns, we check this with
-the **determinant** $\det(\mathbf{A})$. The rule is: if the determinant is
-not zero, the system has exactly one solution.
+the **determinant** $\det(\mathbf{A})$, which NumPy computes with
+`np.linalg.det()`. The rule is: if the determinant is not zero, the system
+has exactly one solution.
 
 ```{code-cell} python
 det_A = np.linalg.det(A)

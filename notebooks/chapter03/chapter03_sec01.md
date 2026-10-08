@@ -91,18 +91,19 @@ A = np.array([
     # TODO: ???   day 3: 1 apple, 1 banana, 3 clementines
 ], dtype=float)
 
-# TODO: ???   b = the three receipts 1.80, 1.20, 2.00
+# TODO: ???   create the right-hand side b from the three receipts
 
 print(A)
 print('Shape (rows, columns):', A.shape)
 ```
 
 `A.shape` returns `(3, 3)`, i.e. three rows and three columns. We access a
-single entry with two indices: first the row, then the column.
+single entry with two indices in square brackets, `A[row, column]`: first
+the row, then the column.
 
 ```{code-cell} python
-# TODO: ???   print A[0, 2], the clementine coefficient on day 1
-# TODO: ???   print A[1, 0], the apple coefficient on day 2
+# TODO: ???   print the clementine coefficient on day 1
+# TODO: ???   print the apple coefficient on day 2
 ```
 
 ## Does the system have a unique solution?
@@ -114,11 +115,12 @@ Not every LSE has exactly one solution. Three cases are possible:
 * infinitely many solutions (one equation carries no new information)
 
 For square systems, i.e. as many equations as unknowns, we check this with
-the **determinant** $\det(\mathbf{A})$. The rule is: if the determinant is
-not zero, the system has exactly one solution.
+the **determinant** $\det(\mathbf{A})$, which NumPy computes with
+`np.linalg.det()`. The rule is: if the determinant is not zero, the system
+has exactly one solution.
 
 ```{code-cell} python
-# TODO: ???   det_A = np.linalg.det(A)
+# TODO: ???   compute the determinant and store it in det_A
 print(f'Determinant: {det_A:.4f}')
 
 # np.isclose checks whether a value is close to zero.
@@ -172,7 +174,7 @@ If the determinant is not zero, we compute the solution with
 right-hand side.
 
 ```{code-cell} python
-# TODO: ???   x = np.linalg.solve(A, b)
+# TODO: ???   solve the LSE and store the solution in x
 
 print(f'Price apple:      {x[0]:.2f} euros')
 print(f'Price banana:     {x[1]:.2f} euros')
@@ -185,7 +187,7 @@ vector $\vec{b}$. That is the **check**. For the matrix product we use the
 `@` operator, not `*`.
 
 ```{code-cell} python
-# TODO: ???   b_check = A @ x
+# TODO: ???   compute A times x and store the result in b_check
 
 print('A @ x:', b_check)
 print('b:    ', b)
@@ -229,7 +231,6 @@ $$\begin{align}
 4. Compute $\mathbf{A} \cdot \vec{n}$ by hand and check that, row by row,
    you get back the system of equations above.
 
-
 ```{code-cell} python
 # code cell
 ```
@@ -244,7 +245,6 @@ $$\mathbf{A} = \begin{pmatrix} 2 & 1 & 1 \\ 4 & 2 & 2 \\ 1 & 0 & 3 \end{pmatrix}
    closely at the first two rows.
 2. Create the matrix and check your guess with `np.linalg.det()` and
    `np.isclose()`.
-
 
 ```{code-cell} python
 # code cell
@@ -266,8 +266,6 @@ revenue in euros:
 2. Answer without code: the check `np.allclose(A @ x, b)` returns `True`.
    Does that mean `A` and `b` were guaranteed to be set up correctly?
 
-
 ```{code-cell} python
 # code cell
 ```
-

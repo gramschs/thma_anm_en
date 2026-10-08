@@ -55,7 +55,9 @@ mathematical operations directly to entire series of numbers, without
 writing a single loop, as we will see below.
 
 The difference between a list and an array is seen most quickly with an
-example. A sensor delivers five acceleration values in m/s^2:
+example. A sensor delivers five acceleration values in m/s^2, which we store
+once as a list and once as an array. We create the array with `np.array()`
+from a list of numbers.
 
 ```{code-cell} python
 # accelerations in m/s^2 as a Python list
@@ -105,7 +107,8 @@ we already cover most cases in which we need to create a new array: from
 existing values, as an evenly distributed axis or as a placeholder.
 
 Before we continue computing with the arrays we have created, we check their
-basic properties: size and data type.
+basic properties: size and data type. We read them with `.shape` and
+`.dtype`, written directly after the array name, without parentheses.
 
 ```{code-cell} python
 print(measurements_array.shape)   # number of elements per dimension

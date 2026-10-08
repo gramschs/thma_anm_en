@@ -95,15 +95,14 @@ A = np.array([
     # TODO: ???   equation (2'): -T_AB + T_BC + R_B*Q = 0
     # TODO: ???   equation (3'): -T_BC + R_C*Q = -T_CR
 ])
-
-# TODO: ???   right-hand side b from equations (1')-(3')
+# TODO: ???   create the right-hand side from equations (1')-(3') and store it in b
 
 # check solvability
-# TODO: ???   compute the determinant of A
+# TODO: ???   compute the determinant of A and store it in det_A
 print(f'Determinant: {det_A:.4f}')
 
 # solve
-# TODO: ???   solve A @ x = b for x
+# TODO: ???   solve the LSE and store the solution in x
 T_AB, T_BC, Q = x   # unpack the result into three variables
 
 print(f'T_AB = {T_AB:.2f} K   (interface A-B)')
@@ -124,7 +123,7 @@ temperature jump, just as the largest resistance in an electrical circuit
 produces the largest voltage drop.
 
 ```{code-cell} python
-# TODO: ???   temperature differences delta_A, delta_B, delta_C across each layer
+# TODO: ???   compute the temperature difference across each layer (right minus left) and store them in delta_A, delta_B, delta_C
 
 print(f'Temperature difference layer A (R = {R_A} K/W): {delta_A:.2f} K')
 print(f'Temperature difference layer B (R = {R_B} K/W): {delta_B:.2f} K')

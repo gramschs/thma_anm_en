@@ -104,7 +104,9 @@ unique solution has *no* solution or *infinitely many*.
 
 For this we need, besides $\mathbf{A}$, also the **augmented coefficient
 matrix** $[\mathbf{A} \mid \vec{b}]$: the matrix $\mathbf{A}$ with $\vec{b}$
-as an extra column. In NumPy, `np.column_stack` appends it.
+as an extra column. In NumPy, `np.column_stack` appends it; the arrays to be
+joined are passed together in an extra pair of parentheses. We compute the
+rank with `np.linalg.matrix_rank()`.
 
 ```{code-cell} python
 # A uniquely solvable system
@@ -115,11 +117,11 @@ A = np.array([
 ])
 b = np.array([1.0, 2.0, 3.0])
 
-# TODO: ???   Ab = np.column_stack((A, b)), the augmented matrix
+# TODO: ???   build the augmented matrix [A | b] and store it in Ab
 
 n = A.shape[1]   # number of unknowns
-# TODO: ???   print the rank of A with np.linalg.matrix_rank(A)
-# TODO: ???   print the rank of Ab with np.linalg.matrix_rank(Ab)
+# TODO: ???   print the rank of A
+# TODO: ???   print the rank of the augmented matrix Ab
 print('Number of unknowns:', n)
 ```
 
@@ -144,7 +146,7 @@ A = np.array([
 b_contradictory = np.array([3.0, 7.0, 2.0])   # b[1] should be 2*b[0] = 6, but is 7
 b_consistent = np.array([3.0, 6.0, 2.0])      # b[1] = 6 = 2*b[0], matches row 2 = 2*row 1
 
-# TODO: ???   print rank(A), rank([A|b_contradictory]) and rank([A|b_consistent])
+# TODO: ???   print the rank of A and of the two augmented matrices with b_contradictory and b_consistent
 ```
 
 With `b_contradictory` the rank of the augmented matrix rises to 3, while
@@ -158,7 +160,9 @@ exercise of Chapter 3.2: a beam without horizontal restraint.
 
 Now we vary $R_4$ systematically and look for the value at which the bridge
 current becomes zero. For each value of $R_4$ we solve a separate system of
-equations.
+equations and store the bridge current $I$ and the power dissipation
+$P = R_B \cdot I^2$. `enumerate()` supplies the index `k` along with each
+value `r4`.
 
 ```{code-cell} python
 import matplotlib.pyplot as plt
@@ -170,7 +174,7 @@ i_values = np.zeros(500)
 p_values = np.zeros(500)
 
 for k, r4 in enumerate(r4_values):
-    pass   # TODO: ???   solve_bridge(r4)[5], store in i_values[k] and p_values[k] = RB * current**2
+    pass   # TODO: ???   solve the bridge for r4 and store the bridge current and the power dissipation at position k
 
 fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(7, 7), sharex=True)
 
@@ -192,10 +196,11 @@ plt.show()
 The bridge current crosses the zero line, and the power dissipation touches
 the x-axis there. We find the zero crossing with `np.argmin` over the
 absolute value and compare it with the known balance condition
-$R_4^\ast = R_2 \cdot R_3 / R_1$.
+$R_4^\ast = R_2 \cdot R_3 / R_1$. `np.abs()` computes the absolute values
+element by element, `np.argmin()` returns the index of the smallest element.
 
 ```{code-cell} python
-# TODO: ???   k_zero = index of the smallest np.abs(i_values) with np.argmin
+# TODO: ???   find the index of the bridge current closest to zero and store it in k_zero
 r4_balance = r4_values[k_zero]
 
 r4_analytical = R2 * R3 / R1
@@ -231,7 +236,6 @@ system of equations.
    is negative, at $R_4 = 50\,\Omega$ it is positive. What evidently
    happens for a value in between, and what does that mean for the bridge?
 
-
 ```{code-cell} python
 # code cell
 ```
@@ -249,7 +253,6 @@ $$\mathbf{A} = \begin{pmatrix} 1 & 1 & 2 \\ 3 & 3 & 6 \\ 1 & 0 & 1 \end{pmatrix}
    $\text{rank}([\mathbf{A} \mid \vec{b}])$ with `np.linalg.matrix_rank`.
    Which of the three cases applies?
 
-
 ```{code-cell} python
 # code cell
 ```
@@ -262,8 +265,6 @@ $$\mathbf{A} = \begin{pmatrix} 1 & 1 & 2 \\ 3 & 3 & 6 \\ 1 & 0 & 1 \end{pmatrix}
 2. Answer without code: why does the power dissipation touch the x-axis at
    the root instead of crossing it?
 
-
 ```{code-cell} python
 # code cell
 ```
-

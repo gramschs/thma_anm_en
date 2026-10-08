@@ -31,7 +31,8 @@ fast does the runtime grow with the system size, and where does
 For the timing measurements we need test problems: matrices and
 right-hand sides of any size that form a uniquely solvable system. A random
 matrix is almost always solvable. We make sure of that by strengthening the
-diagonal.
+diagonal: we add $n$ times the identity matrix, which NumPy creates with
+`np.eye(n)`.
 
 ```{code-cell} python
 import numpy as np
@@ -58,8 +59,7 @@ print('Shape of A:  ', A.shape)
 print('Determinant:', round(float(np.linalg.det(A)), 1))
 ```
 
-We add $n$ times the identity matrix, so that each diagonal element grows
-by $n$. The factor $n$ matters: the typical row sum of an $n \times n$
+Each diagonal element thus grows by $n$. The factor $n$ matters: the typical row sum of an $n \times n$
 random matrix grows with $\sqrt{n}$, and a fixed increment would no longer
 be enough to make the diagonal dominant for large $n$.
 
@@ -115,7 +115,8 @@ The absolute times depend on the hardware and fluctuate somewhat from run
 to run. To study the scaling, we plot the times against the system size
 using `ax.loglog`: both axes are logarithmic. A power law
 $t \propto n^\alpha$ then appears as a straight line whose slope is the
-exponent $\alpha$.
+exponent $\alpha$. With `marker='o'` each measured point is additionally
+marked with a circle.
 
 ```{code-cell} python
 # reference line for O(n^3), fitted to the first data point
@@ -175,6 +176,7 @@ log_t = np.log(t_values)
 # np.polyfit(x, y, 1) fits a line through the points and returns
 # [slope, intercept]. We use only the upper half of the data points,
 # since for small n the fixed overhead distorts the measurement.
+# log_n[middle:] selects the entries from index middle to the end.
 middle = len(n_values) // 2
 slope = np.polyfit(log_n[middle:], log_t[middle:], 1)[0]
 

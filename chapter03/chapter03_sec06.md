@@ -146,7 +146,9 @@ unique solution has *no* solution or *infinitely many*.
 
 For this we need, besides $\mathbf{A}$, also the **augmented coefficient
 matrix** $[\mathbf{A} \mid \vec{b}]$: the matrix $\mathbf{A}$ with $\vec{b}$
-as an extra column. In NumPy, `np.column_stack` appends it.
+as an extra column. In NumPy, `np.column_stack` appends it; the arrays to be
+joined are passed together in an extra pair of parentheses. We compute the
+rank with `np.linalg.matrix_rank()`.
 
 ```{code-cell} python
 # A uniquely solvable system
@@ -249,7 +251,9 @@ The system has infinitely many solutions.
 
 Now we vary $R_4$ systematically and look for the value at which the bridge
 current becomes zero. For each value of $R_4$ we solve a separate system of
-equations.
+equations and store the bridge current $I$ and the power dissipation
+$P = R_B \cdot I^2$. `enumerate()` supplies the index `k` along with each
+value `r4`.
 
 ```{code-cell} python
 import matplotlib.pyplot as plt
@@ -285,7 +289,8 @@ plt.show()
 The bridge current crosses the zero line, and the power dissipation touches
 the x-axis there. We find the zero crossing with `np.argmin` over the
 absolute value and compare it with the known balance condition
-$R_4^\ast = R_2 \cdot R_3 / R_1$.
+$R_4^\ast = R_2 \cdot R_3 / R_1$. `np.abs()` computes the absolute values
+element by element, `np.argmin()` returns the index of the smallest element.
 
 ```{code-cell} python
 k_zero = np.argmin(np.abs(i_values))

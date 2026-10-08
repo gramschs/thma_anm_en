@@ -166,8 +166,6 @@ def clean_myst_file(input_filename, output_filename):
         output_lines.append('\n')
         output_lines.extend(body)
 
-    output_lines = collapse_blank_lines(output_lines)
-
     if mini_exercises:
         output_lines.append('\n')
         output_lines.append('## Mini-exercises\n')
@@ -180,6 +178,10 @@ def clean_myst_file(input_filename, output_filename):
             if code_cell:
                 output_lines.extend(code_cell)
                 output_lines.append('\n')
+
+    output_lines = collapse_blank_lines(output_lines)
+    while output_lines and output_lines[-1].strip() == '':
+        output_lines.pop()
 
     with open(output_filename, 'w') as output_file:
         output_file.writelines(output_lines)

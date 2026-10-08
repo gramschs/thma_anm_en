@@ -33,22 +33,23 @@ A list can contain any number of elements. With `len()` we display the
 number of elements.
 
 ```{code-cell} python
-# TODO: ???   get the number of elements in speeds_kmh with len()
+# TODO: ???   determine the number of measurements in speeds_kmh and store it in num_measurements
 print(f'Number of measurements: {num_measurements}')
 ```
 
-We access individual elements via the **index**. Python starts counting at 0.
-With the index `-1` we conveniently access the last element.
+We access individual elements via the **index** in square brackets. Python
+starts counting at 0. With the index `-1` we conveniently access the last
+element.
 
 ```{code-cell} python
-# TODO: ???   first_measurement = first element of speeds_kmh
-# TODO: ???   last_measurement = last element of speeds_kmh
+# TODO: ???   store the first measurement in first_measurement
+# TODO: ???   store the last measurement in last_measurement
 print(f'First measurement: {first_measurement} km/h')
 print(f'Last measurement: {last_measurement} km/h')
 ```
 
 To add a new measurement at the end of the list, we use the `append()`
-method.
+method, which we write with a dot directly after the list name.
 
 ```{code-cell} python
 # TODO: ???   append 75 to speeds_kmh
@@ -104,6 +105,11 @@ to m/s by hand several times. With our own **function** we encapsulate this
 calculation, so that we only define it once and can reuse it as often as we
 like.
 
+A function begins with the keyword `def`, followed by the function name and
+the **parameters** in parentheses. Here too, the header ends with a colon `:`
+and the function body is indented. The keyword `return` determines which
+value is returned to the caller.
+
 ```{code-cell} python
 def kmh_to_ms(speed_kmh):
     pass   # TODO: ???   convert speed_kmh to m/s and return it
@@ -112,12 +118,8 @@ speed_ms = kmh_to_ms(95)
 print(speed_ms)
 ```
 
-A function begins with the keyword `def`, followed by the function name and
-the **parameters** in parentheses. Here too, the header ends with a colon `:`
-and the function body is indented. The keyword `return` determines which
-value is returned to the caller. Once the function is defined, we
-call it as often as we like with different arguments, for example for every
-measured value in our list.
+Once the function is defined, we call it as often as we like with different
+arguments, for example for every measured value in our list.
 
 ```{code-cell} python
 for speed in speeds_kmh:
@@ -126,13 +128,15 @@ for speed in speeds_kmh:
 
 A function can have several parameters. If we write an `=` with a value after
 a parameter, that is a **default value**: if we call the function without
-this argument, Python automatically uses the default value.
+this argument, Python automatically uses the default value. If we want a
+different value, we pass it like any other argument, or by name with
+`parameter=value`.
 
 ```{code-cell} python
 def kinetic_energy(speed_ms, mass=1200):
     return 0.5 * mass * speed_ms**2
 
-# TODO: ???   call kinetic_energy(27.8) once with the default mass and once with mass=1500
+# TODO: ???   print the kinetic energy at 27.8 m/s, once with the default mass and once with 1500 kg
 ```
 
 Directly below the header of a function we can write a **docstring** in
@@ -170,7 +174,6 @@ with `len()`.
 Also answer, without running the code: what does `temperatures[-2]` return
 after you have appended the sixth value? Justify your answer.
 
-
 ```{code-cell} python
 # code cell
 ```
@@ -185,7 +188,6 @@ Also answer: why would a list `[23.5, 'test_rig_2', '14:32']` be less
 suitable for this data than a dictionary? Phrase your answer in your own
 words.
 
-
 ```{code-cell} python
 # code cell
 ```
@@ -199,8 +201,6 @@ function for `speed_kmh = 100` and print the result.
 Also answer, without running the code: what does the function call return if
 you forget the keyword `return` in the function? Justify your answer.
 
-
 ```{code-cell} python
 # code cell
 ```
-

@@ -126,7 +126,8 @@ close to zero.
 print(f'Determinant: {det_A:.4f}')
 
 # np.isclose checks whether a value is close to zero.
-# This is more reliable than == 0, because floating-point numbers are never exact.
+# This is more reliable than == 0, because calculations with floating-point
+# numbers can produce small rounding errors.
 if np.isclose(det_A, 0.0):
     print('det(A) = 0: no unique solution.')
 else:
@@ -151,20 +152,33 @@ print(f'Determinant: {np.linalg.det(A_singular):.2e}')
 ```
 
 The result is not exactly zero, but a tiny number such as `1e-15` or `1e-16`,
-whose exact value depends on the computer.
-Floating-point numbers are stored only approximately, and
-every computation accumulates small rounding errors. That is exactly why we
-compare with `np.isclose` and not with `== 0`.
+whose exact value depends on the computer. The entries of the matrix are
+whole numbers and are stored exactly. However, NumPy computes the
+determinant in several intermediate steps with divisions, and not every
+intermediate result can be stored exactly as a floating-point number. These
+small rounding errors are the reason why we compare with `np.isclose` and
+not with `== 0`.
 
 **What happens with a singular matrix?**
 
-If we pass a singular matrix to the solver function `np.linalg.solve`, the
-program terminates with a `LinAlgError`. We catch such errors with `try`
-and `except` instead of letting the program crash:
+The solver function `np.linalg.solve` raises a `LinAlgError` only if an
+exact zero appears during the elimination. Because of the rounding errors,
+this does not happen for `A_singular`: `np.linalg.solve(A_singular, b)`
+returns a supposed solution with entries on the order of $10^{15}$, without
+any warning. That is why we check the determinant before solving.
+
+If the error does occur, for example with a matrix whose second row is
+exactly twice the first, we catch it with `try` and `except` instead of
+letting the program crash:
 
 ```python
+A_small = np.array([
+    [1.0, 2.0],
+    [2.0, 4.0],   # row 2 = 2 * row 1
+])
+
 try:
-    x = np.linalg.solve(A_singular, b)
+    x = np.linalg.solve(A_small, np.array([1.0, 2.0]))
 except np.linalg.LinAlgError:
     print('Matrix is singular, the system has no unique solution.')
 ```
@@ -173,6 +187,18 @@ If the determinant is zero, the system has either no solution or infinitely
 many. In the excursus on the Wheatstone bridge we use the **rank** to clarify
 which case applies and how to check solvability even when there are more
 equations than unknowns.
+
+**How reliable is the determinant test?**
+
+The rule "determinant not zero, exactly one solution" holds in exact
+mathematics. On the computer, the value of the determinant also depends on
+the scaling of the matrix. If we multiply the $20 \times 20$ identity matrix
+by $0.001$, its determinant drops to $10^{-60}$ and `np.isclose` reports
+zero, although the system is just as easy to solve as before. For our small,
+well-scaled examples the determinant test is sufficient. More reliable
+numerical criteria are the rank and the **condition number**
+(`np.linalg.cond()`), which measures how strongly small errors in the data
+affect the solution.
 
 ## Solving the system and checking the result
 
@@ -211,11 +237,11 @@ print('Check passed:', np.allclose(b_check, b))
 We write a system of linear equations as the matrix equation
 $\mathbf{A} \cdot \vec{x} = \vec{b}$. We create the coefficient matrix
 $\mathbf{A}$ as a two-dimensional NumPy array, and the right-hand side
-$\vec{b}$ as a one-dimensional array. With `np.linalg.det()` and
-`np.isclose()` we check in advance whether a unique solution exists, and we
-catch the `LinAlgError` with `try`/`except`. The solution itself comes from
-`np.linalg.solve(A, b)` in a single line, verified by the check
-`np.allclose(A @ x, b)`.
+$\vec{b}$ as a one-dimensional array. For small, well-scaled matrices,
+`np.linalg.det()` and `np.isclose()` tell us in advance whether a unique
+solution exists, and we catch a `LinAlgError` with `try`/`except`. The
+solution itself comes from `np.linalg.solve(A, b)` in a single line,
+verified by the check `np.allclose(A @ x, b)`.
 
 In the next chapter we leave the fruit stand behind and set up a linear
 system from a mechanical engineering problem: the static equilibrium of a
@@ -234,11 +260,11 @@ $$\begin{align}
 1 n_1 + 4 n_2 &= 9 \qquad \text{(aluminum in kg)}
 \end{align}$$
 
-1. Write the coefficient matrix `A` and the right-hand side `b` as
+1. Write the coefficient matrix `A_prod` and the right-hand side `b_prod` as
    NumPy arrays.
-2. Print `A.shape`.
-3. Answer without code: what do the entries `A[1, 0]` and `b[1]` mean in
-   context?
+2. Print `A_prod.shape`.
+3. Answer without code: what do the entries `A_prod[1, 0]` and `b_prod[1]`
+   mean in context?
 4. Compute $\mathbf{A} \cdot \vec{n}$ by hand and check that, row by row,
    you get back the system of equations above.
 
@@ -250,9 +276,9 @@ $$\begin{align}
 
 Given the matrix
 
-$$\mathbf{A} = \begin{pmatrix} 2 & 1 & 1 \\ 4 & 2 & 2 \\ 1 & 0 & 3 \end{pmatrix}.$$
+$$\mathbf{M} = \begin{pmatrix} 2 & 1 & 1 \\ 4 & 2 & 2 \\ 1 & 0 & 3 \end{pmatrix}.$$
 
-1. Answer without code: will `np.linalg.det(A)` be close to zero? Look
+1. Answer without code: will `np.linalg.det(M)` be close to zero? Look
    closely at the first two rows.
 2. Create the matrix and check your guess with `np.linalg.det()` and
    `np.isclose()`.
@@ -272,10 +298,11 @@ revenue in euros:
 | Tue | 3 | 4 | 1 | 17.60 |
 | Wed | 4 | 2 | 3 | 23.30 |
 
-1. Create `A` and `b`, check the determinant, solve with
+1. Create `A_cafe` and `b_cafe`, check the determinant, solve with
    `np.linalg.solve` and verify the result with a check.
-2. Answer without code: the check `np.allclose(A @ x, b)` returns `True`.
-   Does that mean `A` and `b` were guaranteed to be set up correctly?
+2. Answer without code: the check `np.allclose(A_cafe @ x_cafe, b_cafe)`
+   returns `True`. Does that mean `A_cafe` and `b_cafe` were guaranteed to be
+   set up correctly?
 
 ```{code-cell} python
 # code cell

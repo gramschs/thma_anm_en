@@ -102,7 +102,8 @@ gives the same result right away.
 
 The three equations contain the unknowns in fractions. We bring all
 unknowns to the left-hand side by multiplying each equation by $R_i$ and
-rearranging:
+rearranging. We write each equation so that the term $R_i \cdot Q$ has a
+positive sign:
 
 $$T_{AB} + R_A \cdot Q = T_{LA} \qquad (1')$$
 
@@ -146,11 +147,13 @@ Answer without code:
 ````{admonition} Solution
 :class: tip
 :class: dropdown
-1. The entry $A_{21} = -1$ comes from equation (2'), which arises by
-   rearranging $(T_{AB} - T_{BC}) / R_B = Q$. The temperature difference
-   across layer B is $T_{AB} - T_{BC}$, where $T_{AB}$ has a positive sign.
-   After multiplying by $R_B$ and sorting all unknowns to the left,
-   $-T_{AB}$ remains, so the coefficient is $-1$.
+1. The entry $A_{21} = -1$ comes from equation (2'). Multiplying
+   $(T_{AB} - T_{BC}) / R_B = Q$ by $R_B$ and bringing all unknowns to the
+   left first gives $T_{AB} - T_{BC} - R_B \cdot Q = 0$. We then multiply the
+   whole equation by $-1$, so that, as in (1') and (3'), the term
+   $R_B \cdot Q$ has a positive sign. This turns $T_{AB}$ into $-T_{AB}$, so
+   the coefficient is $-1$. The sign of a whole row is a free choice: both
+   forms of the equation have the same solution.
 2. $b[1] = 0$ because equation (2') contains no known temperature. The
    middle layer only borders the two interfaces, whose temperatures are
    themselves unknown. There is no externally given boundary condition for
@@ -221,9 +224,9 @@ print(f'Sum: {delta_A + delta_B + delta_C:.2f} K '
 ```
 
 Layer C indeed shows the largest temperature jump at about −9.3 K, and
-layer B, with the smallest resistance, the smallest at −4.0 K. All differences are
-negative because the temperature falls from left to right, and together they
-add up to exactly −20 K.
+layer B, with the smallest resistance, the smallest at −4.0 K. All
+differences are negative because the temperature falls from left to right,
+and together they add up to exactly −20 K.
 
 ```{admonition} Mini-exercise (✩)
 :class: tip

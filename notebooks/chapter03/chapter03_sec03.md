@@ -52,7 +52,8 @@ $$\frac{T_{BC} - T_{CR}}{R_C} = Q \qquad (3)$$
 
 The three equations contain the unknowns in fractions. We bring all
 unknowns to the left-hand side by multiplying each equation by $R_i$ and
-rearranging:
+rearranging. We write each equation so that the term $R_i \cdot Q$ has a
+positive sign:
 
 $$T_{AB} + R_A \cdot Q = T_{LA} \qquad (1')$$
 
@@ -140,9 +141,9 @@ print(f'Sum: {delta_A + delta_B + delta_C:.2f} K '
 ```
 
 Layer C indeed shows the largest temperature jump at about −9.3 K, and
-layer B, with the smallest resistance, the smallest at −4.0 K. All differences are
-negative because the temperature falls from left to right, and together they
-add up to exactly −20 K.
+layer B, with the smallest resistance, the smallest at −4.0 K. All
+differences are negative because the temperature falls from left to right,
+and together they add up to exactly −20 K.
 
 ## Summary and outlook
 

@@ -59,12 +59,16 @@ I_3 + I - I_4 = 0$$
 
 **Kirchhoff's voltage law** (conservation of energy) says: around any
 closed loop, the sum of the voltage drops $R \cdot I$ equals the sum of the
-source voltages in that loop, i.e. zero for a loop without a source. The two
-outer loops and the cross loop give:
+source voltages in that loop, i.e. zero for a loop without a source. A
+voltage drop counts as positive if we traverse the resistor in the reference
+direction of its current, and as negative otherwise. In the cross loop, for
+example, we go from $K_1$ via $R_1$ to $K_2$, through $R_B$ to $K_3$ and via
+$R_3$ back to $K_1$, against the direction of $I_3$. The two outer loops and
+the cross loop give:
 
 $$R_1 I_1 + R_2 I_2 = U_0 \qquad
 R_3 I_3 + R_4 I_4 = U_0 \qquad
-R_1 I_1 - R_3 I_3 - R_B I = 0$$
+R_1 I_1 + R_B I - R_3 I_3 = 0$$
 
 We turn these six equations into a matrix. We wrap this directly into a
 function, so that we can vary $R_4$ easily later on.
@@ -90,7 +94,7 @@ def solve_bridge(R4):
         [ 0.0,  0.0,  0.0, +1.0, -1.0, +1.0],   # node 3
         [ 0.0,   R1,   R2,  0.0,  0.0,  0.0],   # loop 1
         [ 0.0,  0.0,  0.0,   R3,   R4,  0.0],   # loop 2
-        [ 0.0,   R1,  0.0,  -R3,  0.0,  -RB],   # cross loop
+        [ 0.0,   R1,  0.0,  -R3,  0.0,   RB],   # cross loop
     ])
     b = np.array([0.0, 0.0, 0.0, U0, U0, 0.0])
     return np.linalg.solve(A, b)
@@ -102,7 +106,7 @@ print(f'Total current I0 = {I0 * 1000:.2f} mA')
 print(f'Bridge current I = {I * 1000:.4f} mA')
 ```
 
-At $R_4 = 200\,\Omega$ a bridge current of about −15.6 mA flows. The
+At $R_4 = 200\,\Omega$ a bridge current of about −13.2 mA flows. The
 negative sign means that the current flows opposite to the assumed
 reference direction.
 
@@ -125,7 +129,7 @@ reference direction.
 x = solve_bridge(R4=50.0)
 print(f'Bridge current I = {x[5] * 1000:.4f} mA')
 ```
-At $R_4 = 50\,\Omega$ the bridge current is positive at about +22.7 mA,
+At $R_4 = 50\,\Omega$ the bridge current is positive at about +17.9 mA,
 while at $R_4 = 200\,\Omega$ it was negative. Somewhere in between it
 changes sign and is zero at that point. At that value of $R_4$ the bridge
 is balanced. We determine this point precisely further below.

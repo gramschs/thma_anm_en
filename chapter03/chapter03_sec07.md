@@ -34,8 +34,10 @@ them with random numbers: `np.random.default_rng(seed)` creates a random
 number generator, which we store in `rng`. The same `seed` always yields the
 same random numbers. `rng.standard_normal(shape)` then fills an array of the
 given shape with normally distributed random numbers. A random matrix is
-almost always solvable. We make sure of that by strengthening the diagonal:
-we add $n$ times the identity matrix, which NumPy creates with `np.eye(n)`.
+almost always solvable, but it can be **ill-conditioned**: small rounding
+errors then have a large effect on the solution. We counter this by
+strengthening the diagonal: we add $n$ times the identity matrix, which
+NumPy creates with `np.eye(n)`.
 
 ```{code-cell} python
 import numpy as np
@@ -53,7 +55,7 @@ def generate_linear_system(n, seed=0):
     """
     rng = np.random.default_rng(seed)
     A = rng.standard_normal((n, n))
-    A = A + n * np.eye(n)          # strengthen the diagonal -> always solvable
+    A = A + n * np.eye(n)          # strengthen the diagonal -> well-conditioned
     b = rng.standard_normal(n)
     return A, b
 
@@ -64,9 +66,12 @@ print('Determinant:', round(float(np.linalg.det(A)), 1))
 
 Each diagonal element thus grows by $n$. The factor $n$ matters: a matrix is
 **diagonally dominant** if, in every row, the diagonal element is larger in
-magnitude than the sum of the magnitudes of the other entries. For an
-$n \times n$ random matrix this sum grows roughly like $0.8 \cdot n$, so a
-fixed increment would no longer be enough for large $n$.
+magnitude than the sum of the magnitudes of the other entries. Such a matrix
+is always solvable. For an $n \times n$ random matrix
+this sum grows roughly like $0.8 \cdot n$. Adding $n$ therefore makes most
+rows dominant and the matrix well-conditioned with high probability,
+although it does not guarantee dominance in every row. A fixed increment
+would not be enough for large $n$.
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
@@ -89,9 +94,10 @@ A2, _ = generate_linear_system(5, seed=0)
 print('same matrix:', np.allclose(A1, A2))
 ```
 Both calls give the same matrix, because the `seed` fixes the starting
-state of the random generator. For a fair comparison of the runtimes of
-different system sizes, the test matrices should differ only in size, not
-in random properties. A fixed `seed` also makes the measurement repeatable.
+state of the random generator. A fixed `seed` makes the measurement
+reproducible: if we repeat it, on the same or on another computer, we solve
+exactly the same systems of equations. Differences in runtime then come from
+the computer, not from different matrices.
 ````
 
 ## Measuring and plotting runtime

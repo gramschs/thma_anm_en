@@ -131,11 +131,11 @@ $$\begin{align}
 1 n_1 + 4 n_2 &= 9 \qquad \text{(aluminum in kg)}
 \end{align}$$
 
-1. Write the coefficient matrix `A` and the right-hand side `b` as
+1. Write the coefficient matrix `A_prod` and the right-hand side `b_prod` as
    NumPy arrays.
-2. Print `A.shape`.
-3. Answer without code: what do the entries `A[1, 0]` and `b[1]` mean in
-   context?
+2. Print `A_prod.shape`.
+3. Answer without code: what do the entries `A_prod[1, 0]` and `b_prod[1]`
+   mean in context?
 4. Compute $\mathbf{A} \cdot \vec{n}$ by hand and check that, row by row,
    you get back the system of equations above.
 ```
@@ -150,19 +150,19 @@ $$\begin{align}
 ```python
 import numpy as np
 
-A = np.array([
+A_prod = np.array([
     [3, 2],    # steel:     3 kg per unit of product 1, 2 kg per unit of product 2
     [1, 4],    # aluminum:  1 kg per unit of product 1, 4 kg per unit of product 2
 ], dtype=float)
 
-b = np.array([12.0, 9.0])
+b_prod = np.array([12.0, 9.0])
 
-print(A.shape)
+print(A_prod.shape)
 ```
-`A.shape` is `(2, 2)`. The entry `A[1, 0]` sits in row 1 (aluminum) and
-column 0 (product 1), so it is the aluminum required per unit of product 1,
-here 1 kg. `b[1]` belongs to the second equation and is the total available
-amount of aluminum, here 9 kg.
+`A_prod.shape` is `(2, 2)`. The entry `A_prod[1, 0]` sits in row 1
+(aluminum) and column 0 (product 1), so it is the aluminum required per unit
+of product 1, here 1 kg. `b_prod[1]` belongs to the second equation and is
+the total available amount of aluminum, here 9 kg.
 
 The product by hand:
 
@@ -194,7 +194,8 @@ det_A = np.linalg.det(A)
 print(f'Determinant: {det_A:.4f}')
 
 # np.isclose checks whether a value is close to zero.
-# This is more reliable than == 0, because floating-point numbers are never exact.
+# This is more reliable than == 0, because calculations with floating-point
+# numbers can produce small rounding errors.
 if np.isclose(det_A, 0.0):
     print('det(A) = 0: no unique solution.')
 else:
@@ -219,20 +220,33 @@ print(f'Determinant: {np.linalg.det(A_singular):.2e}')
 ```
 
 The result is not exactly zero, but a tiny number such as `1e-15` or `1e-16`,
-whose exact value depends on the computer.
-Floating-point numbers are stored only approximately, and
-every computation accumulates small rounding errors. That is exactly why we
-compare with `np.isclose` and not with `== 0`.
+whose exact value depends on the computer. The entries of the matrix are
+whole numbers and are stored exactly. However, NumPy computes the
+determinant in several intermediate steps with divisions, and not every
+intermediate result can be stored exactly as a floating-point number. These
+small rounding errors are the reason why we compare with `np.isclose` and
+not with `== 0`.
 
 ````{admonition} What happens with a singular matrix?
 :class: warning
-If we pass a singular matrix to the solver function `np.linalg.solve`, the
-program terminates with a `LinAlgError`. We catch such errors with `try`
-and `except` instead of letting the program crash:
+The solver function `np.linalg.solve` raises a `LinAlgError` only if an
+exact zero appears during the elimination. Because of the rounding errors,
+this does not happen for `A_singular`: `np.linalg.solve(A_singular, b)`
+returns a supposed solution with entries on the order of $10^{15}$, without
+any warning. That is why we check the determinant before solving.
+
+If the error does occur, for example with a matrix whose second row is
+exactly twice the first, we catch it with `try` and `except` instead of
+letting the program crash:
 
 ```python
+A_small = np.array([
+    [1.0, 2.0],
+    [2.0, 4.0],   # row 2 = 2 * row 1
+])
+
 try:
-    x = np.linalg.solve(A_singular, b)
+    x = np.linalg.solve(A_small, np.array([1.0, 2.0]))
 except np.linalg.LinAlgError:
     print('Matrix is singular, the system has no unique solution.')
 ```
@@ -243,13 +257,26 @@ many. In the excursus on the Wheatstone bridge we use the **rank** to clarify
 which case applies and how to check solvability even when there are more
 equations than unknowns.
 
+```{admonition} How reliable is the determinant test?
+:class: warning
+The rule "determinant not zero, exactly one solution" holds in exact
+mathematics. On the computer, the value of the determinant also depends on
+the scaling of the matrix. If we multiply the $20 \times 20$ identity matrix
+by $0.001$, its determinant drops to $10^{-60}$ and `np.isclose` reports
+zero, although the system is just as easy to solve as before. For our small,
+well-scaled examples the determinant test is sufficient. More reliable
+numerical criteria are the rank and the **condition number**
+(`np.linalg.cond()`), which measures how strongly small errors in the data
+affect the solution.
+```
+
 ```{admonition} Mini-exercise (✩)
 :class: tip
 Given the matrix
 
-$$\mathbf{A} = \begin{pmatrix} 2 & 1 & 1 \\ 4 & 2 & 2 \\ 1 & 0 & 3 \end{pmatrix}.$$
+$$\mathbf{M} = \begin{pmatrix} 2 & 1 & 1 \\ 4 & 2 & 2 \\ 1 & 0 & 3 \end{pmatrix}.$$
 
-1. Answer without code: will `np.linalg.det(A)` be close to zero? Look
+1. Answer without code: will `np.linalg.det(M)` be close to zero? Look
    closely at the first two rows.
 2. Create the matrix and check your guess with `np.linalg.det()` and
    `np.isclose()`.
@@ -265,20 +292,21 @@ $$\mathbf{A} = \begin{pmatrix} 2 & 1 & 1 \\ 4 & 2 & 2 \\ 1 & 0 & 3 \end{pmatrix}
 ```python
 import numpy as np
 
-A = np.array([
+M = np.array([
     [2, 1, 1],
     [4, 2, 2],
     [1, 0, 3],
 ], dtype=float)
 
-det_A = np.linalg.det(A)
-print(f'Determinant: {det_A:.2e}')
-print('close to zero:', np.isclose(det_A, 0.0))
+det_M = np.linalg.det(M)
+print(f'Determinant: {det_M:.2e}')
+print('close to zero:', np.isclose(det_M, 0.0))
 ```
 The second row is exactly twice the first row and therefore carries no new
-information. The determinant is therefore zero; on the computer it shows up
-as a tiny number close to zero. `np.isclose` returns `True`, so the system
-has no unique solution.
+information. The determinant is therefore zero. Depending on the rounding
+errors, the computer shows it as exactly `0.00e+00` or as a tiny number
+close to zero. In both cases `np.isclose` returns `True`, so the system has
+no unique solution.
 ````
 
 ## Solving the system and checking the result
@@ -324,10 +352,11 @@ revenue in euros:
 | Tue | 3 | 4 | 1 | 17.60 |
 | Wed | 4 | 2 | 3 | 23.30 |
 
-1. Create `A` and `b`, check the determinant, solve with
+1. Create `A_cafe` and `b_cafe`, check the determinant, solve with
    `np.linalg.solve` and verify the result with a check.
-2. Answer without code: the check `np.allclose(A @ x, b)` returns `True`.
-   Does that mean `A` and `b` were guaranteed to be set up correctly?
+2. Answer without code: the check `np.allclose(A_cafe @ x_cafe, b_cafe)`
+   returns `True`. Does that mean `A_cafe` and `b_cafe` were guaranteed to be
+   set up correctly?
 ```
 
 ```{code-cell} python
@@ -340,29 +369,29 @@ revenue in euros:
 ```python
 import numpy as np
 
-A = np.array([
+A_cafe = np.array([
     [5, 2, 3],
     [3, 4, 1],
     [4, 2, 3],
 ], dtype=float)
 
-b = np.array([25.60, 17.60, 23.30])
+b_cafe = np.array([25.60, 17.60, 23.30])
 
-print(f'Determinant: {np.linalg.det(A):.2f}')
+print(f'Determinant: {np.linalg.det(A_cafe):.2f}')
 
-x = np.linalg.solve(A, b)
-print(f'Coffee:    {x[0]:.2f} euros')
-print(f'Tea:       {x[1]:.2f} euros')
-print(f'Ice cream: {x[2]:.2f} euros')
+x_cafe = np.linalg.solve(A_cafe, b_cafe)
+print(f'Coffee:    {x_cafe[0]:.2f} euros')
+print(f'Tea:       {x_cafe[1]:.2f} euros')
+print(f'Ice cream: {x_cafe[2]:.2f} euros')
 
-print('Check passed:', np.allclose(A @ x, b))
+print('Check passed:', np.allclose(A_cafe @ x_cafe, b_cafe))
 ```
 The determinant is 10.0, so the system has a unique solution: coffee 2.30
 euros, tea 1.80 euros, ice cream 3.50 euros. The check only confirms that
-`x` fits the `A` and `b` we set up, not that `A` and `b` themselves are
-correct. A typo in `A` would still produce a solution that passes the
-check. That is why it is worth printing and reviewing `A` and `b` once more
-before solving.
+`x_cafe` fits the `A_cafe` and `b_cafe` we set up, not that `A_cafe` and
+`b_cafe` themselves are correct. A typo in `A_cafe` would still produce a
+solution that passes the check. That is why it is worth printing and
+reviewing `A_cafe` and `b_cafe` once more before solving.
 ````
 
 ## Summary and outlook
@@ -370,11 +399,11 @@ before solving.
 We write a system of linear equations as the matrix equation
 $\mathbf{A} \cdot \vec{x} = \vec{b}$. We create the coefficient matrix
 $\mathbf{A}$ as a two-dimensional NumPy array, and the right-hand side
-$\vec{b}$ as a one-dimensional array. With `np.linalg.det()` and
-`np.isclose()` we check in advance whether a unique solution exists, and we
-catch the `LinAlgError` with `try`/`except`. The solution itself comes from
-`np.linalg.solve(A, b)` in a single line, verified by the check
-`np.allclose(A @ x, b)`.
+$\vec{b}$ as a one-dimensional array. For small, well-scaled matrices,
+`np.linalg.det()` and `np.isclose()` tell us in advance whether a unique
+solution exists, and we catch a `LinAlgError` with `try`/`except`. The
+solution itself comes from `np.linalg.solve(A, b)` in a single line,
+verified by the check `np.allclose(A @ x, b)`.
 
 In the next chapter we leave the fruit stand behind and set up a linear
 system from a mechanical engineering problem: the static equilibrium of a

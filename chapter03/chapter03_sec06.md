@@ -43,7 +43,7 @@ produces a measurable current.
 Wheatstone bridge with the four resistors $R_1, R_2, R_3, R_4$, the bridge
 resistor $R_B$ and the voltage source $U_0$. The arrows show the assumed
 reference directions of the six currents.
-(Source: own figure; license [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0))
+(Source: own figure; license [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0))
 ```
 
 The bridge has six unknown currents:

@@ -244,8 +244,8 @@ euros each.
 :class: tip
 A horizontal beam of length $L = 6\,\text{m}$ is supported on the left at A
 by a pin support, on the right at B by a roller support. The pin support
-carries $A_x$ (horizontal) and $A_y$ (vertical), the roller support only
-$B_y$. The beam is loaded by:
+carries $F_{Ax}$ (horizontal) and $F_{Ay}$ (vertical), the roller support only
+$F_{By}$. The beam is loaded by:
 
 * a horizontal force $H = 3\,\text{kN}$ to the right at the height of the
   beam axis,
@@ -258,9 +258,9 @@ $B_y$. The beam is loaded by:
    $\sum F_y = 0$, $\sum M_A = 0$; forces to the right and upward positive,
    moments counterclockwise positive).
 2. Write them as $\mathbf{A} \cdot \vec{x} = \vec{b}$ with
-   $\vec{x} = (A_x,\ A_y,\ B_y)^\top$, check the determinant, and solve the
+   $\vec{x} = (F_{Ax},\ F_{Ay},\ F_{By})^\top$, check the determinant, and solve the
    system.
-3. Print the three support reactions and interpret the sign of $A_x$.
+3. Print the three support reactions and interpret the sign of $F_{Ax}$.
 
 Structure your code with IPO comments (input, processing, output).
 ```
@@ -276,9 +276,9 @@ Structure your code with IPO comments (input, processing, output).
 import numpy as np
 
 # Input
-# sum Fx:  A_x + 3 = 0
-# sum Fy:  A_y + B_y - 6 - 3 = 0   ->   A_y + B_y = 9
-# sum M_A: 6*B_y - 6*2 - 3*4 = 0   ->   6*B_y = 24
+# sum Fx:  F_Ax + 3 = 0
+# sum Fy:  F_Ay + F_By - 6 - 3 = 0   ->   F_Ay + F_By = 9
+# sum M_A: 6*F_By - 6*2 - 3*4 = 0   ->   6*F_By = 24
 A = np.array([
     [1.0, 0.0, 0.0],
     [0.0, 1.0, 1.0],
@@ -292,21 +292,21 @@ x = np.linalg.solve(A, b)
 
 # Output
 print(f'Determinant: {det_A:.1f}')
-print(f'A_x = {x[0]:.1f} kN')
-print(f'A_y = {x[1]:.1f} kN')
-print(f'B_y = {x[2]:.1f} kN')
+print(f'F_Ax = {x[0]:.1f} kN')
+print(f'F_Ay = {x[1]:.1f} kN')
+print(f'F_By = {x[2]:.1f} kN')
 print('Check passed:', np.allclose(A @ x, b))
 ```
 Output:
 ```
 Determinant: 6.0
-A_x = -3.0 kN
-A_y = 5.0 kN
-B_y = 4.0 kN
+F_Ax = -3.0 kN
+F_Ay = 5.0 kN
+F_By = 4.0 kN
 Check passed: True
 ```
 The determinant is 6.0, the system is uniquely solvable. The negative sign
-of $A_x$ means that the horizontal support reaction points to the left
+of $F_{Ax}$ means that the horizontal support reaction points to the left
 with $3\,\text{kN}$, opposite to the assumed direction. It balances the
 horizontal force $H$.
 ````

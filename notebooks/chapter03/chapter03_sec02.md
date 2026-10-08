@@ -23,8 +23,8 @@ Beam with pin support and roller support, cable force and load $F$.
 
 A horizontal beam of length $L = 4\,\text{m}$ is supported on the left at
 point A by a **pin support** and on the right at point B by a **roller
-support**. The pin support can carry a horizontal force $A_x$ and a vertical
-force $A_y$, the roller support only a vertical force $B_y$. The x-axis
+support**. The pin support can carry a horizontal force $F_{Ax}$ and a vertical
+force $F_{Ay}$, the roller support only a vertical force $F_{By}$. The x-axis
 points to the right, the y-axis upward, and the origin is at A.
 
 The beam is loaded by:
@@ -34,7 +34,7 @@ The beam is loaded by:
 * a **load** $F = 12\,\text{kN}$ vertically downward at a distance of
   $3\,\text{m}$ from A.
 
-We want to find the three support reactions $A_x$, $A_y$ and $B_y$.
+We want to find the three support reactions $F_{Ax}$, $F_{Ay}$ and $F_{By}$.
 
 ## Part 1: Set up the equilibrium conditions
 
@@ -56,7 +56,7 @@ about A.
 
 Combine the three equations from Part 1 into the matrix equation
 $\mathbf{A} \cdot \vec{x} = \vec{b}$, with the vector of unknowns
-$\vec{x} = (A_x,\ A_y,\ B_y)^\top$. Create `A` as a two-dimensional array
+$\vec{x} = (F_{Ax},\ F_{Ay},\ F_{By})^\top$. Create `A` as a two-dimensional array
 and `b` as a one-dimensional array, and use the determinant to check
 whether the system has a unique solution.
 
@@ -77,9 +77,9 @@ Print the three support reactions in kN.
 
 Answer in your own words:
 
-1. What does the negative sign of $A_x$ mean for the direction of the
+1. What does the negative sign of $F_{Ax}$ mean for the direction of the
    horizontal support reaction?
-2. $A_y$ is also negative. In which direction does the vertical support
+2. $F_{Ay}$ is also negative. In which direction does the vertical support
    reaction at the pin support point, and how does that fit with the cable
    force acting on the beam?
 
@@ -92,8 +92,8 @@ pull). What would happen to the beam? Use your result from Part 3.
 ## Bonus exercise: A beam without horizontal restraint (✩✩✩)
 
 Now **both** supports are roller supports that can carry only vertical
-forces. There are therefore only two unknown support reactions, $A_y$ and
-$B_y$, but still three equilibrium conditions. The loading stays unchanged.
+forces. There are therefore only two unknown support reactions, $F_{Ay}$ and
+$F_{By}$, but still three equilibrium conditions. The loading stays unchanged.
 
 1. Write the three equations with the two unknowns as
    $\mathbf{A} \cdot \vec{x} = \vec{b}$. The matrix `A` then has three rows

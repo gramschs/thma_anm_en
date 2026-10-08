@@ -121,8 +121,8 @@ Structure your code with IPO comments (input, processing, output).
 
 A horizontal beam of length $L = 6\,\text{m}$ is supported on the left at A
 by a pin support, on the right at B by a roller support. The pin support
-carries $A_x$ (horizontal) and $A_y$ (vertical), the roller support only
-$B_y$. The beam is loaded by:
+carries $F_{Ax}$ (horizontal) and $F_{Ay}$ (vertical), the roller support only
+$F_{By}$. The beam is loaded by:
 
 * a horizontal force $H = 3\,\text{kN}$ to the right at the height of the
   beam axis,
@@ -135,9 +135,9 @@ $B_y$. The beam is loaded by:
    $\sum F_y = 0$, $\sum M_A = 0$; forces to the right and upward positive,
    moments counterclockwise positive).
 2. Write them as $\mathbf{A} \cdot \vec{x} = \vec{b}$ with
-   $\vec{x} = (A_x,\ A_y,\ B_y)^\top$, check the determinant, and solve the
+   $\vec{x} = (F_{Ax},\ F_{Ay},\ F_{By})^\top$, check the determinant, and solve the
    system.
-3. Print the three support reactions and interpret the sign of $A_x$.
+3. Print the three support reactions and interpret the sign of $F_{Ax}$.
 
 Structure your code with IPO comments (input, processing, output).
 

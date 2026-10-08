@@ -26,8 +26,8 @@ Beam with pin support and roller support, cable force and load $F$.
 :class: tip
 A horizontal beam of length $L = 4\,\text{m}$ is supported on the left at
 point A by a **pin support** and on the right at point B by a **roller
-support**. The pin support can carry a horizontal force $A_x$ and a vertical
-force $A_y$, the roller support only a vertical force $B_y$. The x-axis
+support**. The pin support can carry a horizontal force $F_{Ax}$ and a vertical
+force $F_{Ay}$, the roller support only a vertical force $F_{By}$. The x-axis
 points to the right, the y-axis upward, and the origin is at A.
 
 The beam is loaded by:
@@ -37,7 +37,7 @@ The beam is loaded by:
 * a **load** $F = 12\,\text{kN}$ vertically downward at a distance of
   $3\,\text{m}$ from A.
 
-We want to find the three support reactions $A_x$, $A_y$ and $B_y$.
+We want to find the three support reactions $F_{Ax}$, $F_{Ay}$ and $F_{By}$.
 ```
 
 ```{admonition} Part 1: Set up the equilibrium conditions
@@ -62,15 +62,15 @@ about A.
 :class: dropdown
 Sum of horizontal forces:
 
-$$A_x + 6 = 0$$
+$$F_{Ax} + 6 = 0$$
 
 Sum of vertical forces:
 
-$$A_y + B_y + 8 - 12 = 0 \quad\Longrightarrow\quad A_y + B_y = 4$$
+$$F_{Ay} + F_{By} + 8 - 12 = 0 \quad\Longrightarrow\quad F_{Ay} + F_{By} = 4$$
 
 Sum of moments about A (lever arm times force, counterclockwise positive):
 
-$$4 \cdot B_y + 1 \cdot 8 - 3 \cdot 12 = 0 \quad\Longrightarrow\quad 4\,B_y = 28$$
+$$4 \cdot F_{By} + 1 \cdot 8 - 3 \cdot 12 = 0 \quad\Longrightarrow\quad 4\,F_{By} = 28$$
 
 The vertical cable component ($8\,\text{kN}$ upward at a distance of
 $1\,\text{m}$) produces a positive moment, the load ($12\,\text{kN}$
@@ -81,7 +81,7 @@ downward at a distance of $3\,\text{m}$) a negative one.
 :class: tip
 Combine the three equations from Part 1 into the matrix equation
 $\mathbf{A} \cdot \vec{x} = \vec{b}$, with the vector of unknowns
-$\vec{x} = (A_x,\ A_y,\ B_y)^\top$. Create `A` as a two-dimensional array
+$\vec{x} = (F_{Ax},\ F_{Ay},\ F_{By})^\top$. Create `A` as a two-dimensional array
 and `b` as a one-dimensional array, and use the determinant to check
 whether the system has a unique solution.
 ```
@@ -96,11 +96,11 @@ whether the system has a unique solution.
 ```python
 import numpy as np
 
-# unknowns: x = [A_x, A_y, B_y]
+# unknowns: x = [F_Ax, F_Ay, F_By]
 A = np.array([
-    [1, 0, 0],   # sum Fx:  1*A_x + 0*A_y + 0*B_y = -6
-    [0, 1, 1],   # sum Fy:  0*A_x + 1*A_y + 1*B_y =  4
-    [0, 0, 4],   # sum M_A: 0*A_x + 0*A_y + 4*B_y = 28
+    [1, 0, 0],   # sum Fx:  1*F_Ax + 0*F_Ay + 0*F_By = -6
+    [0, 1, 1],   # sum Fy:  0*F_Ax + 1*F_Ay + 1*F_By =  4
+    [0, 0, 4],   # sum M_A: 0*F_Ax + 0*F_Ay + 4*F_By = 28
 ], dtype=float)
 
 b = np.array([-6.0, 4.0, 28.0])
@@ -130,23 +130,23 @@ Print the three support reactions in kN.
 ```python
 x = np.linalg.solve(A, b)
 
-print(f'A_x = {x[0]:.1f} kN')
-print(f'A_y = {x[1]:.1f} kN')
-print(f'B_y = {x[2]:.1f} kN')
+print(f'F_Ax = {x[0]:.1f} kN')
+print(f'F_Ay = {x[1]:.1f} kN')
+print(f'F_By = {x[2]:.1f} kN')
 
 print('Check passed:', np.allclose(A @ x, b))
 ```
-The solution is $A_x = -6.0\,\text{kN}$, $A_y = -3.0\,\text{kN}$,
-$B_y = 7.0\,\text{kN}$. The check passes.
+The solution is $F_{Ax} = -6.0\,\text{kN}$, $F_{Ay} = -3.0\,\text{kN}$,
+$F_{By} = 7.0\,\text{kN}$. The check passes.
 ````
 
 ```{admonition} Part 4: Interpret the result
 :class: tip
 Answer in your own words:
 
-1. What does the negative sign of $A_x$ mean for the direction of the
+1. What does the negative sign of $F_{Ax}$ mean for the direction of the
    horizontal support reaction?
-2. $A_y$ is also negative. In which direction does the vertical support
+2. $F_{Ay}$ is also negative. In which direction does the vertical support
    reaction at the pin support point, and how does that fit with the cable
    force acting on the beam?
 ```
@@ -154,11 +154,11 @@ Answer in your own words:
 ````{admonition} Solution Part 4
 :class: tip
 :class: dropdown
-1. We had assumed $A_x$ to be a force pointing to the right. The result
-   $A_x = -6\,\text{kN}$ means that the actual support reaction points to
+1. We had assumed $F_{Ax}$ to be a force pointing to the right. The result
+   $F_{Ax} = -6\,\text{kN}$ means that the actual support reaction points to
    the left with $6\,\text{kN}$. It balances the horizontal cable
    component.
-2. $A_y = -3\,\text{kN}$ means that the vertical support reaction at the
+2. $F_{Ay} = -3\,\text{kN}$ means that the vertical support reaction at the
    pin support points downward. So the pin support is holding the beam
    down at this point. The reason is the cable force: it pulls upward with
    $8\,\text{kN}$, which near A is more than needed for equilibrium, so
@@ -176,7 +176,7 @@ pull). What would happen to the beam? Use your result from Part 3.
 :class: tip
 :class: dropdown
 From Part 3 we know that the vertical support reaction at A points
-downward ($A_y = -3\,\text{kN}$). A roller support that can only push is
+downward ($F_{Ay} = -3\,\text{kN}$). A roller support that can only push is
 not able to provide that. The beam would lift off at A and rotate about
 support B until it hits another component or falls down. It would no
 longer be in equilibrium. The mathematical model with three unknowns
@@ -187,8 +187,8 @@ directions.
 ````{admonition} Bonus exercise: A beam without horizontal restraint (✩✩✩)
 :class: tip
 Now **both** supports are roller supports that can carry only vertical
-forces. There are therefore only two unknown support reactions, $A_y$ and
-$B_y$, but still three equilibrium conditions. The loading stays unchanged.
+forces. There are therefore only two unknown support reactions, $F_{Ay}$ and
+$F_{By}$, but still three equilibrium conditions. The loading stays unchanged.
 
 1. Write the three equations with the two unknowns as
    $\mathbf{A} \cdot \vec{x} = \vec{b}$. The matrix `A` then has three rows
@@ -209,11 +209,11 @@ $B_y$, but still three equilibrium conditions. The loading stays unchanged.
 ```python
 import numpy as np
 
-# unknowns: x = [A_y, B_y]
+# unknowns: x = [F_Ay, F_By]
 A = np.array([
-    [0, 0],   # sum Fx:  0*A_y + 0*B_y = -6
-    [1, 1],   # sum Fy:  1*A_y + 1*B_y =  4
-    [0, 4],   # sum M_A: 0*A_y + 4*B_y = 28
+    [0, 0],   # sum Fx:  0*F_Ay + 0*F_By = -6
+    [1, 1],   # sum Fy:  1*F_Ay + 1*F_By =  4
+    [0, 4],   # sum M_A: 0*F_Ay + 4*F_By = 28
 ], dtype=float)
 
 b = np.array([-6.0, 4.0, 28.0])
@@ -228,8 +228,8 @@ except np.linalg.LinAlgError as error:
 `np.linalg.solve` requires a square matrix and terminates with a
 `LinAlgError` for the shape `(3, 2)`.
 
-The first equation reads $0 \cdot A_y + 0 \cdot B_y = -6$, i.e. $0 = -6$.
-That is a contradiction; no choice of $A_y$ and $B_y$ can satisfy it. The
+The first equation reads $0 \cdot F_{Ay} + 0 \cdot F_{By} = -6$, i.e. $0 = -6$.
+That is a contradiction; no choice of $F_{Ay}$ and $F_{By}$ can satisfy it. The
 system has **no solution**.
 
 Physically this means: the horizontal cable component exerts a force of

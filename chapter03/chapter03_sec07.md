@@ -22,17 +22,20 @@ fast does the runtime grow with the system size, and where does
   operation.
 * [ ] You can plot the runtime against the system size in a log-log plot
   and estimate the scaling exponent with `np.polyfit`.
-* [ ] You can explain the observed $O(n^3)$ scaling and estimate its
-  consequences for large systems.
+* [ ] You can explain the theoretical $O(n^3)$ scaling, compare it with the
+  measurement and estimate its consequences for large systems.
 ```
 
 ## Generating random test systems
 
 For the timing measurements we need test problems: matrices and
-right-hand sides of any size that form a uniquely solvable system. A random
-matrix is almost always solvable. We make sure of that by strengthening the
-diagonal: we add $n$ times the identity matrix, which NumPy creates with
-`np.eye(n)`.
+right-hand sides of any size that form a uniquely solvable system. We fill
+them with random numbers: `np.random.default_rng(seed)` creates a random
+number generator, which we store in `rng`. The same `seed` always yields the
+same random numbers. `rng.standard_normal(shape)` then fills an array of the
+given shape with normally distributed random numbers. A random matrix is
+almost always solvable. We make sure of that by strengthening the diagonal:
+we add $n$ times the identity matrix, which NumPy creates with `np.eye(n)`.
 
 ```{code-cell} python
 import numpy as np
@@ -41,7 +44,7 @@ import matplotlib.pyplot as plt
 import matplotlib.style as style
 style.use('seaborn-v0_8')
 
-def generate_lse(n, seed=0):
+def generate_linear_system(n, seed=0):
     """Generates a random, uniquely solvable n x n system of equations.
 
     n:    size of the system
@@ -54,19 +57,21 @@ def generate_lse(n, seed=0):
     b = rng.standard_normal(n)
     return A, b
 
-A, b = generate_lse(5)
+A, b = generate_linear_system(5)
 print('Shape of A:  ', A.shape)
 print('Determinant:', round(float(np.linalg.det(A)), 1))
 ```
 
-Each diagonal element thus grows by $n$. The factor $n$ matters: the typical row sum of an $n \times n$
-random matrix grows with $\sqrt{n}$, and a fixed increment would no longer
-be enough to make the diagonal dominant for large $n$.
+Each diagonal element thus grows by $n$. The factor $n$ matters: a matrix is
+**diagonally dominant** if, in every row, the diagonal element is larger in
+magnitude than the sum of the magnitudes of the other entries. For an
+$n \times n$ random matrix this sum grows roughly like $0.8 \cdot n$, so a
+fixed increment would no longer be enough for large $n$.
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
-1. Call `generate_lse(5, seed=0)` twice and use `np.allclose` to check
-   whether both calls give the same matrix.
+1. Call `generate_linear_system(5, seed=0)` twice and use `np.allclose` to
+   check whether both calls give the same matrix.
 2. Answer without code: why does it make sense, when measuring runtimes,
    to always use the same `seed`?
 ```
@@ -79,8 +84,8 @@ be enough to make the diagonal dominant for large $n$.
 :class: tip
 :class: dropdown
 ```python
-A1, _ = generate_lse(5, seed=0)
-A2, _ = generate_lse(5, seed=0)
+A1, _ = generate_linear_system(5, seed=0)
+A2, _ = generate_linear_system(5, seed=0)
 print('same matrix:', np.allclose(A1, A2))
 ```
 Both calls give the same matrix, because the `seed` fixes the starting
@@ -98,7 +103,7 @@ between two calls is the elapsed time. We measure how long
 ```{code-cell} python
 def measure_runtime(n):
     """Generates an n x n system, solves it, and returns the runtime in s."""
-    A, b = generate_lse(n)
+    A, b = generate_linear_system(n)
     start = time.perf_counter()
     np.linalg.solve(A, b)
     return time.perf_counter() - start
@@ -116,7 +121,9 @@ to run. To study the scaling, we plot the times against the system size
 using `ax.loglog`: both axes are logarithmic. A power law
 $t \propto n^\alpha$ then appears as a straight line whose slope is the
 exponent $\alpha$. With `marker='o'` each measured point is additionally
-marked with a circle.
+marked with a circle. For comparison we draw a reference line that grows
+exactly with $n^3$ and starts at the first measured point.
+`grid(True, which='both')` also draws grid lines between the powers of ten.
 
 ```{code-cell} python
 # reference line for O(n^3), fitted to the first data point
@@ -132,6 +139,11 @@ ax.legend()
 ax.grid(True, which='both')
 plt.show()
 ```
+
+The measured points lie below the reference line, because the line starts
+at the first point, where a fixed overhead per call still dominates the
+runtime. For large $n$ both run almost parallel: there the runtime grows
+roughly with $n^3$.
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
@@ -167,7 +179,9 @@ plot is therefore better suited.
 
 In log-log space, $\log t = \alpha \cdot \log n + \text{const}$. The
 exponent $\alpha$ is therefore the slope of a line through the points
-$(\log n,\ \log t)$. This slope is provided by `np.polyfit`.
+$(\log n,\ \log t)$. This slope is provided by `np.polyfit`. To use only
+the upper half of the points, we compute the middle index with the integer
+division `//`, which rounds the result down to a whole number.
 
 ```{code-cell} python
 log_n = np.log(n_values)
@@ -184,12 +198,17 @@ print(f'estimated exponent: {slope:.2f}')
 print('theoretical value:  3.00')
 ```
 
-The measured exponent lies close to 3, and the exact number fluctuates
-from measurement to measurement. This confirms the theoretical $O(n^3)$
-complexity: internally, `np.linalg.solve` decomposes the matrix into a
-product of two triangular matrices (LU decomposition), and this step costs
-on the order of $n^3$ arithmetic operations. Doubling the system size
-increases the runtime by a factor of $2^3 = 8$.
+The measured exponent typically lies between about 2.5 and 3, and the exact
+number fluctuates from measurement to measurement. The theory predicts
+$O(n^3)$: internally, `np.linalg.solve` decomposes the matrix into a product
+of two triangular matrices (LU decomposition), and this step costs on the
+order of $n^3$ arithmetic operations. That the measured value often lies
+somewhat below 3 has a practical reason: for medium-sized systems, the
+library manages more arithmetic operations per second the larger the matrix
+is, because it makes better use of several processor cores and the
+processor's cache. Only for very large $n$ does the $n^3$ growth show in
+full. If we then double the system size, the runtime increases by a factor
+of $2^3 = 8$.
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
@@ -227,10 +246,11 @@ fewer arithmetic operations.
 
 ## Summary
 
-The runtime of `np.linalg.solve` grows with the third power of the system
-size, $O(n^3)$, because internally an LU decomposition is carried out. For
-small and medium systems up to a few thousand unknowns, this is not a
-problem. For the large, sparse systems of engineering practice, one needs
+In theory, the runtime of `np.linalg.solve` grows with the third power of the
+system size, $O(n^3)$, because internally an LU decomposition is carried out.
+For medium-sized systems, the measured exponent is often somewhat smaller.
+For small and medium systems up to a few thousand unknowns, this is not a
+problem. For the large, sparse systems of engineering practice, we need
 specialized iterative solvers.
 
 This concludes Part 3. In Part 4 we use the same tool to solve a larger

@@ -24,11 +24,11 @@ produces a measurable current.
 
 ```{admonition} Learning objectives
 :class: attention
-* [ ] You can turn Kirchhoff's current law and voltage law into an LSE
-  $\mathbf{A} \cdot \vec{x} = \vec{b}$.
+* [ ] You can turn Kirchhoff's current law and voltage law into a linear
+  system $\mathbf{A} \cdot \vec{x} = \vec{b}$.
 * [ ] You can use `np.linalg.matrix_rank` to determine the rank of a matrix
-  and read off from it whether an LSE has exactly one, no, or infinitely
-  many solutions.
+  and read off from it whether a linear system has exactly one, no, or
+  infinitely many solutions.
 * [ ] You can carry out a parameter study over a resistor and determine the
   balance point of the bridge.
 ```
@@ -58,8 +58,9 @@ I_1 - I_2 - I = 0 \qquad
 I_3 + I - I_4 = 0$$
 
 **Kirchhoff's voltage law** (conservation of energy) says: around any
-closed loop, the sum of the voltage drops $R \cdot I$ equals the source
-voltage. The two outer loops and the cross loop give:
+closed loop, the sum of the voltage drops $R \cdot I$ equals the sum of the
+source voltages in that loop, i.e. zero for a loop without a source. The two
+outer loops and the cross loop give:
 
 $$R_1 I_1 + R_2 I_2 = U_0 \qquad
 R_3 I_3 + R_4 I_4 = U_0 \qquad
@@ -130,13 +131,13 @@ changes sign and is zero at that point. At that value of $R_4$ the bridge
 is balanced. We determine this point precisely further below.
 ````
 
-## When does an LSE have no unique solution? The rank
+## When does a linear system have no unique solution? The rank
 
 For the six unknown currents we took exactly six equations: three nodes and
 three loops. *What would have happened if we had added another loop
-equation?* It would not have been new information, but a combination of the
-existing ones. The system of equations would then have had more rows than
-unknowns, without being any better determined.
+equation?* It would not have added any new information, since it is only a
+combination of the existing ones. The system of equations would then have
+had more rows than unknowns, without being any better determined.
 
 How many equations really carry independent information is measured by the
 **rank** of a matrix. In Chapter 3.1 we checked solvability using the
@@ -167,13 +168,14 @@ print('Rank of [A | b]:', np.linalg.matrix_rank(Ab))
 print('Number of unknowns:', n)
 ```
 
-For a system with $n$ unknowns, three cases apply:
+Both ranks are 3, equal to the number of unknowns: the system has exactly
+one solution. In general, for a system with $n$ unknowns, three cases apply:
 
-| $\text{rank}(\mathbf{A})$ | $\text{rank}([\mathbf{A} \mid \vec{b}])$ | Solvability |
-| :---: | :---: | :--- |
-| $= n$ | $= n$ | exactly one solution |
-| $< n$ | $= \text{rank}(\mathbf{A})$ | infinitely many solutions |
-| $< n$ | $> \text{rank}(\mathbf{A})$ | no solution |
+| Condition | Solvability |
+| :--- | :--- |
+| $\text{rank}(\mathbf{A}) = \text{rank}([\mathbf{A} \mid \vec{b}]) = n$ | exactly one solution |
+| $\text{rank}(\mathbf{A}) = \text{rank}([\mathbf{A} \mid \vec{b}]) < n$ | infinitely many solutions |
+| $\text{rank}(\mathbf{A}) < \text{rank}([\mathbf{A} \mid \vec{b}])$ | no solution |
 
 We look at the two non-unique cases using a matrix whose second row is
 twice the first:
@@ -253,7 +255,9 @@ Now we vary $R_4$ systematically and look for the value at which the bridge
 current becomes zero. For each value of $R_4$ we solve a separate system of
 equations and store the bridge current $I$ and the power dissipation
 $P = R_B \cdot I^2$. `enumerate()` supplies the index `k` along with each
-value `r4`.
+value `r4`. We plot both quantities in two subplots one below the other;
+`sharex=True` gives them a common x-axis, and `ax[0].axhline(0)` draws a
+horizontal line at zero to make the zero crossing easy to see.
 
 ```{code-cell} python
 import matplotlib.pyplot as plt
@@ -287,10 +291,11 @@ plt.show()
 ```
 
 The bridge current crosses the zero line, and the power dissipation touches
-the x-axis there. We find the zero crossing with `np.argmin` over the
-absolute value and compare it with the known balance condition
-$R_4^\ast = R_2 \cdot R_3 / R_1$. `np.abs()` computes the absolute values
-element by element, `np.argmin()` returns the index of the smallest element.
+the x-axis there. We find the zero crossing as the index at which the
+magnitude of the bridge current is smallest: `np.abs()` computes the
+absolute values element by element, and `np.argmin()` returns the index of
+the smallest element. We then compare the result with the known balance
+condition $R_4^\ast = R_2 \cdot R_3 / R_1$.
 
 ```{code-cell} python
 k_zero = np.argmin(np.abs(i_values))
@@ -324,8 +329,13 @@ deviation.
 :class: dropdown
 ```python
 r4_fine = np.linspace(10.0, 300.0, 2000)
-i_fine = np.array([solve_bridge(r4)[5] for r4 in r4_fine])
-print(f'R4* with 2000 sample points: {r4_fine[np.argmin(np.abs(i_fine))]:.2f} ohm')
+i_fine = np.zeros(2000)
+
+for k, r4 in enumerate(r4_fine):
+    i_fine[k] = solve_bridge(r4)[5]
+
+k_zero_fine = np.argmin(np.abs(i_fine))
+print(f'R4* with 2000 sample points: {r4_fine[k_zero_fine]:.2f} ohm')
 ```
 With more sample points, the value found lies closer to the analytical
 100 ohm. The power dissipation $P = R_B \cdot I^2$ contains the current

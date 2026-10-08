@@ -41,8 +41,9 @@ I_1 - I_2 - I = 0 \qquad
 I_3 + I - I_4 = 0$$
 
 **Kirchhoff's voltage law** (conservation of energy) says: around any
-closed loop, the sum of the voltage drops $R \cdot I$ equals the source
-voltage. The two outer loops and the cross loop give:
+closed loop, the sum of the voltage drops $R \cdot I$ equals the sum of the
+source voltages in that loop, i.e. zero for a loop without a source. The two
+outer loops and the cross loop give:
 
 $$R_1 I_1 + R_2 I_2 = U_0 \qquad
 R_3 I_3 + R_4 I_4 = U_0 \qquad
@@ -88,13 +89,13 @@ At $R_4 = 200\,\Omega$ a bridge current of about −15.6 mA flows. The
 negative sign means that the current flows opposite to the assumed
 reference direction.
 
-## When does an LSE have no unique solution? The rank
+## When does a linear system have no unique solution? The rank
 
 For the six unknown currents we took exactly six equations: three nodes and
 three loops. *What would have happened if we had added another loop
-equation?* It would not have been new information, but a combination of the
-existing ones. The system of equations would then have had more rows than
-unknowns, without being any better determined.
+equation?* It would not have added any new information, since it is only a
+combination of the existing ones. The system of equations would then have
+had more rows than unknowns, without being any better determined.
 
 How many equations really carry independent information is measured by the
 **rank** of a matrix. In Chapter 3.1 we checked solvability using the
@@ -125,13 +126,14 @@ n = A.shape[1]   # number of unknowns
 print('Number of unknowns:', n)
 ```
 
-For a system with $n$ unknowns, three cases apply:
+Both ranks are 3, equal to the number of unknowns: the system has exactly
+one solution. In general, for a system with $n$ unknowns, three cases apply:
 
-| $\text{rank}(\mathbf{A})$ | $\text{rank}([\mathbf{A} \mid \vec{b}])$ | Solvability |
-| :---: | :---: | :--- |
-| $= n$ | $= n$ | exactly one solution |
-| $< n$ | $= \text{rank}(\mathbf{A})$ | infinitely many solutions |
-| $< n$ | $> \text{rank}(\mathbf{A})$ | no solution |
+| Condition | Solvability |
+| :--- | :--- |
+| $\text{rank}(\mathbf{A}) = \text{rank}([\mathbf{A} \mid \vec{b}]) = n$ | exactly one solution |
+| $\text{rank}(\mathbf{A}) = \text{rank}([\mathbf{A} \mid \vec{b}]) < n$ | infinitely many solutions |
+| $\text{rank}(\mathbf{A}) < \text{rank}([\mathbf{A} \mid \vec{b}])$ | no solution |
 
 We look at the two non-unique cases using a matrix whose second row is
 twice the first:
@@ -162,7 +164,9 @@ Now we vary $R_4$ systematically and look for the value at which the bridge
 current becomes zero. For each value of $R_4$ we solve a separate system of
 equations and store the bridge current $I$ and the power dissipation
 $P = R_B \cdot I^2$. `enumerate()` supplies the index `k` along with each
-value `r4`.
+value `r4`. We plot both quantities in two subplots one below the other;
+`sharex=True` gives them a common x-axis, and `ax[0].axhline(0)` draws a
+horizontal line at zero to make the zero crossing easy to see.
 
 ```{code-cell} python
 import matplotlib.pyplot as plt
@@ -194,10 +198,11 @@ plt.show()
 ```
 
 The bridge current crosses the zero line, and the power dissipation touches
-the x-axis there. We find the zero crossing with `np.argmin` over the
-absolute value and compare it with the known balance condition
-$R_4^\ast = R_2 \cdot R_3 / R_1$. `np.abs()` computes the absolute values
-element by element, `np.argmin()` returns the index of the smallest element.
+the x-axis there. We find the zero crossing as the index at which the
+magnitude of the bridge current is smallest: `np.abs()` computes the
+absolute values element by element, and `np.argmin()` returns the index of
+the smallest element. We then compare the result with the known balance
+condition $R_4^\ast = R_2 \cdot R_3 / R_1$.
 
 ```{code-cell} python
 # TODO: ???   find the index of the bridge current closest to zero and store it in k_zero

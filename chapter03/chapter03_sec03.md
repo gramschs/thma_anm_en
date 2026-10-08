@@ -25,8 +25,8 @@ the right.
   on the left-hand side.
 * [ ] You can read off the coefficient matrix $\mathbf{A}$ and the vector
   $\vec{b}$ from the rearranged equations.
-* [ ] You can solve the LSE with `np.linalg.solve` and interpret the result
-  physically, including a negative sign.
+* [ ] You can solve the linear system with `np.linalg.solve` and interpret
+  the result physically, including a negative sign.
 ```
 
 ## The physical model
@@ -49,7 +49,8 @@ and flattest in layer B. (Source: own figure; license [CC BY-NC-SA
 ```
 
 In the **steady state** the heat flow $Q$ is the same through all layers.
-The **heat transfer law**, analogous to Ohm's law, reads for each layer
+For each layer, **Fourier's law** of heat conduction holds, written here in
+resistance form analogous to Ohm's law:
 
 $$Q = \frac{\Delta T_i}{R_i},$$
 
@@ -131,8 +132,9 @@ in $A_{ij}$. Unknowns that do not appear in an equation get the coefficient
 :class: tip
 Answer without code:
 
-1. In the coefficient matrix, row 2, column 1 holds the value $-1$. Which
-   equation does this entry come from, and why is it negative?
+1. In the coefficient matrix, row 2, column 1 (in Python `A[1, 0]`) holds
+   the value $-1$. Which equation does this entry come from, and why is it
+   negative?
 2. Why is the second entry of the right-hand side, $b[1]$, equal to zero?
    What does that mean physically?
 ```
@@ -156,6 +158,10 @@ Answer without code:
 ````
 
 ## Implementation and solution
+
+We set up $\mathbf{A}$ and $\vec{b}$ in NumPy, check the determinant and
+solve the system as in Chapter 3.1. With `T_AB, T_BC, Q = x` we then unpack
+the solution vector into three variables with meaningful names.
 
 ```{code-cell} python
 import numpy as np
@@ -198,7 +204,9 @@ negative value would mean that the heat flows in the other direction.
 As a check, we compute the temperature difference across each layer. Layer
 C has the largest resistance and should therefore show the largest
 temperature jump, just as the largest resistance in an electrical circuit
-produces the largest voltage drop.
+produces the largest voltage drop. Unlike in equations (1) to (3), we take
+the temperature on the right minus the temperature on the left of each
+layer, so that the three differences add up to $T_{CR} - T_{LA}$.
 
 ```{code-cell} python
 delta_A = T_AB - T_LA
@@ -212,11 +220,17 @@ print(f'Sum: {delta_A + delta_B + delta_C:.2f} K '
       f'(must equal T_CR - T_LA = {T_CR - T_LA:.1f} K)')
 ```
 
+Layer C indeed shows the largest temperature jump at about −9.3 K, and
+layer B, with the smallest resistance, the smallest at −4.0 K. All differences are
+negative because the temperature falls from left to right, and together they
+add up to exactly −20 K.
+
 ```{admonition} Mini-exercise (✩)
 :class: tip
-A cold-storage wall keeps the inside at $T_\text{inside} = 268$ K (−5 °C),
-while outside it is $T_\text{outside} = 293$ K (20 °C). The left side is the
-inside ($T_{LA} = T_\text{inside}$), the right side the outside
+In a cold store, the inside is kept at $T_\text{inside} = 268$ K (−5 °C),
+while outside it is $T_\text{outside} = 293$ K (20 °C). The wall of the cold
+store consists of three layers. The left side is the inside
+($T_{LA} = T_\text{inside}$), the right side the outside
 ($T_{CR} = T_\text{outside}$).
 
 | Layer | Material | $R$ in K/W |

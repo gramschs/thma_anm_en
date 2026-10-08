@@ -11,24 +11,24 @@ amount. On three days we buy different quantities and each time pay a total
 amount. We no longer know the individual prices, only the quantities and the
 receipts. *How do we work out the individual prices from that?*
 
-That is the task of a **linear system of equations**, or **LSE** for short.
-In this chapter we write an LSE as a matrix equation, use the determinant to
-check whether it has a unique solution, and compute it with a single NumPy
-function. The NumPy arrays from Chapter 2 are our tool here; the only thing
-new is that we now work with two-dimensional arrays.
+That is the task of a **system of linear equations**, or **linear system** for
+short. In this chapter we write a linear system as a matrix equation, use the
+determinant to check whether it has a unique solution, and compute it with a
+single NumPy function. The NumPy arrays from Chapter 2 are our tool here;
+the only thing new is that we now work with two-dimensional arrays.
 
 ## Learning objectives
 
 ```{admonition} Learning objectives
 :class: attention
-* [ ] You can write a linear system of equations in matrix form
+* [ ] You can write a system of linear equations in matrix form
   $\mathbf{A} \cdot \vec{x} = \vec{b}$.
 * [ ] You can create a matrix as a two-dimensional NumPy array and access
   individual entries with `A[i, j]`.
-* [ ] You can use `np.linalg.det()` to check whether an LSE has a unique
-  solution, and catch a `LinAlgError` with `try`/`except`.
-* [ ] You can solve an LSE with `np.linalg.solve()` and verify the result
-  with a check.
+* [ ] You can use `np.linalg.det()` to check whether a linear system has a
+  unique solution, and catch a `LinAlgError` with `try`/`except`.
+* [ ] You can solve a linear system with `np.linalg.solve()` and verify the
+  result with a check.
 ```
 
 ## How do we write a system of equations as a matrix?
@@ -78,7 +78,7 @@ $x_A$, plus $2$ times $x_B$, plus $1$ times $x_C$. That is exactly the
 left-hand side of the first equation. The same holds for the second and
 third rows.
 
-If we set this product equal to the vector of receipts, row by row we get
+If we set this product equal to the vector of amounts paid, row by row we get
 back our original system of equations:
 
 $$\begin{pmatrix} 3 & 2 & 1 \\ 2 & 3 & 0 \\ 1 & 1 & 3 \end{pmatrix}
@@ -87,12 +87,13 @@ $$\begin{pmatrix} 3 & 2 & 1 \\ 2 & 3 & 0 \\ 1 & 1 & 3 \end{pmatrix}
 
 This is the **matrix equation** $\mathbf{A} \cdot \vec{x} = \vec{b}$. The
 **coefficient matrix** $\mathbf{A}$ contains the purchase quantities, the
-vector $\vec{x}$ the unknown prices, and the vector $\vec{b}$ the receipts.
+vector $\vec{x}$ the unknown prices, and the vector $\vec{b}$ the amounts paid.
 Each row of $\mathbf{A}$ belongs to one equation, each column to one
 unknown.
 
 In NumPy we create $\mathbf{A}$ as a **two-dimensional array**: a list of
-lists, where each inner list is one row.
+lists, where each inner list is one row. With `dtype=float` all entries are
+stored as floating-point numbers, even though we type them as integers.
 
 ```{code-cell} python
 import numpy as np
@@ -176,7 +177,7 @@ row by row, exactly the two original equations.
 
 ## Does the system have a unique solution?
 
-Not every LSE has exactly one solution. Three cases are possible:
+Not every linear system has exactly one solution. Three cases are possible:
 
 * exactly one solution (the normal case)
 * no solution (the equations contradict each other)
@@ -185,7 +186,8 @@ Not every LSE has exactly one solution. Three cases are possible:
 For square systems, i.e. as many equations as unknowns, we check this with
 the **determinant** $\det(\mathbf{A})$, which NumPy computes with
 `np.linalg.det()`. The rule is: if the determinant is not zero, the system
-has exactly one solution.
+has exactly one solution. We use `np.isclose()` to check whether a value is
+close to zero.
 
 ```{code-cell} python
 det_A = np.linalg.det(A)
@@ -199,8 +201,12 @@ else:
     print('det(A) not equal to 0: exactly one solution.')
 ```
 
+The determinant of our fruit-stand matrix is 14, clearly different from
+zero, so the system has exactly one solution.
+
 For comparison, here is a matrix whose third row is the sum of the first
-two and therefore carries no new information:
+two and therefore carries no new information. We print its determinant in
+scientific notation with `:.2e`, i.e. as a number times a power of ten.
 
 ```{code-cell} python
 A_singular = np.array([
@@ -212,8 +218,9 @@ A_singular = np.array([
 print(f'Determinant: {np.linalg.det(A_singular):.2e}')
 ```
 
-The result is not exactly zero, but a tiny number on the order of `1e-16`.
-Floating-point numbers are stored on the computer only approximately, and
+The result is not exactly zero, but a tiny number such as `1e-15` or `1e-16`,
+whose exact value depends on the computer.
+Floating-point numbers are stored only approximately, and
 every computation accumulates small rounding errors. That is exactly why we
 compare with `np.isclose` and not with `== 0`.
 
@@ -232,9 +239,9 @@ except np.linalg.LinAlgError:
 ````
 
 If the determinant is zero, the system has either no solution or infinitely
-many. Which case applies, and how to check solvability even when there are
-more equations than unknowns, we clarify with the **rank** in the excursus
-on the Wheatstone bridge.
+many. In the excursus on the Wheatstone bridge we use the **rank** to clarify
+which case applies and how to check solvability even when there are more
+equations than unknowns.
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
@@ -288,10 +295,13 @@ print(f'Price banana:     {x[1]:.2f} euros')
 print(f'Price clementine: {x[2]:.2f} euros')
 ```
 
+An apple costs 0.30 euros, a banana 0.20 euros and a clementine 0.50 euros.
+
 *How do we know this result is correct?* If $\vec{x}$ is the correct
 solution, the matrix product $\mathbf{A} \cdot \vec{x}$ must again give the
 vector $\vec{b}$. That is the **check**. For the matrix product we use the
-`@` operator, not `*`.
+`@` operator, not `*`. `np.allclose()` then compares all entries of two
+arrays up to tiny rounding errors.
 
 ```{code-cell} python
 b_check = A @ x
@@ -357,7 +367,7 @@ before solving.
 
 ## Summary and outlook
 
-We write a linear system of equations as the matrix equation
+We write a system of linear equations as the matrix equation
 $\mathbf{A} \cdot \vec{x} = \vec{b}$. We create the coefficient matrix
 $\mathbf{A}$ as a two-dimensional NumPy array, and the right-hand side
 $\vec{b}$ as a one-dimensional array. With `np.linalg.det()` and
@@ -366,6 +376,7 @@ catch the `LinAlgError` with `try`/`except`. The solution itself comes from
 `np.linalg.solve(A, b)` in a single line, verified by the check
 `np.allclose(A @ x, b)`.
 
-In the next chapter we leave the fruit stand behind and set up an LSE from a
-mechanical engineering problem: the static equilibrium of a loaded beam.
-The approach stays the same, only the equations now come from mechanics.
+In the next chapter we leave the fruit stand behind and set up a linear
+system from a mechanical engineering problem: the static equilibrium of a
+loaded beam. The approach stays the same, only the equations now come from
+mechanics.

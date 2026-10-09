@@ -39,12 +39,12 @@
 %   Schicht C: R_C = 0,7 K/W  ->  steilste Steigung
 %
 % Temperaturprofil (y, oberhalb der Wand):
-%   Maßstab: 0,25 cm pro K, Nullpunkt bei T = 300 K
+%   Maßstab: 0,125 cm pro K, Nullpunkt bei T = 273 K
 %   Profil-Basislinie: y = 3,3 cm (Wandhöhe 2,5 + Abstand 0,8)
-%   T_LA = 300,00 K  ->  y = 3,30 cm
-%   T_AB = 303,33 K  ->  y = 4,13 cm  (= 300 + 10 * 0,5/1,5)
-%   T_BC = 305,33 K  ->  y = 4,63 cm  (= 300 + 10 * 0,8/1,5)
-%   T_CR = 310,00 K  ->  y = 5,80 cm
+%   T_LA = 293,00 K  ->  y = 5,80 cm
+%   T_AB = 286,33 K  ->  y = 4,97 cm  (= 293 - 20 * 0,5/1,5)
+%   T_BC = 282,33 K  ->  y = 4,47 cm  (= 293 - 20 * 0,8/1,5)
+%   T_CR = 273,00 K  ->  y = 3,30 cm
 % ==========================================================
 
 % ----------------------------------------------------------
@@ -72,11 +72,11 @@
 % Randtemperaturen als Annotationen
 \draw[annotation] (-1.1,1.25) -- (0,1.25);
 \node[left=2pt, font=\small, text=my_darkgray, align=right] at (-1.1,1.25)
-    {$T_{LA}$\\$=300\,\mathrm{K}$};
+    {$T_{LA}$\\$=293\,\mathrm{K}$};
 
 \draw[annotation] (7.1,1.25) -- (6.0,1.25);
 \node[right=2pt, font=\small, text=my_darkgray, align=left] at (7.1,1.25)
-    {$T_{CR}$\\$=310\,\mathrm{K}$};
+    {$T_{CR}$\\$=273\,\mathrm{K}$};
 
 % ----------------------------------------------------------
 % Gestrichelte Grenzflächenlinien (verbinden Wand und Profil)
@@ -90,28 +90,28 @@
 %   Schicht C steilste Steigung (R_C größter Widerstand)
 % ----------------------------------------------------------
 \draw[my_darkblue, ultra thick, line cap=round, line join=round]
-    (0,   3.30)   % T_LA = 300,00 K
- -- (2.0, 4.13)   % T_AB = 303,33 K  (DeltaT_A = 3,33 K)
- -- (4.0, 4.63)   % T_BC = 305,33 K  (DeltaT_B = 2,00 K)
- -- (6.0, 5.80);  % T_CR = 310,00 K  (DeltaT_C = 4,67 K)
+    (0,   5.80)   % T_LA = 293,00 K
+ -- (2.0, 4.97)   % T_AB = 286,33 K  (DeltaT_A = 6,67 K)
+ -- (4.0, 4.47)   % T_BC = 282,33 K  (DeltaT_B = 4,00 K)
+ -- (6.0, 3.30);  % T_CR = 273,00 K  (DeltaT_C = 9,33 K)
 
 % Punkte an den Grenzflächen (my_orange, weißer Rand)
-\foreach \px/\py in {0/3.30, 2.0/4.13, 4.0/4.63, 6.0/5.80} {
+\foreach \px/\py in {0/5.80, 2.0/4.97, 4.0/4.47, 6.0/3.30} {
     \fill[my_orange, draw=my_lightgray, line width=1.5pt]
         (\px,\py) circle (3.5pt);
 }
 
 % Temperaturbeschriftungen am Profil
-\node[left=5pt,  font=\small, text=my_darkgray] at (0,   3.30) {$T_{LA}$};
-\node[above=5pt, font=\small, text=my_darkgray] at (2.0, 4.13) {$T_{AB}$};
-\node[above=5pt, font=\small, text=my_darkgray] at (4.0, 4.63) {$T_{BC}$};
-\node[right=5pt, font=\small, text=my_darkgray] at (6.0, 5.80) {$T_{CR}$};
+\node[left=5pt,  font=\small, text=my_darkgray] at (0,   5.80) {$T_{LA}$};
+\node[above=5pt, font=\small, text=my_darkgray] at (2.0, 4.97) {$T_{AB}$};
+\node[above=5pt, font=\small, text=my_darkgray] at (4.0, 4.47) {$T_{BC}$};
+\node[right=5pt, font=\small, text=my_darkgray] at (6.0, 3.30) {$T_{CR}$};
 
 % ----------------------------------------------------------
-% Wärmestrom-Pfeil (rechts nach links, da T_CR > T_LA)
+% Wärmestrom-Pfeil (links nach rechts, da T_LA > T_CR)
 % ----------------------------------------------------------
 \draw[my_orange, ultra thick, -{Stealth[length=10pt, width=7pt]}]
-    (6.0,-0.9) -- (0,-0.9);
+    (0,-0.9) -- (6.0,-0.9);
 \node[below=4pt, font=\small, text=my_darkgray] at (3.0,-0.9)
     {Heat flow $Q$};
 

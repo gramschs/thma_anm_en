@@ -13,7 +13,7 @@ The difficulty level is given in the title of each exercise:
 
 * ✩ Comprehension: predict and explain code and outputs (approx. 5 min)
 * ✩✩ Application: write your own code and interpret results (approx. 10 min)
-* ✩✩✩ Mini-project: combine several concepts of the part (approx. 30 min)
+* ✩✩✩ Mini-project: combine several concepts from this chapter (approx. 30 min)
 
 ````{admonition} Exercise 2.1 (✩)
 :class: tip
@@ -28,7 +28,7 @@ counter = np.array([2, 4, 6])
 measurement = np.array([2, 4, 6.0])
 ```
 
-Note down your guess before you run the code.
+Write down your guess in a Markdown cell before you run the code.
 
 1. Which values does `t` contain and what does `t.shape` return?
 2. What does `placeholder.dtype` return?
@@ -86,7 +86,7 @@ measurements_2 = np.array([1.0, 2.0, 3.0, 4.0])
 angle = np.array([0.0, np.pi / 2, np.pi])
 ```
 
-Note down your guess before you run the code.
+Write down your guess in a Markdown cell before you run the code.
 
 1. What do `measurements_1 + measurements_2`, `measurements_1 * measurements_2`
    and `measurements_1 / measurements_2` return?
@@ -199,7 +199,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Note down your guess before you run the code.
+Write down your guess in a Markdown cell before you run the code.
 
 1. Which line style does the upper curve have and how many full oscillations
    does it show in the plotted range?

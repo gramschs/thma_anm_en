@@ -58,6 +58,12 @@ Python-Grundlagen (z.B. Kapitel 3) ist meist jede Section ein eigenständiges
 Input-Notebook zu einem Thema, ohne begleitendes Übungsblatt in derselben
 Nummerierung. Vor dem Einfügen von Lücken den Inhalt kurz sichten.
 
+## Übungsblätter fürs Selbststudium (sec05)
+
+✩-Aufgaben (Code vorhersagen) enthalten nach dem vorgegebenen Code immer den
+Satz "Write down your guess in a Markdown cell before you run the code." und
+enden mit "Run the code and check your predictions."
+
 ## Granularität
 
 - Richtwert: **5-8 Lücken pro Notebook** für eine 45-minütige Live-Session.

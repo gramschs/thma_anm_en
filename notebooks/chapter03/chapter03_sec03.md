@@ -29,7 +29,7 @@ Temperature profile of a multilayer wall in the steady state (schematic
 representation with equal geometric layer thickness). Since the heat flow
 through all layers is the same, the slope of the temperature profile is
 proportional to the thermal resistance of each layer, steepest in layer C
-and flattest in layer B. (Source: own figure; license [CC BY-NC-SA
+and flattest in layer B. (Source: figure by the author; license [CC BY-NC-SA
 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0))
 
 In the **steady state** the heat flow $Q$ is the same through all layers.

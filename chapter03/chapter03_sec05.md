@@ -7,13 +7,13 @@ kernelspec:
 # 3.5 Exercises
 
 These exercises are meant for self-study at home and review the material of
-Chapters 3.1 to 3.4. Plan for a good hour and a half of working time.
+Chapters 3.1 to 3.4. Plan for about 90 minutes of working time.
 
 The difficulty level is given in the title of each exercise:
 
 * ✩ Comprehension: predict and explain code and outputs (approx. 5 min)
 * ✩✩ Application: write your own code and interpret results (approx. 10 min)
-* ✩✩✩ Mini-project: combine several concepts of the part (approx. 30 min)
+* ✩✩✩ Mini-project: combine several concepts from this chapter (approx. 30 min)
 
 ````{admonition} Exercise 3.1 (✩)
 :class: tip
@@ -26,7 +26,7 @@ A = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], dtype=float)
 b = np.array([1.0, 2.0, 3.0])
 ```
 
-Write down your guess before running the code.
+Write down your guess in a Markdown cell before you run the code.
 
 1. What does `A.shape` return?
 2. What does `A[2, 0]` return?
@@ -78,7 +78,7 @@ A = np.array([[2, 1], [5, 3]], dtype=float)
 b = np.array([8.0, 19.0])
 ```
 
-Write down your guess before running the code.
+Write down your guess in a Markdown cell before you run the code.
 
 1. Compute the determinant in your head: $\det = 2 \cdot 3 - 1 \cdot 5$.
    Does the system have a unique solution?
@@ -135,7 +135,7 @@ except np.linalg.LinAlgError:
     print('Matrix is singular.')
 ```
 
-Write down your guess before running the code.
+Write down your guess in a Markdown cell before you run the code.
 
 1. Compute `np.linalg.det(A)` in your head. What do you notice about the
    two rows of `A`?

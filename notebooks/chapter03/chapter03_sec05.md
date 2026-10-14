@@ -7,13 +7,13 @@ kernelspec:
 # 3.5 Exercises
 
 These exercises are meant for self-study at home and review the material of
-Chapters 3.1 to 3.4. Plan for a good hour and a half of working time.
+Chapters 3.1 to 3.4. Plan for about 90 minutes of working time.
 
 The difficulty level is given in the title of each exercise:
 
 * ✩ Comprehension: predict and explain code and outputs (approx. 5 min)
 * ✩✩ Application: write your own code and interpret results (approx. 10 min)
-* ✩✩✩ Mini-project: combine several concepts of the part (approx. 30 min)
+* ✩✩✩ Mini-project: combine several concepts from this chapter (approx. 30 min)
 
 ## Exercise 3.1 (✩)
 

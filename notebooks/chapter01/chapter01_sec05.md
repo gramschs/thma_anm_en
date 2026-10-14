@@ -13,7 +13,7 @@ The difficulty level is given in the title of each exercise:
 
 * ✩ Comprehension: predict and explain code and outputs (approx. 5 min)
 * ✩✩ Application: write your own code and interpret results (approx. 10 min)
-* ✩✩✩ Mini-project: combine several concepts of the part (approx. 30 min)
+* ✩✩✩ Mini-project: combine several concepts from this chapter (approx. 30 min)
 
 ## Exercise 1.1 (✩)
 

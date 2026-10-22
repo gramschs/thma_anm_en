@@ -40,7 +40,7 @@ project:
       - file: chapter03/chapter03_sec02.md
       - file: chapter03/chapter03_sec03.md
       - file: chapter03/chapter03_sec04.md
-#      - file: chapter03/chapter03_sec05.md
+      - file: chapter03/chapter03_sec05.md
 #      - file: chapter03/chapter03_sec06.md
 #      - file: chapter03/chapter03_sec07.md
     - title: 4. Linear Systems of Equations - Part 2

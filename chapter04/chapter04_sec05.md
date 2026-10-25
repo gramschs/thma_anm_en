@@ -7,7 +7,7 @@ kernelspec:
 # 4.5 Exercises
 
 These exercises are meant for self-study at home and review the material of
-Chapters 4.1 to 4.4. Plan for about 90 minutes of working time.
+Chapters 4.1 to 4.4. Allow about 90 minutes for them.
 Before starting the exercises, run the following two cells. They contain
 the plotting function and the three functions from Chapters 4.1, 4.3 and
 4.4.

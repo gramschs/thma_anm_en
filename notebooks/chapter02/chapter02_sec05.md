@@ -7,7 +7,7 @@ kernelspec:
 # 2.5 Exercises
 
 These exercises are intended for self-study at home and review the material
-of chapters 2.1 to 2.4. Expect around 90 minutes of working time.
+of chapters 2.1 to 2.4. Allow about 90 minutes for them.
 
 The difficulty level is given in the title of each exercise:
 

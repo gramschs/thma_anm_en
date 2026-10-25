@@ -7,7 +7,7 @@ kernelspec:
 # 1.5 Exercises
 
 These exercises are intended for self-study at home and review the material
-of chapters 1.1 to 1.4. Expect around two hours of working time.
+of chapters 1.1 to 1.4. Allow about two hours for them.
 
 The difficulty level is given in the title of each exercise:
 

@@ -18,11 +18,11 @@ On a packaging line, housing lids arrive on a conveyor belt. A swivel arm
 picks up each lid from the belt and places it in a box. The arm has a single
 rotary joint at the origin and is $L = 0.6\,\text{m}$ long from the joint to
 the gripper. In the home position $\alpha = 0$, it points along the
-$x$-axis, and the gripper is above the lid on the belt. The arm can swivel
+$x$-axis, and the gripper is over the lid on the belt. The arm can swivel
 counterclockwise from $0°$ to $180°$.
 
 ```{figure} pics/chap05_schwenkarm_EN.svg
-:alt: Top view of a swivel arm with its joint at the origin; in the home position it is above a lid on a conveyor belt, and it swivels by the angle alpha along a dashed circular path to a box
+:alt: Top view of a swivel arm with its joint at the origin; in the home position it is over a lid on a conveyor belt, and it swivels by the angle alpha along a dashed circular path to a box
 :align: center
 
 The swivel arm from above: it picks up the lid from the conveyor belt and
@@ -169,7 +169,7 @@ end of a list. Plot all four positions with
 
 `plot_robot(arms, parts=lids, surroundings=[conveyor, box], labels=[...])`.
 
-Estimate from the plot: at roughly which angle is the gripper above the
+Estimate from the plot: at roughly which angle is the gripper over the
 center of the box?
 ```
 
@@ -196,14 +196,14 @@ plot_robot(arms, parts=lids, surroundings=[conveyor, box],
 ```
 The gripper moves on a circle of radius $0.6\,\text{m}$ via
 $(0.424, 0.424)$ and $(0, 0.6)$ to $(-0.424, 0.424)$. At $135°$ it is already
-above the box, but still about $5\,\text{cm}$ from the center, offset toward
+over the box, but still about $5\,\text{cm}$ from the center, offset toward
 the upper right corner. A little further counterclockwise, it gets closer to
-the center. The placing angle is therefore slightly more than $135°$. The lid
+the center. The placement angle is therefore slightly more than $135°$. The lid
 rotates along with the arm: at $90°$, its long edge is parallel to the
 $y$-axis.
 ````
 
-```{admonition} Part 2: Compute the placing angle
+```{admonition} Part 2: Compute the placement angle
 :class: tip
 Instead of estimating, we try out all angles. Use `np.linspace` to create the
 angles from $0°$ to $180°$ in steps of $1°$. In a loop, compute the gripper
@@ -212,8 +212,8 @@ center of the box. Store the distances in an array `distances` that you
 create beforehand with `np.zeros`.
 
 `np.argmin` works like `np.argmax` from Chapter 2.4 but returns the index of
-the smallest value. Use it to determine the placing angle. How far from the
-center of the box is the gripper at that angle? Plot the arm in the placing
+the smallest value. Use it to determine the placement angle. How far from the
+center of the box is the gripper at that angle? Plot the arm in the place
 position with the center of the box as the target.
 ```
 
@@ -234,21 +234,21 @@ for k in range(len(angles_deg)):
     difference = gripper - box_center
     distances[k] = np.sqrt(difference[0]**2 + difference[1]**2)
 
-# the index of the smallest distance gives the placing angle
+# the index of the smallest distance gives the placement angle
 k_best = np.argmin(distances)
 place_angle = angles_deg[k_best]
-print(f'Placing angle: {place_angle:.0f}°')
+print(f'Placement angle: {place_angle:.0f}°')
 print(f'Remaining distance to the box center: {distances[k_best] * 1000:.1f} mm')
 
 R_place = rotation_matrix(np.deg2rad(place_angle))
 arm_place = (R_place @ arm.T).T
 plot_robot(arm_place, targets=box_center, surroundings=[conveyor, box],
-           title=f'Placing position at {place_angle:.0f}°')
+           title=f'Place position at {place_angle:.0f}°')
 ```
 Output:
 
 ```text
-Placing angle: 140°
+Placement angle: 140°
 Remaining distance to the box center: 4.3 mm
 ```
 At $140°$, the gripper is at $(-0.460, 0.386)$, $4.3\,\text{mm}$ from the
@@ -262,7 +262,7 @@ need to distinguish:
   arbitrarily small. An error that arises only because we try a finite
   number of angles instead of all of them is called a **discretization
   error**.
-* **Geometric remainder:** The center of the box is $0.603\,\text{m}$ from
+* **Geometric mismatch:** The center of the box is $0.603\,\text{m}$ from
   the joint, but the gripper moves on a circle of radius $0.6\,\text{m}$. The
   gripper cannot reach the center of the box. Even at the exact best angle,
   $3.1\,\text{mm}$ therefore remains, and no grid, however fine, changes
@@ -275,14 +275,14 @@ Part 3.
 
 ```{admonition} Part 3: Does the lid fit in the box?
 :class: tip
-Rotate the lid by the placing angle and store the result in `lid_place`.
+Rotate the lid by the placement angle and store the result in `lid_place`.
 Then check whether all four corners lie inside the box. `lid_place[:, 0]`
 returns column 0, i.e. the $x$-coordinates of all corners, and
 `lid_place[:, 1]` the $y$-coordinates. Compare the smallest and largest
 coordinates of the lid with those of the box.
 
 What is the smallest gap between the lid and the walls of the box? Plot the
-pick position and the placing position with the lid in one plot.
+pick position and the place position with the lid in one plot.
 ```
 
 ```{code-cell} python
@@ -293,7 +293,7 @@ pick position and the placing position with the lid in one plot.
 :class: tip
 :class: dropdown
 ```python
-# lid in the placing position
+# lid in the place position
 lid_place = (R_place @ lid.T).T
 
 # smallest and largest coordinates of the lid
@@ -341,7 +341,7 @@ gripper travels from the belt to the box. We approximate the circular arc
 with straight segments. To do this, write two functions:
 
 1. `gripper_path(num_points)` uses `np.linspace` to create evenly spaced
-   angles from $0°$ to the placing angle and returns the gripper positions as
+   angles from $0°$ to the placement angle and returns the gripper positions as
    an array of shape `(num_points, 2)`.
 2. `path_length(path)` adds up the straight-line distances between
    consecutive points of the path, each computed with the Pythagorean
@@ -365,7 +365,7 @@ arc?
 :class: dropdown
 ```python
 def gripper_path(num_points):
-    """Gripper positions while swiveling from 0 degrees to the placing angle."""
+    """Gripper positions while swiveling from 0 degrees to the placement angle."""
     angles = np.linspace(0, place_angle, num_points)
     path = np.zeros((num_points, 2))
     for k in range(num_points):

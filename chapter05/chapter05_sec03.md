@@ -414,9 +414,9 @@ directions a 0.
 
 ## Chaining transformations
 
-We transformed the part with two matrices, one after the other. For a point
-$\tilde{p} = (x, y, 1)^\top$ in homogeneous coordinates, we may move the
-parentheses in the matrix product:
+We transformed the part with two matrices, one after the other. Matrix
+multiplication is associative, so for a point $\tilde{p} = (x, y, 1)^\top$ in
+homogeneous coordinates, we can move the parentheses:
 
 $$\mathbf{T}_2 \cdot (\mathbf{T}_1 \cdot \tilde{p})
 = (\mathbf{T}_2 \cdot \mathbf{T}_1) \cdot \tilde{p}.$$

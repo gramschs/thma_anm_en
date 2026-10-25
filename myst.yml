@@ -49,7 +49,14 @@ project:
       - file: chapter04/chapter04_sec02.md
       - file: chapter04/chapter04_sec03.md
       - file: chapter04/chapter04_sec04.md
-#      - file: chapter04/chapter04_sec05.md
+      - file: chapter04/chapter04_sec05.md
+    - title: 5. Coordinate Transformations - Part 1
+      children:
+      - file: chapter05/chapter05_sec01.md
+      - file: chapter05/chapter05_sec02.md
+      - file: chapter05/chapter05_sec03.md
+      - file: chapter05/chapter05_sec04.md
+#      - file: chapter05/chapter05_sec05.md
 
 site:
   template: book-theme

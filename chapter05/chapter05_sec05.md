@@ -7,7 +7,7 @@ kernelspec:
 # 5.5 Exercises
 
 These exercises are meant for self-study at home and review the material of
-Chapters 5.1 to 5.4. Plan for about 90 minutes of working time. Before
+Chapters 5.1 to 5.4. Allow about 90 minutes for them. Before
 starting the exercises, run the following two cells. They contain the
 plotting function, the functions from Chapters 5.1, 5.3 and 5.4, and the arm
 and the part of the SCARA robot.

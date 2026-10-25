@@ -7,7 +7,7 @@ kernelspec:
 # 3.5 Exercises
 
 These exercises are meant for self-study at home and review the material of
-Chapters 3.1 to 3.4. Plan for about 90 minutes of working time.
+Chapters 3.1 to 3.4. Allow about 90 minutes for them.
 
 The difficulty level is given in the title of each exercise:
 

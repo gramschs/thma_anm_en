@@ -177,6 +177,27 @@ center of the box?
 # code cell
 ```
 
+````{admonition} Hint Part 1
+:class: tip
+:class: dropdown
+In the second section of Chapter 5.1, we rotated the arm and the part with
+`(R @ points.T).T`. Repeat this in a loop for each angle and append each
+result to the matching list.
+```python
+# home position as the first element, then append three rotated positions
+arms = [arm]
+lids = [lid]
+for angle in [45, 90, 135]:
+    R = rotation_matrix(___)
+    arms.append(___)
+    lids.append(___)
+
+plot_robot(arms, parts=lids, surroundings=[conveyor, box],
+           labels=['0°', '45°', '90°', '135°'],
+           title='Swivel arm in four positions')
+```
+````
+
 ````{admonition} Solution Part 1
 :class: tip
 :class: dropdown
@@ -220,6 +241,36 @@ position with the center of the box as the target.
 ```{code-cell} python
 # code cell
 ```
+
+````{admonition} Hint Part 2
+:class: tip
+:class: dropdown
+As in the first section of Chapter 5.1, we rotate the gripper alone with
+`rotation_matrix(...) @ arm[1]`. For the distance, we form the difference
+vector to the center of the box and apply the Pythagorean theorem. How many
+values does `np.linspace` need for steps of $1°$ between $0°$ and $180°$?
+```python
+angles_deg = np.linspace(0, 180, ___)
+distances = np.zeros(len(angles_deg))
+
+for k in range(len(angles_deg)):
+    gripper = ___
+    difference = gripper - box_center
+    distances[k] = ___
+
+# the index of the smallest distance gives the placement angle
+k_best = ___
+place_angle = angles_deg[k_best]
+print(f'Placement angle: {place_angle:.0f}°')
+print(f'Remaining distance to the box center: {distances[k_best] * 1000:.1f} mm')
+
+# arm in the place position, we need R_place and arm_place again in Part 3
+R_place = rotation_matrix(np.deg2rad(place_angle))
+arm_place = ___
+plot_robot(arm_place, targets=box_center, surroundings=[conveyor, box],
+           title=f'Place position at {place_angle:.0f}°')
+```
+````
 
 ````{admonition} Solution Part 2
 :class: tip
@@ -288,6 +339,41 @@ pick position and the place position with the lid in one plot.
 ```{code-cell} python
 # code cell
 ```
+
+````{admonition} Hint Part 3
+:class: tip
+:class: dropdown
+Rotate the lid with `R_place` from Part 2. `np.min` and `np.max` from
+Chapter 2.1 return the smallest and largest value of a column. The lid lies
+inside the box if all four comparisons are true.
+```python
+# lid in the place position
+lid_place = ___
+
+# smallest and largest coordinates of the lid
+x_min = np.min(lid_place[:, 0])
+x_max = ___
+y_min = ___
+y_max = ___
+
+# smallest and largest coordinates of the box
+box_x_min = np.min(box[:, 0])
+box_x_max = np.max(box[:, 0])
+box_y_min = np.min(box[:, 1])
+box_y_max = np.max(box[:, 1])
+
+fits = (x_min >= box_x_min and ___)
+print('Lid lies completely inside the box:', fits)
+
+# gaps to the four walls of the box: left, right, bottom, top
+gaps = np.array([x_min - box_x_min, box_x_max - x_max, ___, ___])
+print(f'Smallest gap to a wall: {np.min(gaps) * 100:.1f} cm')
+
+plot_robot([arm, arm_place], parts=[lid, lid_place],
+           surroundings=[conveyor, box], labels=['Pick', 'Place'],
+           title='Lid in the box')
+```
+````
 
 ````{admonition} Solution Part 3
 :class: tip
@@ -359,6 +445,44 @@ arc?
 ```{code-cell} python
 # code cell
 ```
+
+````{admonition} Hint Part 4
+:class: tip
+:class: dropdown
+The loop from Part 2 already gives the gripper positions. In `gripper_path`,
+store them in the rows of an array instead of the distances. In
+`path_length`, form a difference vector as in Part 2, now between point `k`
+and point `k + 1`. How many times does the loop have to run for this?
+```python
+def gripper_path(num_points):
+    """Gripper positions while swiveling from 0 degrees to the placement angle."""
+    angles = np.linspace(0, place_angle, num_points)
+    path = np.zeros((num_points, 2))
+    for k in range(num_points):
+        path[k] = ___
+    return path
+
+def path_length(path):
+    """Sum of the straight-line distances between consecutive points."""
+    length = 0.0
+    for k in range(___):
+        difference = ___
+        length += np.sqrt(difference[0]**2 + difference[1]**2)
+    return length
+
+# exact arc length: radius times angle in radians
+arc_length = ___
+print(f'Exact circular arc: {arc_length:.5f} m')
+
+for num in [8, 29, 141]:
+    length = path_length(gripper_path(num))
+    print(f'{num:3d} points: {length:.5f} m, error {(arc_length - length) * 1000:.2f} mm')
+
+plot_robot([arm, arm_place], parts=[lid, lid_place],
+           path=gripper_path(8), surroundings=[conveyor, box],
+           labels=['Pick', 'Place'], title='Gripper path with 8 points')
+```
+````
 
 ````{admonition} Solution Part 4
 :class: tip

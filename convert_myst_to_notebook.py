@@ -144,8 +144,8 @@ def clean_myst_file(input_filename, output_filename):
                 output_lines.pop()
             continue
 
-        if title.startswith('Solution'):
-            continue  # Solutions: dropped entirely
+        if title.startswith(('Solution', 'Hint')):
+            continue  # Solutions and hints: dropped entirely
 
         if 'warning' in classes:
             output_lines.append(f'**{title}**\n')

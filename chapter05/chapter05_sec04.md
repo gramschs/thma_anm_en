@@ -196,6 +196,42 @@ correspond to exactly one position?
 # code cell
 ```
 
+````{admonition} Hint Part 1
+:class: tip
+:class: dropdown
+The body of the function is almost complete in the last section of
+Chapter 5.3. Replace the fixed angles there with `alpha` and `beta`. Collect
+the positions in lists as in Part 1 of Chapter 5.2.
+```python
+def robot_position(alpha, beta):
+    """Arm points and part corners for the joint angles in radians."""
+    T_alpha = transformation_matrix(alpha, 0, 0)
+    T_arm2 = T_alpha @ ___
+    # arm 1 only with T_alpha, arm 2 and the part with both rotations
+    arm1_new = transform(T_alpha, arm[0:2])
+    arm2_new = ___
+    arm_new = np.array([arm1_new[0], arm1_new[1], arm2_new[1]])
+    part_new = ___
+    return arm_new, part_new
+
+# test with the position from Chapter 5.3
+arm_test, part_test = robot_position(___, ___)
+print('Gripper at (30°, 60°) in m:', np.round(arm_test[2], 4))
+
+# collect and plot three positions
+arms = []
+parts = []
+for angle_pair in [[0, 0], [30, 60], [60, 90]]:
+    arm_new, part_new = robot_position(np.deg2rad(angle_pair[0]), ___)
+    arms.append(arm_new)
+    parts.append(___)
+
+plot_robot(arms, parts=parts, surroundings=[feeder, board],
+           labels=['Home position', '(30°, 60°)', '(60°, 90°)'],
+           title='Three positions of the SCARA robot')
+```
+````
+
 ````{admonition} Solution Part 1
 :class: tip
 :class: dropdown
@@ -267,6 +303,38 @@ these angles? Plot the resulting position with $P_1$ as the target.
 # code cell
 ```
 
+````{admonition} Hint Part 2
+:class: tip
+:class: dropdown
+The outer loop runs over $\alpha$, the inner loop over $\beta$. Compute the
+distance as in Part 2 of Chapter 5.2. The only new thing is that we do not
+store all distances but use `if` to keep track of the best value so far.
+`robot_position` expects the angles in radians.
+```python
+target = placement_sites[0]
+
+# initial value larger than any possible distance
+best_distance = 10.0
+for alpha_deg in np.linspace(0, 180, 181):
+    for beta_deg in np.linspace(0, 150, ___):
+        arm_new, part_new = robot_position(___, ___)
+        difference = arm_new[2] - target
+        distance = ___
+        # remember the smallest distance and the corresponding angles
+        if ___:
+            best_distance = distance
+            best_alpha = alpha_deg
+            best_beta = beta_deg
+
+print(f'Angles found: α = {best_alpha:.0f}°, β = {best_beta:.0f}°')
+print(f'Remaining distance to P1: {best_distance * 1000:.1f} mm')
+
+arm_p1, part_p1 = robot_position(np.deg2rad(best_alpha), np.deg2rad(best_beta))
+plot_robot(arm_p1, parts=part_p1, targets=target,
+           surroundings=[feeder, board], title='Position for P1')
+```
+````
+
 ````{admonition} Solution Part 2
 :class: tip
 :class: dropdown
@@ -333,6 +401,37 @@ positions with their parts in a single plot.
 ```{code-cell} python
 # code cell
 ```
+
+````{admonition} Hint Part 3
+:class: tip
+:class: dropdown
+The body of `search_angles` is the nested loop from Part 2. The target
+becomes the parameter, and instead of printing, `return` gives back the three
+results. The loop over the placement sites works like the loop over the angle
+pairs in Part 1.
+```python
+def search_angles(target):
+    """Joint angles in degrees that bring the gripper closest to target."""
+    best_distance = 10.0
+    # insert the nested loop from Part 2 here
+    ___
+    return best_alpha, best_beta, best_distance
+
+arms = []
+parts = []
+for k in range(len(placement_sites)):
+    alpha_deg, beta_deg, distance = search_angles(___)
+    arm_new, part_new = robot_position(np.deg2rad(alpha_deg), np.deg2rad(beta_deg))
+    arms.append(arm_new)
+    parts.append(part_new)
+    print(f'P{k + 1}: α = {alpha_deg:3.0f}°, β = {beta_deg:3.0f}°, '
+          f'remaining {distance * 1000:.1f} mm, part rotated by {___:.0f}°')
+
+plot_robot(arms, parts=parts, targets=placement_sites,
+           surroundings=[feeder, board], labels=['P1', 'P2', 'P3'],
+           title='All placement sites')
+```
+````
 
 ````{admonition} Solution Part 3
 :class: tip

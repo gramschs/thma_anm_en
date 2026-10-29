@@ -166,6 +166,16 @@ back:
 2. Rotate: we multiply by the rotation matrix.
 3. Shift back: we add the position of joint 2 again.
 
+```{figure} pics/chap05_drehung_um_gelenk2_EN.svg
+:alt: Four coordinate systems with the robot arm: in the home position the gripper is at (0.7, 0) and the target at (0.4, 0.3), after step 1 joint 2 lies at the origin and the gripper at (0.3, 0), after step 2 arm 2 is rotated by 90 degrees about the origin and the gripper is at (0, 0.3), after step 3 arm 2 sits at joint 2 again and the gripper is at (0.4, 0.3)
+:align: center
+:label: fig_chap05_drehung_um_gelenk2
+
+The three steps at $\beta = 90°$, with the position before each step shown in
+gray.
+(Source: figure by the author; license [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0))
+```
+
 ```{code-cell} python
 joint2 = arm[1]
 
@@ -184,6 +194,23 @@ print('After step 3:', np.round(gripper_new, 4))
 After step 1, the gripper is at $(0.3, 0)$, i.e. $0.3\,\text{m}$ to the right
 of the shifted joint 2. Step 2 rotates it to $(0, 0.3)$, and step 3 moves it
 to the correct position $(0.4, 0.3)$.
+
+In the following interactive figure, you carry out the three steps yourself.
+Use the slider to choose a different angle $\beta$. The gripper always stays
+on the dashed circle around joint 2. With "First attempt: rotation matrix
+only" you see for comparison where the rotation matrix alone takes the
+gripper.
+
+<!-- markdownlint-disable MD033 -->
+<div class="applet-container applet-880">
+<iframe
+  src="https://gramschs.github.io/thma_anm_de_assets/interactive/chapter05/scara-drehung.html?lang=en"
+  width="100%"
+  frameborder="0"
+  scrolling="no">
+</iframe>
+</div>
+<!-- markdownlint-enable MD033 -->
 
 We treat the part the same way. If we subtract a vector with two entries from
 an array of shape `(4, 2)`, NumPy subtracts it from every row. This way we
@@ -519,6 +546,21 @@ $\mathbf{T}_\alpha$, however, joint 2 is no longer there, and
 $\mathbf{T}_\beta$ rotates about a point where there is no joint at all. The
 matrix product is therefore not commutative in general, and when we chain
 transformations, we have to pay close attention to the order.
+
+In the tab "Both joints" of the interactive figure, you play both orders and
+change the angles. A circle marks the center of rotation of the matrix that
+is currently acting.
+
+<!-- markdownlint-disable MD033 -->
+<div class="applet-container applet-880">
+<iframe
+  src="https://gramschs.github.io/thma_anm_de_assets/interactive/chapter05/scara-drehung.html?lang=en&tab=2"
+  width="100%"
+  frameborder="0"
+  scrolling="no">
+</iframe>
+</div>
+<!-- markdownlint-enable MD033 -->
 
 ```{admonition} Mini-exercise (✩)
 :class: tip

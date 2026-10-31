@@ -57,6 +57,13 @@ project:
       - file: chapter05/chapter05_sec03.md
       - file: chapter05/chapter05_sec04.md
 #      - file: chapter05/chapter05_sec05.md
+    - title: 6. Coordinate Transformations - Part 2
+      children:
+      - file: chapter06/chapter06_sec01.md
+      - file: chapter06/chapter06_sec02.md
+      - file: chapter06/chapter06_sec03.md
+      - file: chapter06/chapter06_sec04.md
+#      - file: chapter06/chapter06_sec05.md
 
 site:
   template: book-theme

@@ -66,7 +66,7 @@ enden mit "Run the code and check your predictions."
 
 ## Granularität
 
-- Richtwert: **5-8 Lücken pro Notebook** für eine 45-minütige Live-Session.
+- Richtwert: **5-6 Lücken pro Notebook** für eine 45-minütige Live-Session.
 - Feine Granularität (pro Zeile/Schritt) nur beim zentralen Lernkonzept der
   Einheit (z.B. Koeffizientenmatrix zeilenweise ablesen).
 - Alles andere grob bzw. einzeilig lassen (z.B. ein `# TODO: ???` für einen

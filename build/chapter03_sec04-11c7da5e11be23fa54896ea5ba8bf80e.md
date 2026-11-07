@@ -1,0 +1,244 @@
+---
+kernelspec:
+  name: python3
+  display_name: 'Python 3'
+---
+
+# 3.4 How Much Does Thicker Insulation Help?
+
+In Chapter 3.3 we computed the temperatures and the heat flow in a
+three-layer wall. In this chapter we add an insulation layer to the wall and
+use a parameter study to investigate how much the heat flow drops as we
+increase the insulation. Work through the parts in pairs if possible, and in
+order.
+
+````{admonition} Project: Parameter study on insulation thickness (✩✩)
+:class: tip
+An exterior wall consists of four layers. Inside it is
+$T_{LA} = 293\,\text{K}$ (20 °C), outside $T_{DR} = 263\,\text{K}$ (−10 °C).
+
+| Layer | Component | $R$ in K/W |
+| --- | --- | --- |
+| A | Interior plaster | 0.04 |
+| B | Masonry | 0.5 |
+| C | Insulation | $R_C$ (variable) |
+| D | Exterior plaster | 0.04 |
+
+The unknowns are the three interface temperatures $T_{AB}$, $T_{BC}$,
+$T_{CD}$ and the heat flow $Q$. As in Chapter 3.3, $Q = \Delta T_i / R_i$
+holds for each layer.
+````
+
+```{admonition} Part 1: Set up the system of equations
+:class: tip
+Rearrange the four layer equations so that all unknowns are on the left
+(multiply each by its $R_i$). Write the result as the matrix equation
+$\mathbf{A} \cdot \vec{x} = \vec{b}$ with
+$\vec{x} = (T_{AB},\ T_{BC},\ T_{CD},\ Q)^\top$. The matrix has the same
+structure as in Chapter 3.3, just with one more row and one more column.
+```
+
+```{code-cell} python
+# code cell
+```
+
+````{admonition} Solution Part 1
+:class: tip
+:class: dropdown
+The rearranged equations read:
+
+$$T_{AB} + R_A Q = T_{LA}$$
+$$-T_{AB} + T_{BC} + R_B Q = 0$$
+$$-T_{BC} + T_{CD} + R_C Q = 0$$
+$$-T_{CD} + R_D Q = -T_{DR}$$
+
+From this the matrix form:
+
+$$\begin{pmatrix}
++1 &  0 &  0 & R_A \\
+-1 & +1 &  0 & R_B \\
+ 0 & -1 & +1 & R_C \\
+ 0 &  0 & -1 & R_D
+\end{pmatrix}
+\cdot
+\begin{pmatrix} T_{AB} \\ T_{BC} \\ T_{CD} \\ Q \end{pmatrix}
+=
+\begin{pmatrix} T_{LA} \\ 0 \\ 0 \\ -T_{DR} \end{pmatrix}$$
+````
+
+```{admonition} Part 2: Solve for a fixed insulation value
+:class: tip
+Create `A` and `b` as NumPy arrays for $R_C = 1.0\,\text{K/W}$. Check the
+determinant, solve with `np.linalg.solve`, and print the three interface
+temperatures (in °C) and the heat flow. Verify the result with a check.
+```
+
+```{code-cell} python
+# code cell
+```
+
+````{admonition} Solution Part 2
+:class: tip
+:class: dropdown
+```python
+import numpy as np
+
+R_A = 0.04
+R_B = 0.5
+R_C = 1.0
+R_D = 0.04
+T_LA = 293.0
+T_DR = 263.0
+
+A = np.array([
+    [+1.0,  0.0,  0.0, R_A],
+    [-1.0, +1.0,  0.0, R_B],
+    [ 0.0, -1.0, +1.0, R_C],
+    [ 0.0,  0.0, -1.0, R_D],
+])
+b = np.array([T_LA, 0.0, 0.0, -T_DR])
+
+print(f'Determinant: {np.linalg.det(A):.4f}')
+
+x = np.linalg.solve(A, b)
+T_AB, T_BC, T_CD, Q = x
+
+print(f'T_AB = {T_AB - 273.15:.1f} °C')
+print(f'T_BC = {T_BC - 273.15:.1f} °C')
+print(f'T_CD = {T_CD - 273.15:.1f} °C')
+print(f'Q    = {Q:.2f} W')
+print('Check passed:', np.allclose(A @ x, b))
+```
+With $R_C = 1.0$ K/W the heat flow comes out to about 19.0 W. The
+temperature drops from 20 °C inside, barely noticeably across the interior
+plaster to 19.1 °C, then across the masonry to 9.6 °C, and finally steeply
+across the insulation to −9.4 °C. Almost the entire temperature difference
+occurs across the insulation layer.
+````
+
+````{admonition} Part 3: Parameter study and plot
+:class: tip
+Investigate how the heat flow depends on the insulation thickness. Vary
+$R_C$ with
+
+```python
+r_c_values = np.linspace(0.0, 3.0, 31)
+```
+
+Solve the system of equations for each value, store the heat flow in an
+array `q_values`, and plot `q_values` against `r_c_values` as a line plot
+(axis labels, title, grid).
+````
+
+```{code-cell} python
+# code cell
+```
+
+````{admonition} Solution Part 3
+:class: tip
+:class: dropdown
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.style as style
+style.use('seaborn-v0_8')
+
+R_A, R_B, R_D = 0.04, 0.5, 0.04
+T_LA, T_DR = 293.0, 263.0
+
+r_c_values = np.linspace(0.0, 3.0, 31)
+q_values = np.zeros(31)
+
+for i, r_c in enumerate(r_c_values):
+    A = np.array([
+        [+1.0,  0.0,  0.0, R_A],
+        [-1.0, +1.0,  0.0, R_B],
+        [ 0.0, -1.0, +1.0, r_c],
+        [ 0.0,  0.0, -1.0, R_D],
+    ])
+    b = np.array([T_LA, 0.0, 0.0, -T_DR])
+    x = np.linalg.solve(A, b)
+    q_values[i] = x[3]
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(r_c_values, q_values)
+ax.set_xlabel('Thermal resistance of the insulation in K/W')
+ax.set_ylabel('Heat flow in W')
+ax.set_title('Heat flow as a function of insulation thickness')
+ax.grid(True)
+plt.show()
+```
+For each value of $R_C$ we solve a separate system of equations. Only the
+one matrix entry in row 3, column 4 changes, everything else stays the
+same.
+````
+
+```{admonition} Part 4: Evaluate the plot
+:class: tip
+Answer in your own words:
+
+1. How does the heat flow change when $R_C$ rises from 0 to 0.5 K/W, and
+   how does it change when it rises from 2.5 to 3.0 K/W?
+2. What does the shape of the curve imply for the question of whether ever
+   thicker insulation is worthwhile?
+```
+
+````{admonition} Solution Part 4
+:class: tip
+:class: dropdown
+1. At the beginning, additional insulation helps a lot: from $R_C = 0$ to
+   $R_C = 0.5$ K/W the heat flow drops from about 52 W to about 28 W. Near
+   the end it helps little: from $R_C = 2.5$ to $R_C = 3.0$ K/W it only
+   drops further from about 9.7 W to 8.4 W.
+2. The curve first falls steeply and then becomes flatter and flatter. The
+   benefit of each additional layer of insulation decreases. Beyond a
+   certain point, the extra material no longer pays off relative to the
+   heat saved. This is called the **diminishing marginal return** of
+   insulation.
+````
+
+````{admonition} Bonus exercise: Halving the heat flow (✩✩✩)
+:class: tip
+Determine from the parameter study at which $R_C$ the heat flow has dropped
+to half the value without insulation ($R_C = 0$).
+
+1. The value without insulation is `q_values[0]`. Form the target
+   `q_target = q_values[0] / 2`.
+2. Find the index of the `q_values` entry closest to `q_target`, using
+   `np.argmin(np.abs(q_values - q_target))`.
+3. Print the corresponding $R_C$ and mark the point in the plot from Part 3
+   with a second `ax.scatter()` call.
+````
+
+```{code-cell} python
+# code cell
+```
+
+````{admonition} Solution bonus exercise
+:class: tip
+:class: dropdown
+```python
+q_target = q_values[0] / 2
+i_half = np.argmin(np.abs(q_values - q_target))
+r_c_half = r_c_values[i_half]
+
+print(f'Heat flow without insulation: {q_values[0]:.1f} W')
+print(f'Half the heat flow:           {q_target:.1f} W')
+print(f'reached at R_C = {r_c_half:.2f} K/W')
+
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(r_c_values, q_values, label='heat flow')
+ax.scatter(r_c_half, q_values[i_half], color='red', zorder=5,
+           label='half the heat flow')
+ax.set_xlabel('Thermal resistance of the insulation in K/W')
+ax.set_ylabel('Heat flow in W')
+ax.set_title('Halving the heat flow')
+ax.legend()
+ax.grid(True)
+plt.show()
+```
+The heat flow without insulation is about 52 W. Half of that, about 26 W,
+is already reached with an insulation of $R_C \approx 0.6$ K/W. To halve it
+once more would require significantly more than double the insulation
+resistance, which again shows the diminishing marginal return.
+````

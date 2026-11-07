@@ -204,7 +204,7 @@ gripper.
 <!-- markdownlint-disable MD033 -->
 <div class="applet-container applet-880">
 <iframe
-  src="https://gramschs.github.io/thma_anm_de_assets/interactive/chapter05/scara-drehung.html?lang=en"
+  src="https://gramschs.github.io/thma_anm_assets/interactive/chapter05/scara-drehung.html?lang=en"
   width="100%"
   frameborder="0"
   scrolling="no">
@@ -554,7 +554,7 @@ is currently acting.
 <!-- markdownlint-disable MD033 -->
 <div class="applet-container applet-880">
 <iframe
-  src="https://gramschs.github.io/thma_anm_de_assets/interactive/chapter05/scara-drehung.html?lang=en&tab=2"
+  src="https://gramschs.github.io/thma_anm_assets/interactive/chapter05/scara-drehung.html?lang=en&tab=2"
   width="100%"
   frameborder="0"
   scrolling="no">

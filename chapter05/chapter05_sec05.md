@@ -230,7 +230,7 @@ $\sqrt{0.4^2 + 0.3^2} = 0.5\,\text{m}$ from the origin, because a rotation
 does not change lengths. `R.T` is the rotation by $-90°$. It moves the
 gripper to $(0.3, -0.4)$, i.e. into the position $\alpha = -90°$,
 $\beta = 90°$. The last line uses 90 radians instead of $90°$. Without
-`np.deg2rad`, there is no error message, just a wrong result.
+`np.deg2rad()`, there is no error message, just a wrong result.
 ````
 
 ````{admonition} Exercise 5.2 (✩)
@@ -264,7 +264,7 @@ print(np.round(edge, 4))
 Write down your guess in a Markdown cell before you run the code.
 
 1. What is the shape of `lid.T`, and what is the shape of `lid_new`?
-2. What do the two lines with `np.allclose` print? Explain your answer.
+2. What do the two lines with `np.allclose()` print? Explain your answer.
 3. In the home position, the long edge is $0.1\,\text{m}$ long and points in
    the $x$-direction. Which values do you expect for `edge` after the swivel
    motion? Hint: $\cos 30° \approx 0.866$.
@@ -463,13 +463,13 @@ In a matrix product, the right matrix acts first. With `T_shift @ T_rot`, the
 table first rotates the workpiece to $(0, 0.1)$ and then shifts it to
 $(0.2, 0.1)$. With `T_rot @ T_shift`, the workpiece is first shifted to
 $(0.3, 0)$ and then rotated about the origin to $(0, 0.3)$. By its
-definition, `transformation_matrix` rotates first and shifts afterward. That
+definition, `transformation_matrix()` rotates first and shifts afterward. That
 is why `T_shift @ T_rot` equals
 `transformation_matrix(np.deg2rad(90), 0.2, 0)`. The other product contains
 the translation $(0, 0.2)$, because the rotation has also rotated the
 translation vector. As soon as translations are involved, the matrix product
 is therefore no longer commutative. The workpiece is an array of shape
-`(1, 2)` because `transform` expects the points row by row.
+`(1, 2)` because `transform()` expects the points row by row.
 ````
 
 ```{admonition} Exercise 5.5 (✩✩)
@@ -481,7 +481,7 @@ circle has a radius of $50\,\text{mm}$. The first hole is to the right of the
 center at $(170, 80)$; the others follow counterclockwise at intervals of
 $60°$.
 
-1. Use `rotation_about_point` and `transform` to compute the positions of
+1. Use `rotation_about_point()` and `transform()` to compute the positions of
    all six holes and store them in an array `holes` of shape `(6, 2)`. You
    get hole $k$ by rotating the first hole by $k \cdot 60°$ about $M$.
 2. Use the Pythagorean theorem to check that all holes are $50\,\text{mm}$
@@ -489,7 +489,7 @@ $60°$.
    geometrically.
 3. By mistake, the flange was clamped in a position rotated by $15°$ about
    its center. Compute the actual positions with a single transformation and
-   plot the nominal and actual positions with `ax.scatter` in one diagram.
+   plot the nominal and actual positions with `ax.scatter()` in one diagram.
    To make the bolt circle look round, add `ax.set_aspect('equal')`. How far,
    in millimeters, is each hole from its nominal position?
 
@@ -595,8 +595,8 @@ computed without matrices.
 2. Write a function `gripper_formula(alpha, beta)` with a docstring that
    returns the gripper position for angles in radians as an array.
 3. For the angle pairs $(30°, 60°)$, $(9°, 99°)$, $(120°, 45°)$ and
-   $(180°, 150°)$, use `np.allclose` to compare your function with the
-   gripper from `robot_position`.
+   $(180°, 150°)$, use `np.allclose()` to compare your function with the
+   gripper from `robot_position()`.
 4. The formula is much shorter than the chain of transformation matrices.
    Why do robot controllers still work with matrices?
 
@@ -651,7 +651,7 @@ another $l_2$ away in the direction $\alpha + \beta$:
 $$x = l_1 \cos\alpha + l_2 \cos(\alpha + \beta), \qquad
 y = l_1 \sin\alpha + l_2 \sin(\alpha + \beta).$$
 
-For all four angle pairs, the formula agrees with `robot_position`. For the
+For all four angle pairs, the formula agrees with `robot_position()`. For the
 gripper alone, it is indeed shorter. The controller, however, also needs the
 corners of the part, and many robots have more than two joints that rotate in
 3D space. Each additional quantity would need its own, ever longer formula.
@@ -666,11 +666,11 @@ Which points can the gripper of the SCARA robot reach at all? The set of
 these points is called the **workspace** of the robot. As in Chapter 5.4,
 joint 1 rotates between $0°$ and $180°$, and joint 2 between $0°$ and $150°$.
 
-1. Use `robot_position` to compute the gripper position for all angles
+1. Use `robot_position()` to compute the gripper position for all angles
    $\alpha$ from $0°$ to $180°$ and $\beta$ from $0°$ to $150°$ in steps of
    $5°$. Store the positions in an array `points` with
    $37 \cdot 31 = 1147$ rows and two columns. Create it beforehand with
-   `np.zeros` and use a row index that you increase by one in the inner
+   `np.zeros()` and use a row index that you increase by one in the inner
    loop.
 2. Plot the points with `ax.scatter(..., s=2)`. Add `ax.set_aspect('equal')`
    so that circles look round.
@@ -873,17 +873,17 @@ placement_sites = np.array([[0.30, 0.35], [0.40, 0.40], [0.45, 0.30]])
 
 **Part 1:** Write a function
 `robot_position_with_gripper_axis(alpha, beta, gamma)` that, like
-`robot_position`, returns the points of the arm and the corners of the part.
+`robot_position()`, returns the points of the arm and the corners of the part.
 Transform the part with
 $\mathbf{T}_\alpha \cdot \mathbf{T}_\beta \cdot \mathbf{T}_\gamma$, where
 $\mathbf{T}_\gamma$ rotates about the position of the gripper in the home
 position. Check for $\alpha = 30°$ and $\beta = 60°$: with $\gamma = 0$, the
-function returns the same as `robot_position`. With $\gamma = 90°$, the
+function returns the same as `robot_position()`. With $\gamma = 90°$, the
 center of the part stays at the gripper. The center is the midpoint of the
 diagonal, i.e. `(corners[0] + corners[2]) / 2`.
 
 **Part 2:** For each site, compute the angle $\gamma$ that rotates the part
-from the angle $\alpha + \beta$ to the target angle. Use `np.allclose` to
+from the angle $\alpha + \beta$ to the target angle. Use `np.allclose()` to
 check that the long edge `corners[1] - corners[0]` then equals
 $0.08 \cdot (\cos\varphi_\text{target}, \sin\varphi_\text{target})$.
 

@@ -1,0 +1,157 @@
+% exercises_preamble.tex
+%
+% Präambel für die Übungsblätter zum Selbststudium (Kapitel N.3 bzw. N.5) als
+% PDF, übernommen aus der Präambel der CA-2-Unterlagen
+% (internal/exams/exam_2026ws/ca02/preamble.tex). Die Studierenden üben damit
+% das Format von CA 3: Aufgaben auf Papier, gelöst lokal am PC.
+% Die .tex-Dateien erzeugt convert_myst_to_latex.py aus dem Master.
+
+% ── Seitenlayout ─────────────────────────────────────────────────────────
+\usepackage[a4paper, width=150mm, height=240mm]{geometry}
+
+\usepackage{amsmath, amssymb}
+
+\usepackage[no-math]{fontspec}
+\usepackage{unicode-math}
+\usepackage{libertinus}
+
+\usepackage{setspace}
+\usepackage{microtype}
+\usepackage{textcomp}
+\usepackage[main=english]{babel}
+
+% ✩ für den Schwierigkeitsgrad (Libertinus hat das Zeichen nicht)
+\usepackage{pifont}
+\usepackage{newunicodechar}
+\newunicodechar{✩}{\ding{73}}
+
+% ── Kopf-/Fußzeilen ──────────────────────────────────────────────────────
+\usepackage[automark]{scrlayer-scrpage}
+\clearpairofpagestyles
+
+\ifoot{S. Gramsch}
+\cfoot{TH Mannheim -- Applied Numerical Mathematics -- WS 2026/27}
+\ofoot{\pagemark}
+
+% Keine Titelei: Die erzeugte .tex-Datei beginnt mit der Überschrift
+% "N.M Exercises" als \section*, darunter "How to Practice" und "Exercises"
+% als \subsection*.
+
+% ── Listen ───────────────────────────────────────────────────────────────
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+% ── Farben ───────────────────────────────────────────────────────────────
+\usepackage{xcolor}
+\definecolor{itwm_blue_04}{HTML}{005A94}
+\definecolor{frankfurtBlueLight}{HTML}{AECAE2}
+
+\definecolor{my_darkgray}{HTML}{484949}
+\definecolor{my_lightgray}{HTML}{F3F4F4}
+\definecolor{my_orange}{HTML}{E87846}
+
+% Farben der Admonition "tip" im Buch (MyST book-theme, heller Modus):
+% Rand und Symbol --myst-color-success, Kopfzeile --myst-color-success-bg
+\definecolor{tip_green}{HTML}{16A34A}
+\definecolor{tip_bg}{HTML}{F0FDF4}
+
+% ── Python-Code ──────────────────────────────────────────────────────────
+\usepackage{listings}
+
+% Zeilenumbrüche im Code mit Pfeil markieren, damit beim Abtippen klar ist,
+% dass es eine einzige Python-Zeile ist
+\lstdefinestyle{python}{
+  language=Python,
+  basicstyle=\ttfamily\small\setstretch{1},
+  keywordstyle=\color{itwm_blue_04}\bfseries,
+  stringstyle=\color{my_orange!80!black},
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+  extendedchars=true,
+}
+
+\lstdefinestyle{ausgabe}{
+  basicstyle=\ttfamily\footnotesize\setstretch{1},
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+}
+
+\lstdefinestyle{inline}{
+  basicstyle=\ttfamily,
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+}
+
+% Code im Fließtext: \py|derivative(values, dt)|
+\newcommand{\py}{\lstinline[style=inline]}
+
+% ── Kästen ───────────────────────────────────────────────────────────────
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{listings}
+
+%% Aufgabe ---------------------------------------------------------------
+% \begin{aufgabe}{Exercise 7.1 (✩)}{approx.\ 7 min}: Bezeichnung links,
+% Richtzeit rechts (in CA 2 und CA 3 stehen dort die Punkte).
+% Aussehen wie die Admonition "tip" im Buch: grüner Rand links, hellgrüne
+% Kopfzeile mit grünem Stift, weißer Inhalt, leichter Schatten.
+% Eine Aufgabe wird nicht über zwei Seiten geteilt: Passt sie nicht mehr,
+% beginnt sie auf der nächsten Seite. Nur für Aufgaben, die länger als eine
+% Seite sind, setzt der Konverter die teilbare Variante aufgabelang ein.
+\tcbset{
+  aufgabenstil/.style 2 args={
+    enhanced,
+    boxrule=0pt,
+    frame hidden,
+    borderline west={1.5pt}{0pt}{tip_green},
+    title={\textcolor{tip_green}{\ding{46}}\enspace #1 \hfill #2},
+    coltitle=black,
+    fonttitle=\bfseries,
+    colbacktitle=tip_bg,
+    colback=white,
+    drop fuzzy shadow=black!25,
+    arc=1mm,
+    left=4mm, right=4mm,
+    before skip=4mm, after skip=4mm,
+  },
+}
+\newtcolorbox{aufgabe}[2]{aufgabenstil={#1}{#2}}
+\newtcolorbox{aufgabelang}[2]{aufgabenstil={#1}{#2}, breakable}
+
+%% Code und Ausgabe ------------------------------------------------------
+% breakable: längerer vorgegebener Code darf über eine Seite hinausgehen,
+% sonst bleibt vor ihm eine halbe Seite leer
+\newtcblisting{code}{
+    listing only,
+    enhanced,
+    breakable,
+    boxrule=0pt,
+    frame hidden,
+    sharp corners,
+    colback=my_lightgray,
+    left=4pt, right=4pt, top=2pt, bottom=2pt,
+    listing options={style=python},
+}
+
+\newtcblisting{ausgabe}{
+    listing only,
+    enhanced,
+    boxrule=0pt,
+    frame hidden,
+    sharp corners,
+    colback=white,
+    borderline west={2pt}{0pt}{my_lightgray!70!black},
+    left=6pt, right=4pt, top=0pt, bottom=0pt,
+    listing options={style=ausgabe},
+}
+
+% ── Verweise ─────────────────────────────────────────────────────────────
+\usepackage[hidelinks]{hyperref}

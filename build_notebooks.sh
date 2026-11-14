@@ -5,10 +5,13 @@
 #
 # Copies chapterNN/*.md into notebooks/chapterNN, cleans the copies with
 # convert_myst_to_notebook.py (drops learning objectives and solutions, turns
-# exercise/project admonitions into plain headings, collects mini-exercises at
-# the end). The cleaned .md still needs the code-along gaps filled in by hand
-# before converting to .ipynb with jupytext (--to ipynb, then --set-formats
-# ipynb).
+# exercise/project admonitions into plain headings, replaces applets by their
+# still image pics/<applet>.png, if present, and a link to the online applet,
+# collects mini-exercises at the end). The cleaned .md still needs the
+# code-along gaps filled in by hand before converting to .ipynb with jupytext
+# (--to ipynb, then --set-formats ipynb). The exercises chapter (H1
+# "N.M Exercises") becomes a PDF sheet without solutions instead
+# (convert_myst_to_latex.py, layout in latex/exercises_preamble.tex).
 
 set -euo pipefail
 
@@ -39,7 +42,16 @@ if [ -d "$source_dir/pics" ]; then
 fi
 
 for md_file in "$target_dir"/*.md; do
-    python3 "$script_dir/convert_myst_to_notebook.py" "$md_file"
+    name="$(basename "$md_file")"
+    if grep -qE '^# [0-9]+\.[0-9]+ Exercises$' "$md_file"; then
+        # exercise sheet for self-study: PDF instead of a notebook, as practice
+        # for CA 3 (tasks on paper, solved locally on the computer)
+        rm "$md_file"
+        (cd "$script_dir" && python3 convert_myst_to_latex.py --pdf \
+            "$chapter/$name" "notebooks/$chapter/${name%.md}.tex")
+    else
+        python3 "$script_dir/convert_myst_to_notebook.py" "$md_file"
+    fi
 done
 
 echo "Cleaned markdown written to $target_dir"

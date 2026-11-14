@@ -47,7 +47,7 @@ have a circular cross-section with a diameter of $1\,\text{cm}$.
 ````
 
 First run the following two cells. The first contains the given plotting
-function, the second the imports and the function `assemble_stiffness_matrix`
+function, the second the imports and the function `assemble_stiffness_matrix()`
 from Chapter 4.1.
 
 ```{code-cell} python
@@ -182,7 +182,7 @@ def assemble_stiffness_matrix(node_pos, members, youngs_modulus, area):
 ```{admonition} Part 1: Describe and plot the truss
 :class: tip
 Create `node_pos`, `support_indices`, `members` and `force_vector`. Keep the
-order from the table in the member list. Plot the truss with `plot_truss`
+order from the table in the member list. Plot the truss with `plot_truss()`
 and compare the plot with the sketch.
 
 Also answer: how many degrees of freedom does the bracket have if we leave
@@ -286,7 +286,7 @@ are the longest.
 ```{admonition} Part 3: Assemble the stiffness matrix
 :class: tip
 Assemble the stiffness matrix `K` with the function
-`assemble_stiffness_matrix`. Print its shape and the matrix in kN/mm,
+`assemble_stiffness_matrix()`. Print its shape and the matrix in kN/mm,
 rounded to one decimal place.
 
 Then use `np.allclose(K, K.T)` to check whether `K` is symmetric. `K.T` is
@@ -391,7 +391,7 @@ that produce no force.
 ````{admonition} Solution closing question
 :class: tip
 :class: dropdown
-The function `assemble_stiffness_matrix` is not even given
+The function `assemble_stiffness_matrix()` is not even given
 `support_indices`. The matrix `K` therefore describes the bracket as if it
 were not attached to the wall. We can shift such a free bracket as a whole
 to the right or left, shift it up or down, or rotate it a little. None of

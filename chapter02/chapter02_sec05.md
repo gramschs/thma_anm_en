@@ -203,7 +203,7 @@ Write down your guess in a Markdown cell before you run the code.
 
 1. Which line style does the upper curve have and how many full oscillations
    does it show in the plotted range?
-2. The upper `plot` call has `label='3 Hz'`, but there is no call to
+2. The upper `plot()` call has `label='3 Hz'`, but there is no call to
    `ax[0].legend()`. What can be seen in the diagram as a result?
 3. How many subplots does `plt.subplots(nrows=2, ncols=1)` create and how do
    you address the lower one?

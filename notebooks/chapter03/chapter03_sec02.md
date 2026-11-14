@@ -7,7 +7,7 @@ kernelspec:
 # 3.2 Support Reactions of a Beam
 
 In Chapter 3.1 we wrote a system of equations as a matrix equation, checked
-its solvability, and solved it with `np.linalg.solve`. In this chapter we
+its solvability, and solved it with `np.linalg.solve()`. In this chapter we
 apply the same approach to a problem from engineering mechanics: the support
 reactions of a loaded beam. Work through the parts in pairs if possible, and
 in order, since each part builds on the previous one.
@@ -66,7 +66,7 @@ whether the system has a unique solution.
 
 ## Part 3: Solve and check
 
-Solve the system with `np.linalg.solve` and verify the result with a check.
+Solve the system with `np.linalg.solve()` and verify the result with a check.
 Print the three support reactions in kN.
 
 ```{code-cell} python
@@ -98,7 +98,7 @@ $F_{By}$, but still three equilibrium conditions. The loading stays unchanged.
 1. Write the three equations with the two unknowns as
    $\mathbf{A} \cdot \vec{x} = \vec{b}$. The matrix `A` then has three rows
    and two columns.
-2. Try to solve the system with `np.linalg.solve`. What does Python report?
+2. Try to solve the system with `np.linalg.solve()`. What does Python report?
 3. Consider the first equation ($\sum F_x = 0$) on its own. Can it be
    satisfied?
 4. Explain physically why this beam cannot be in equilibrium.

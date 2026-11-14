@@ -208,8 +208,8 @@ angle $\psi$ measured from the $x_W$-axis, we have
 
 $$\tan\psi = \frac{\Delta y}{\Delta x}.$$
 
-So the obvious choice is the **arctangent** `np.arctan`. `np.rad2deg`, the
-counterpart of `np.deg2rad`, converts its result from radians to degrees. We
+So the obvious choice is the **arctangent** `np.arctan()`. `np.rad2deg()`, the
+counterpart of `np.deg2rad()`, converts its result from radians to degrees. We
 try it out for the first segment and for the later return trip to the start.
 
 ```{code-cell} python
@@ -250,7 +250,7 @@ print(f'Yaw angle for the return trip: {np.rad2deg(psi_back):.1f}°')
 ```
 
 For the first segment, nothing changes, because $\Delta x > 0$ there. For the
-return trip, `np.arctan2` now returns $-172.9°$, exactly $180°$ less than the
+return trip, `np.arctan2()` now returns $-172.9°$, exactly $180°$ less than the
 arctangent, i.e. the opposite direction.
 
 ## How does the AGV turn along the path?
@@ -259,7 +259,7 @@ Now we repeat the calculation for all segments: at path point `k`, the AGV
 should point toward path point `k + 1`. Nine path points have eight
 segments, so the loop runs over `range(len(path) - 1)`. As with the scan
 points in Chapter 6.1, we collect the yaw angles in an array that we create
-beforehand with `np.zeros`. The last path point has no successor and takes
+beforehand with `np.zeros()`. The last path point has no successor and takes
 over the second-to-last angle.
 
 ```{code-cell} python
@@ -302,7 +302,7 @@ With `path[k]` and `psi[k]`, we know the pose at every path point. As in
 Chapter 6.1, we use it to build $\mathbf{T}_{WV}$ and convert the outline to
 warehouse coordinates, this time in a loop. As with the distances in Part 3
 of Chapter 6.2, we collect the outlines in a list: before the loop, we create
-an empty list, and `append` adds each new outline to the end. The parameter
+an empty list, and `append()` adds each new outline to the end. The parameter
 `limits` shows only the section around the path.
 
 ```{code-cell} python
@@ -332,7 +332,7 @@ Chapter 6.4.
 ## Summary and outlook
 
 We compute the yaw angle between two path points with `np.arctan2(dy, dx)`.
-Unlike `np.arctan`, this function determines the quadrant from the signs and
+Unlike `np.arctan()`, this function determines the quadrant from the signs and
 returns angles from $-180°$ to $180°$. In a loop, we get the yaw angle at
 every path point, approximated by the direction of the secant. With the
 position and the yaw angle, we build $\mathbf{T}_{WV}$ at every path point
@@ -352,7 +352,7 @@ possible targets are at $(8, 4.5)$, $(6, 2.5)$ and $(7, 1.5)$.
 
 1. Answer without code: which yaw angle does the AGV need to drive to each
    of the three targets?
-2. Check your answers with `np.arctan2` and `np.rad2deg`.
+2. Check your answers with `np.arctan2()` and `np.rad2deg()`.
 3. Answer without code: for which of the three drives does the arctangent of
    the quotient $\Delta y / \Delta x$ give a wrong angle or no angle at all?
    Explain.
@@ -367,7 +367,7 @@ possible targets are at $(8, 4.5)$, $(6, 2.5)$ and $(7, 1.5)$.
    though the loop runs only eight times?
 2. In a loop, compute by how many degrees the AGV turns between each pair of
    neighboring path points, i.e. `psi_deg[k + 1] - psi_deg[k]`. Use
-   `np.argmax` and `np.argmin` to find the largest turn to the left and the
+   `np.argmax()` and `np.argmin()` to find the largest turn to the left and the
    largest turn to the right. Between which path points do they occur?
 3. Answer without code: how do the turns between neighboring path points
    change if the fleet manager sends the same path with twice as many

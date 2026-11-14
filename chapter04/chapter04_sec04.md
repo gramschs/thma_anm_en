@@ -54,11 +54,11 @@ First run the following two cells. The first contains the given plotting
 function, the second the imports and the three functions from Chapters 4.1
 and 4.3.
 
-The function `compute_displacements` has an additional parameter
+The function `compute_displacements()` has an additional parameter
 `roller_indices`. A roller support like support B in Chapter 3.2 holds the
 node only in the vertical direction; horizontally, the node can move
 freely. The function therefore replaces only the equation for $u_y$ at a
-roller support. `plot_truss` also knows this parameter and draws roller
+roller support. `plot_truss()` also knows this parameter and draws roller
 supports with an extra line.
 
 ```{code-cell} python

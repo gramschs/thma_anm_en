@@ -233,7 +233,7 @@ Write down your guess in a Markdown cell before you run the code.
    act?
 4. Which of the two blocks `K[0:2, 6:8]` and `K[2:4, 6:8]` is zero?
 5. Run the code, assemble the stiffness matrix with
-   `assemble_stiffness_matrix` for steel with a diameter of $1\,\text{cm}$,
+   `assemble_stiffness_matrix()` for steel with a diameter of $1\,\text{cm}$,
    and check your predictions.
 ````
 
@@ -407,7 +407,7 @@ Write down your guess in a Markdown cell before you run the code.
 3. How must the line `K_supported = K` be changed so that `K` stays
    unchanged?
 4. A truss has a pin support at node 1 and a roller support at node 3.
-   Which rows of the stiffness matrix does `compute_displacements` replace?
+   Which rows of the stiffness matrix does `compute_displacements()` replace?
 5. Run the code and check your predictions.
 ````
 
@@ -634,11 +634,11 @@ least? The feet stay at $(0, 0)$ and $(2\,\text{m}, 0)$, and the apex is at
 $(1\,\text{m}, h)$. The load is $2000\,\text{N}$ downward, and the members
 are made of steel with a diameter of $1\,\text{cm}$.
 
-1. Use `np.linspace` to create twelve heights from $0.25\,\text{m}$ to
+1. Use `np.linspace()` to create twelve heights from $0.25\,\text{m}$ to
    $3.0\,\text{m}$. In a loop, compute the force in member 0 and the
    deflection of the apex for each height.
 2. Plot both quantities over $h$ in two subplots.
-3. At which height is the deflection smallest? Use `np.argmin`.
+3. At which height is the deflection smallest? Use `np.argmin()`.
 4. Why does the member force become so large for small heights? Why does
    the deflection increase again for large heights, even though the member
    force keeps decreasing?

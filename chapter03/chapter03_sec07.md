@@ -6,11 +6,11 @@ kernelspec:
 
 # Excursus: Runtime and Scaling
 
-This chapter is an optional excursus. So far we have used `np.linalg.solve`
+This chapter is an optional excursus. So far we have used `np.linalg.solve()`
 for systems with 3 or 6 unknowns. In engineering practice, a finite-element
 simulation produces systems with thousands to millions of unknowns. *How
 fast does the runtime grow with the system size, and where does
-`np.linalg.solve` reach its limits?*
+`np.linalg.solve()` reach its limits?*
 
 ## Learning objectives
 
@@ -21,7 +21,7 @@ fast does the runtime grow with the system size, and where does
 * [ ] You can use `time.perf_counter()` to measure the runtime of an
   operation.
 * [ ] You can plot the runtime against the system size in a log-log plot
-  and estimate the scaling exponent with `np.polyfit`.
+  and estimate the scaling exponent with `np.polyfit()`.
 * [ ] You can explain the theoretical $O(n^3)$ scaling, compare it with the
   measurement and estimate its consequences for large systems.
 ```
@@ -75,7 +75,7 @@ would not be enough for large $n$.
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
-1. Call `generate_linear_system(5, seed=0)` twice and use `np.allclose` to
+1. Call `generate_linear_system(5, seed=0)` twice and use `np.allclose()` to
    check whether both calls give the same matrix.
 2. Answer without code: why does it make sense, when measuring runtimes,
    to always use the same `seed`?
@@ -104,7 +104,7 @@ the computer, not from different matrices.
 
 `time.perf_counter()` returns a point in time in seconds. The difference
 between two calls is the elapsed time. We measure how long
-`np.linalg.solve` takes for various system sizes.
+`np.linalg.solve()` takes for various system sizes.
 
 ```{code-cell} python
 def measure_runtime(n):
@@ -124,7 +124,7 @@ for i, n in enumerate(n_values):
 
 The absolute times depend on the hardware and fluctuate somewhat from run
 to run. To study the scaling, we plot the times against the system size
-using `ax.loglog`: both axes are logarithmic. A power law
+using `ax.loglog()`: both axes are logarithmic. A power law
 $t \propto n^\alpha$ then appears as a straight line whose slope is the
 exponent $\alpha$. With `marker='o'` each measured point is additionally
 marked with a circle. For comparison we draw a reference line that grows
@@ -153,7 +153,7 @@ roughly with $n^3$.
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
-1. Plot the same data additionally with `ax.plot` instead of `ax.loglog`.
+1. Plot the same data additionally with `ax.plot()` instead of `ax.loglog()`.
 2. Answer without code: in which of the two plots is the scaling exponent
    easier to read off, and why?
 ```
@@ -185,7 +185,7 @@ plot is therefore better suited.
 
 In log-log space, $\log t = \alpha \cdot \log n + \text{const}$. The
 exponent $\alpha$ is therefore the slope of a line through the points
-$(\log n,\ \log t)$. This slope is provided by `np.polyfit`. To use only
+$(\log n,\ \log t)$. This slope is provided by `np.polyfit()`. To use only
 the upper half of the points, we compute the middle index with the integer
 division `//`, which rounds the result down to a whole number.
 
@@ -206,7 +206,7 @@ print('theoretical value:  3.00')
 
 The measured exponent typically lies between about 2.5 and 3, and the exact
 number fluctuates from measurement to measurement. The theory predicts
-$O(n^3)$: internally, `np.linalg.solve` decomposes the matrix into a product
+$O(n^3)$: internally, `np.linalg.solve()` decomposes the matrix into a product
 of two triangular matrices (LU decomposition), and this step costs on the
 order of $n^3$ arithmetic operations. That the measured value often lies
 somewhat below 3 has a practical reason: for medium-sized systems, the
@@ -222,7 +222,7 @@ of $2^3 = 8$.
    $n = 20\,000$, where $n_0$ and $t(n_0)$ come from the largest measured
    point (`n_values[-1]` and `t_values[-1]`).
 2. Answer without code: a finite-element simulation often has
-   $n = 10^6$ unknowns. Is `np.linalg.solve` suitable for that? Look up the
+   $n = 10^6$ unknowns. Is `np.linalg.solve()` suitable for that? Look up the
    terms *sparse matrix* and *iterative solver*.
 ```
 
@@ -242,7 +242,7 @@ print(f'estimated runtime for n = {n_new}: {t_new:.1f} s ({t_new / 60:.1f} min)'
 ```
 For $n = 20\,000$, this gives anywhere from a few seconds to minutes,
 depending on the computer. For $n = 10^6$, the runtime with
-`np.linalg.solve` would no longer be practical, and the memory needed for
+`np.linalg.solve()` would no longer be practical, and the memory needed for
 a full $10^6 \times 10^6$ matrix would be enormous. In practice, the
 matrices of large engineering problems are **sparse**, meaning almost all
 entries are zero. Special iterative solvers exist for this (for example in
@@ -252,7 +252,7 @@ fewer arithmetic operations.
 
 ## Summary
 
-In theory, the runtime of `np.linalg.solve` grows with the third power of the
+In theory, the runtime of `np.linalg.solve()` grows with the third power of the
 system size, $O(n^3)$, because internally an LU decomposition is carried out.
 For medium-sized systems, the measured exponent is often somewhat smaller.
 For small and medium systems up to a few thousand unknowns, this is not a

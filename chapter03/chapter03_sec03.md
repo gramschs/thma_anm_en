@@ -25,7 +25,7 @@ the right.
   on the left-hand side.
 * [ ] You can read off the coefficient matrix $\mathbf{A}$ and the vector
   $\vec{b}$ from the rearranged equations.
-* [ ] You can solve the linear system with `np.linalg.solve` and interpret
+* [ ] You can solve the linear system with `np.linalg.solve()` and interpret
   the result physically, including a negative sign.
 ```
 
@@ -298,8 +298,8 @@ together are correct.
 
 The approach is always the same: rearrange the physical balance equations,
 move all unknowns to the left, all known quantities to the right, then read
-off $\mathbf{A}$ and $\vec{b}$ row by row. `np.linalg.solve` provides the
-solution, `np.allclose` verifies it, and we interpret the sign of the result
+off $\mathbf{A}$ and $\vec{b}$ row by row. `np.linalg.solve()` provides the
+solution, `np.allclose()` verifies it, and we interpret the sign of the result
 through the chosen direction convention.
 
 In the next chapter we extend this example: we add a fourth layer to the

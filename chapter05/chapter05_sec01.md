@@ -229,8 +229,8 @@ same. That is why the top view is enough for the SCARA robot.
 ```
 
 In Python we write the rotation matrix as a function `rotation_matrix(angle)`
-that returns a 2×2 array. `np.cos` and `np.sin` expect the angle in
-**radians**, not in degrees. `np.deg2rad` does the conversion. We rotate the
+that returns a 2×2 array. `np.cos()` and `np.sin()` expect the angle in
+**radians**, not in degrees. `np.deg2rad()` does the conversion. We rotate the
 point with the matrix multiplication operator `@` from Chapter 3.1.
 
 ```{code-cell} python
@@ -263,14 +263,14 @@ vector $\vec{e}_x$.
 :class: warning
 The call `np.cos(30)` interprets 30 as radians, not degrees, and returns
 0.154 instead of 0.866 without any error message. We therefore always convert
-degrees with `np.deg2rad` first.
+degrees with `np.deg2rad()` first.
 ```
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
 1. Answer without code: where is the gripper at $\alpha = 180°$, and where
    at $\alpha = -90°$?
-2. Use `rotation_matrix` to compute the position of the gripper for
+2. Use `rotation_matrix()` to compute the position of the gripper for
    $\alpha = 135°$.
 3. Answer without code: why do the two coordinates from task 2 have the same
    absolute value?
@@ -364,7 +364,7 @@ position of a body but also its **orientation**, i.e. how it is aligned.
 ```{admonition} Mini-exercise (✩)
 :class: tip
 1. Rotate the arm and the part by $\alpha = -60°$ and plot the home position
-   and the rotated position with `plot_robot`.
+   and the rotated position with `plot_robot()`.
 2. Answer without code: what are the shapes of `arm.T` and `R @ arm.T`?
 3. Answer without code: the part is supposed to land on the circuit board
    aligned with the $x$-axis. What happens if the robot puts it down at
@@ -438,9 +438,9 @@ matrix**. Orthogonal matrices change neither lengths nor angles. That is why
 the arm and the part keep their shape, whatever the angle of rotation.
 
 In Python, `np.eye(2)` creates the 2×2 identity matrix. We compare the
-result with `np.allclose` from Chapter 3.1, because cosine and sine involve
+result with `np.allclose()` from Chapter 3.1, because cosine and sine involve
 small rounding errors. In addition, we compute the determinant with
-`np.linalg.det`.
+`np.linalg.det()`.
 
 ```{code-cell} python
 # R transposed times R should give the identity matrix
@@ -472,14 +472,14 @@ print('Home position reached:', np.allclose(arm_back, arm))
 
 The arm is back in the home position. The output shows `-0.` in some places.
 These are tiny negative rounding errors on the order of $10^{-18}$, which
-`np.round` displays as $-0$. Here, too, we therefore compare with
-`np.allclose` and not with `==`.
+`np.round()` displays as $-0$. Here, too, we therefore compare with
+`np.allclose()` and not with `==`.
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
 1. Compute the length of the long edge of the part, i.e. the distance between
    corners 0 and 1, before and after the rotation by $30°$.
-2. Use `np.allclose` to check that $\mathbf{R}^\top \mathbf{R}$ also gives
+2. Use `np.allclose()` to check that $\mathbf{R}^\top \mathbf{R}$ also gives
    the identity matrix for $\varphi = 135°$.
 3. Answer without code: $\mathbf{R}(30°)^\top$ rotates the arm back to the
    home position. Which rotation does $\mathbf{R}(30°)^\top$ correspond to?

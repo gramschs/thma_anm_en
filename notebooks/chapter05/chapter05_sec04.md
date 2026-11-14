@@ -31,7 +31,7 @@ may only bend counterclockwise, i.e. between $0°$ and $150°$.
 
 First run the following two cells. The first contains the given plotting
 function from Chapter 5.1. The second contains the imports, the three
-functions `transformation_matrix`, `transform` and `rotation_about_point`
+functions `transformation_matrix()`, `transform()` and `rotation_about_point()`
 from Chapter 5.3 and the data from the table.
 
 ```{code-cell} python
@@ -203,7 +203,7 @@ error, but now for two angles.
 
 Use two nested loops to go through all $\alpha$ from $0°$ to $180°$ and all
 $\beta$ from $0°$ to $150°$ in steps of $1°$. For each pair of angles,
-compute the position of the gripper with `robot_position` and its distance to
+compute the position of the gripper with `robot_position()` and its distance to
 $P_1$ with the Pythagorean theorem. Use an `if` statement to keep track of
 the smallest distance so far and the corresponding angles. Start with
 `best_distance = 10.0`, i.e. a value larger than any possible distance.
@@ -239,11 +239,11 @@ positions with their parts in a single plot.
 ## Bonus exercise: Does the gripper move in a straight line? (✩✩✩)
 
 The controller moves the gripper from the feeder to $P_1$ by rotating both
-joints simultaneously and uniformly. To model this, use `np.linspace` to
+joints simultaneously and uniformly. To model this, use `np.linspace()` to
 create 21 values each for $\alpha$ from $0°$ to $9°$ and for $\beta$ from
 $0°$ to $99°$. For each pair of values, compute the position of the gripper
-with `robot_position` and store it in an array `path` of shape `(21, 2)`.
-Add the path to the plot with the parameter `path` of `plot_robot`.
+with `robot_position()` and store it in an array `path` of shape `(21, 2)`.
+Add the path to the plot with the parameter `path` of `plot_robot()`.
 
 Compare the length of the path with the length of the straight line between
 its start and end points. Compute the path length as in Part 4 of

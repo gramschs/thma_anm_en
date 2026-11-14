@@ -46,7 +46,7 @@ All members are made of steel ($E = 2.1 \cdot 10^{11}\,\text{N/m}^2$) and
 have a circular cross-section with a diameter of $1\,\text{cm}$.
 
 First run the following two cells. The first contains the given plotting
-function, the second the imports and the function `assemble_stiffness_matrix`
+function, the second the imports and the function `assemble_stiffness_matrix()`
 from Chapter 4.1.
 
 ```{code-cell} python
@@ -181,7 +181,7 @@ def assemble_stiffness_matrix(node_pos, members, youngs_modulus, area):
 ## Part 1: Describe and plot the truss
 
 Create `node_pos`, `support_indices`, `members` and `force_vector`. Keep the
-order from the table in the member list. Plot the truss with `plot_truss`
+order from the table in the member list. Plot the truss with `plot_truss()`
 and compare the plot with the sketch.
 
 Also answer: how many degrees of freedom does the bracket have if we leave
@@ -208,7 +208,7 @@ Which members are the most flexible, and why?
 ## Part 3: Assemble the stiffness matrix
 
 Assemble the stiffness matrix `K` with the function
-`assemble_stiffness_matrix`. Print its shape and the matrix in kN/mm,
+`assemble_stiffness_matrix()`. Print its shape and the matrix in kN/mm,
 rounded to one decimal place.
 
 Then use `np.allclose(K, K.T)` to check whether `K` is symmetric. `K.T` is

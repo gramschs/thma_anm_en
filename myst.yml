@@ -56,14 +56,20 @@ project:
       - file: chapter05/chapter05_sec02.md
       - file: chapter05/chapter05_sec03.md
       - file: chapter05/chapter05_sec04.md
-#      - file: chapter05/chapter05_sec05.md
+      - file: chapter05/chapter05_sec05.md
     - title: 6. Coordinate Transformations - Part 2
       children:
       - file: chapter06/chapter06_sec01.md
       - file: chapter06/chapter06_sec02.md
       - file: chapter06/chapter06_sec03.md
       - file: chapter06/chapter06_sec04.md
-#      - file: chapter06/chapter06_sec05.md
+      - file: chapter06/chapter06_sec05.md
+    - title: 7. Numerical Differentiation
+      children:
+      - file: chapter07/chapter07_sec00.md
+      - file: chapter07/chapter07_sec01.md
+      - file: chapter07/chapter07_sec02.md
+#      - file: chapter07/chapter07_sec03.md
 
 site:
   template: book-theme

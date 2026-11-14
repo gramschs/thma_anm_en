@@ -33,7 +33,7 @@ translation in a single matrix and compute the position of the whole arm.
 
 ## How does joint 2 rotate?
 
-We reuse the arm, the part and the function `rotation_matrix` from
+We reuse the arm, the part and the function `rotation_matrix()` from
 Chapter 5.1. First run the following two cells: the first contains the given
 plotting function, the second the function and the data from Chapter 5.1.
 
@@ -201,7 +201,7 @@ on the dashed circle around joint 2. With "First attempt: rotation matrix
 only" you see for comparison where the rotation matrix alone takes the
 gripper.
 
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable -->
 <div class="applet-container applet-880">
 <iframe
   src="https://gramschs.github.io/thma_anm_assets/interactive/chapter05/scara-drehung.html?lang=en"
@@ -210,7 +210,7 @@ gripper.
   scrolling="no">
 </iframe>
 </div>
-<!-- markdownlint-enable MD033 -->
+<!-- markdownlint-enable -->
 
 We treat the part the same way. If we subtract a vector with two entries from
 an array of shape `(4, 2)`, NumPy subtracts it from every row. This way we
@@ -243,7 +243,7 @@ of Chapter 5.2 for the tilted lid.
 1. Answer without code: where is the gripper if joint 2 rotates by
    $\beta = -90°$ and joint 1 stays in the home position?
 2. Use the three steps to rotate the gripper and the part by $\beta = 45°$,
-   and plot the home position and the new position with `plot_robot`.
+   and plot the home position and the new position with `plot_robot()`.
 3. Answer without code: what happens at $\beta = 90°$ if we forget step 3?
    Where does the gripper end up, and where would arm 2 be?
 ```
@@ -404,7 +404,7 @@ matrix as well.
 1. Answer without code: what does the matrix
    `transformation_matrix(0, 0.1, -0.2)` look like? Where does it move the
    gripper in the home position?
-2. Use `transformation_matrix` and `transform` to rotate the whole arm by
+2. Use `transformation_matrix()` and `transform()` to rotate the whole arm by
    $30°$ about joint 1. Compare with the result from Chapter 5.1.
 3. Answer without code: what would happen if the third coordinate of a point
    were 0 instead of 1?
@@ -452,7 +452,7 @@ The product $\mathbf{T}_2 \cdot \mathbf{T}_1$ is a single matrix that
 performs both steps at once. Combining transformations in this way is called
 **composition**. The matrix that acts first is on the right, just as with the
 rotations in the bonus exercise of Chapter 5.2. For a rotation about any
-point, we chain the three steps in the function `rotation_about_point`.
+point, we chain the three steps in the function `rotation_about_point()`.
 
 ```{code-cell} python
 def rotation_about_point(angle, center):
@@ -551,7 +551,7 @@ In the tab "Both joints" of the interactive figure, you play both orders and
 change the angles. A circle marks the center of rotation of the matrix that
 is currently acting.
 
-<!-- markdownlint-disable MD033 -->
+<!-- markdownlint-disable -->
 <div class="applet-container applet-880">
 <iframe
   src="https://gramschs.github.io/thma_anm_assets/interactive/chapter05/scara-drehung.html?lang=en&tab=2"
@@ -560,14 +560,14 @@ is currently acting.
   scrolling="no">
 </iframe>
 </div>
-<!-- markdownlint-enable MD033 -->
+<!-- markdownlint-enable -->
 
 ```{admonition} Mini-exercise (✩)
 :class: tip
 1. Answer without code: where are joint 2 and the gripper at
    $\alpha = 90°$ and $\beta = -90°$?
-2. Check your answer with `transformation_matrix`, `rotation_about_point` and
-   `transform`, and plot the position.
+2. Check your answer with `transformation_matrix()`, `rotation_about_point()`
+   and `transform()`, and plot the position.
 3. Answer without code: why do we apply
    $\mathbf{T}_\alpha \cdot \mathbf{T}_\beta$ only to arm 2 and the part, and
    not to joint 1?

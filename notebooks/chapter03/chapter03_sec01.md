@@ -156,12 +156,12 @@ whose exact value depends on the computer. The entries of the matrix are
 whole numbers and are stored exactly. However, NumPy computes the
 determinant in several intermediate steps with divisions, and not every
 intermediate result can be stored exactly as a floating-point number. These
-small rounding errors are the reason why we compare with `np.isclose` and
+small rounding errors are the reason why we compare with `np.isclose()` and
 not with `== 0`.
 
 **What happens with a singular matrix?**
 
-The solver function `np.linalg.solve` raises a `LinAlgError` only if an
+The solver function `np.linalg.solve()` raises a `LinAlgError` only if an
 exact zero appears during the elimination. Because of the rounding errors,
 this does not happen for `A_singular`: `np.linalg.solve(A_singular, b)`
 returns a supposed solution with entries on the order of $10^{15}$, without
@@ -193,7 +193,7 @@ equations than unknowns.
 The rule "determinant not zero, exactly one solution" holds in exact
 mathematics. On the computer, the value of the determinant also depends on
 the scaling of the matrix. If we multiply the $20 \times 20$ identity matrix
-by $0.001$, its determinant drops to $10^{-60}$ and `np.isclose` reports
+by $0.001$, its determinant drops to $10^{-60}$ and `np.isclose()` reports
 zero, although the system is just as easy to solve as before. For our small,
 well-scaled examples the determinant test is sufficient. More reliable
 numerical criteria are the rank and the **condition number**
@@ -203,7 +203,7 @@ affect the solution.
 ## Solving the system and checking the result
 
 If the determinant is not zero, we compute the solution with
-`np.linalg.solve`. The function expects the matrix first, then the
+`np.linalg.solve()`. The function expects the matrix first, then the
 right-hand side.
 
 ```{code-cell} python
@@ -299,7 +299,7 @@ revenue in euros:
 | Wed | 4 | 2 | 3 | 23.30 |
 
 1. Create `A_cafe` and `b_cafe`, check the determinant, solve with
-   `np.linalg.solve` and verify the result with a check.
+   `np.linalg.solve()` and verify the result with a check.
 2. Answer without code: the check `np.allclose(A_cafe @ x_cafe, b_cafe)`
    returns `True`. Does that mean `A_cafe` and `b_cafe` were guaranteed to be
    set up correctly?

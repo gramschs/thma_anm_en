@@ -32,7 +32,7 @@ may only bend counterclockwise, i.e. between $0°$ and $150°$.
 
 First run the following two cells. The first contains the given plotting
 function from Chapter 5.1. The second contains the imports, the three
-functions `transformation_matrix`, `transform` and `rotation_about_point`
+functions `transformation_matrix()`, `transform()` and `rotation_about_point()`
 from Chapter 5.3 and the data from the table.
 
 ```{code-cell} python
@@ -290,7 +290,7 @@ error, but now for two angles.
 
 Use two nested loops to go through all $\alpha$ from $0°$ to $180°$ and all
 $\beta$ from $0°$ to $150°$ in steps of $1°$. For each pair of angles,
-compute the position of the gripper with `robot_position` and its distance to
+compute the position of the gripper with `robot_position()` and its distance to
 $P_1$ with the Pythagorean theorem. Use an `if` statement to keep track of
 the smallest distance so far and the corresponding angles. Start with
 `best_distance = 10.0`, i.e. a value larger than any possible distance.
@@ -309,7 +309,7 @@ these angles? Plot the resulting position with $P_1$ as the target.
 The outer loop runs over $\alpha$, the inner loop over $\beta$. Compute the
 distance as in Part 2 of Chapter 5.2. The only new thing is that we do not
 store all distances but use `if` to keep track of the best value so far.
-`robot_position` expects the angles in radians.
+`robot_position()` expects the angles in radians.
 ```python
 target = placement_sites[0]
 
@@ -405,7 +405,7 @@ positions with their parts in a single plot.
 ````{admonition} Hint Part 3
 :class: tip
 :class: dropdown
-The body of `search_angles` is the nested loop from Part 2. The target
+The body of `search_angles()` is the nested loop from Part 2. The target
 becomes the parameter, and instead of printing, `return` gives back the three
 results. The loop over the placement sites works like the loop over the angle
 pairs in Part 1.
@@ -511,18 +511,18 @@ orientation of the part.
    freedom: the two coordinates and the angle of rotation. To set all three
    independently, the robot needs a third rotary axis. Many SCARA robots have
    it directly at the gripper, where it rotates the part about its own
-   center. With `rotation_about_point` from Chapter 5.3, we could add this
+   center. With `rotation_about_point()` from Chapter 5.3, we could add this
    rotation to the chain as a homogeneous matrix as well.
 ````
 
 ```{admonition} Bonus exercise: Does the gripper move in a straight line? (✩✩✩)
 :class: tip
 The controller moves the gripper from the feeder to $P_1$ by rotating both
-joints simultaneously and uniformly. To model this, use `np.linspace` to
+joints simultaneously and uniformly. To model this, use `np.linspace()` to
 create 21 values each for $\alpha$ from $0°$ to $9°$ and for $\beta$ from
 $0°$ to $99°$. For each pair of values, compute the position of the gripper
-with `robot_position` and store it in an array `path` of shape `(21, 2)`.
-Add the path to the plot with the parameter `path` of `plot_robot`.
+with `robot_position()` and store it in an array `path` of shape `(21, 2)`.
+Add the path to the plot with the parameter `path` of `plot_robot()`.
 
 Compare the length of the path with the length of the straight line between
 its start and end points. Compute the path length as in Part 4 of

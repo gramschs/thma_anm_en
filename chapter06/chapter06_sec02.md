@@ -221,7 +221,7 @@ plot_warehouse(outline_W, coordinate_systems=T_WV, surroundings=warehouse,
 :class: tip
 Convert the measurements to Cartesian coordinates as in the second section
 of Chapter 6.1. Because the angles are measured from the $x_S$-axis, you get
-scanner coordinates `points_S`, one row per measurement. Use `np.argmin` to
+scanner coordinates `points_S`, one row per measurement. Use `np.argmin()` to
 find the shortest distance and its angle. Plot the scan with
 
 `plot_warehouse(scan_points=points_S, scanner=[0, 0], limits=(-1, 5, -4.5, 6), title='Scan in scanner coordinates')`.
@@ -296,7 +296,7 @@ scanner on the vehicle and the pose of the vehicle in the warehouse.
 
 ```{admonition} Part 2: The scan in the warehouse
 :class: tip
-Use `transformation_matrix` to build the matrix $\mathbf{T}_{VS}$ that
+Use `transformation_matrix()` to build the matrix $\mathbf{T}_{VS}$ that
 converts from S to V. Convert the scan points in two steps: with
 $\mathbf{T}_{VS}$ into `points_V`, then with $\mathbf{T}_{WV}$ into
 `points_W`. As in Chapter 5.3, the two steps can be chained:
@@ -304,7 +304,7 @@ $\mathbf{T}_{VS}$ into `points_V`, then with $\mathbf{T}_{WV}$ into
 $$\mathbf{T}_{WS} = \mathbf{T}_{WV} \cdot \mathbf{T}_{VS}.$$
 
 The subscripts interlock like the links of a chain: from S via V to W. Use
-`np.allclose` to check whether `transform(T_WS, points_S)` gives the same
+`np.allclose()` to check whether `transform(T_WS, points_S)` gives the same
 result as the two steps. Plot the vehicle, the scan and the warehouse map.
 The position of the scanner is in the third column of $\mathbf{T}_{WS}$.
 
@@ -320,8 +320,8 @@ they?
 :class: tip
 :class: dropdown
 The scanner is only shifted relative to the vehicle, not rotated.
-`transformation_matrix` from Chapter 5.3 therefore gets the angle 0.
-`transform` handles the two conversions as for the outline in Chapter 6.1,
+`transformation_matrix()` from Chapter 5.3 therefore gets the angle 0.
+`transform()` handles the two conversions as for the outline in Chapter 6.1,
 and we write the composition with `@` as in Chapter 5.3.
 ```python
 # scanner in the middle of the front edge, not rotated
@@ -556,7 +556,7 @@ angle is unknown.
    use $\mathbf{T}_{WV} \cdot \mathbf{T}_{VS}$ to compute where the reflector
    would be in the warehouse, and its distance to the position on the
    warehouse map.
-2. Use `np.argmin` to find the yaw angle with the smallest distance. Plot the
+2. Use `np.argmin()` to find the yaw angle with the smallest distance. Plot the
    distance against the yaw angle.
 3. Answer without code: why is a single reflector no longer enough if the
    position of the vehicle is also unknown?

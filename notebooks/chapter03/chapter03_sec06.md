@@ -109,7 +109,7 @@ unique solution has *no* solution or *infinitely many*.
 
 For this we need, besides $\mathbf{A}$, also the **augmented coefficient
 matrix** $[\mathbf{A} \mid \vec{b}]$: the matrix $\mathbf{A}$ with $\vec{b}$
-as an extra column. In NumPy, `np.column_stack` appends it; the arrays to be
+as an extra column. In NumPy, `np.column_stack()` appends it; the arrays to be
 joined are passed together in an extra pair of parentheses. We compute the
 rank with `np.linalg.matrix_rank()`.
 
@@ -219,7 +219,7 @@ print(f'analytical: R4* = {r4_analytical:.1f} ohm')
 ```
 
 The numerical value deviates slightly from the analytical one, because
-`np.linspace` does not hit the root exactly. A finer grid reduces the
+`np.linspace()` does not hit the root exactly. A finer grid reduces the
 deviation.
 
 ## Summary
@@ -229,11 +229,11 @@ six unknown currents. The **rank** of $\mathbf{A}$ and the augmented matrix
 $[\mathbf{A} \mid \vec{b}]$ tells us whether a system of equations has
 exactly one, no, or infinitely many solutions, and is therefore more
 general than the determinant test. With a parameter study over $R_4$ and
-`np.argmin` we determined the balance point of the bridge and confirmed it
+`np.argmin()` we determined the balance point of the bridge and confirmed it
 with the analytical formula.
 
 The second excursus, in Chapter 3.7, shifts perspective: there we
-investigate how the runtime of `np.linalg.solve` grows with the size of the
+investigate how the runtime of `np.linalg.solve()` grows with the size of the
 system of equations.
 
 ## Mini-exercises
@@ -259,7 +259,7 @@ $$\mathbf{A} = \begin{pmatrix} 1 & 1 & 2 \\ 3 & 3 & 6 \\ 1 & 0 & 1 \end{pmatrix}
 1. Answer without code: which two rows of $\mathbf{A}$ are dependent on
    each other?
 2. Determine $\text{rank}(\mathbf{A})$ and
-   $\text{rank}([\mathbf{A} \mid \vec{b}])$ with `np.linalg.matrix_rank`.
+   $\text{rank}([\mathbf{A} \mid \vec{b}])$ with `np.linalg.matrix_rank()`.
    Which of the three cases applies?
 
 ```{code-cell} python

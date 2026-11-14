@@ -4,21 +4,28 @@
 import argparse
 import re
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
+from urllib.parse import urlparse
 
 ADMONITION_RE = re.compile(r'^(`{3,})\{admonition\}\s*(.*?)\s*$')
 CODE_CELL_RE = re.compile(r'^(`+)\{code-cell\}')
 DROPDOWN_RE = re.compile(r'^(`{3,})\{dropdown\}')
 FIGURE_RE = re.compile(r'^(`{3,})\{figure\}\s*(.*?)\s*$')
 OPTION_RE = re.compile(r'^:(\w+):\s*(.*)$')
+LINT_DISABLE = '<!-- markdownlint-disable -->'
+LINT_ENABLE = '<!-- markdownlint-enable -->'
+APPLET_SRC_RE = re.compile(r'<iframe\b[^>]*\bsrc="([^"]*/interactive/[^"]*\.html[^"]*)"')
+IFRAME_TITLE_RE = re.compile(r'<iframe\b[^>]*\btitle="([^"]*)"')
 
 
 def parse_command_line_arguments():
     parser = argparse.ArgumentParser(
         description='Cleans a MyST markdown file for conversion to a Jupyter '
                     'notebook: drops learning objectives and solutions, turns '
-                    'exercise/project admonitions into plain headings, and '
-                    'collects mini-exercises at the end of the file.')
+                    'exercise/project admonitions into plain headings, '
+                    'replaces applets by their still image pics/<applet>.png '
+                    'and a link to the online applet, '
+                    'and collects mini-exercises at the end of the file.')
     parser.add_argument('filename', type=str)
     parser.add_argument('output_filename', type=str, nargs='?',
                          help='Defaults to overwriting filename in place.')
@@ -74,6 +81,43 @@ def try_collect_code_cell(lines, index):
     return lines[index:close + 1], close + 1
 
 
+def try_convert_applet_block(lines, index, input_dir):
+    """If an HTML block between markdownlint-disable and -enable starting at
+    `index` embeds an applet from the assets repo (iframe src .../interactive/
+    .../<name>.html), return (replacement lines, index after the block).
+    The replacement is the still image pics/<name>.png, if it exists next to
+    the input file, followed by a link that opens the applet in the browser
+    (same URL as the iframe, including parameters such as lang=en). Any other
+    line or HTML block returns (None, index) unchanged."""
+    if lines[index].strip() != LINT_DISABLE:
+        return None, index
+
+    close = index + 1
+    while close < len(lines) and lines[close].strip() != LINT_ENABLE:
+        close += 1
+    if close == len(lines):
+        return None, index
+
+    block = ''.join(lines[index:close + 1])
+    match = APPLET_SRC_RE.search(block)
+    if not match:
+        return None, index
+
+    url = match.group(1)
+    name = PurePosixPath(urlparse(url).path).stem
+    link = [f'Interactive version: [open the applet in the browser]({url})\n']
+
+    image_path = f'pics/{name}.png'
+    if not (input_dir / image_path).is_file():
+        print(f'note line {index + 1}: applet {name} has no still image '
+              f'{image_path}, link only')
+        return link, close + 1
+
+    title_match = IFRAME_TITLE_RE.search(block)
+    alt_text = title_match.group(1) if title_match else name.replace('_', ' ')
+    return [f'![{alt_text}]({image_path})\n', '\n'] + link, close + 1
+
+
 def collapse_blank_lines(lines):
     cleaned = []
     prev_blank = False
@@ -93,10 +137,18 @@ def clean_myst_file(input_filename, output_filename):
     output_lines = []
     mini_exercises = []
     warning_tags = ['```{mermaid}']
+    input_dir = Path(input_filename).parent
 
     i = 0
     while i < len(lines):
         line = lines[i]
+
+        # Applets (iframes from the assets repo): still image and link
+        applet_lines, next_i = try_convert_applet_block(lines, i, input_dir)
+        if applet_lines is not None:
+            output_lines.extend(applet_lines)
+            i = next_i
+            continue
 
         dropdown_match = DROPDOWN_RE.match(line)
         if dropdown_match:

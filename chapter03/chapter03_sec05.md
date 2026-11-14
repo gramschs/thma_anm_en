@@ -113,7 +113,7 @@ Output:
 Check: True
 ```
 The determinant is $2 \cdot 3 - 1 \cdot 5 = 1$, so it is not zero: exactly
-one solution. `np.linalg.solve` returns $x = (5,\ -2)$. The check by hand:
+one solution. `np.linalg.solve()` returns $x = (5,\ -2)$. The check by hand:
 $2 \cdot 5 + 1 \cdot (-2) = 8$ and $5 \cdot 5 + 3 \cdot (-2) = 19$, both
 equations hold.
 ````
@@ -170,7 +170,7 @@ Determinant: 0.0
 Matrix is singular.
 ```
 The second row is exactly half the first ($[1, 2] = 0.5 \cdot [2, 4]$), so
-it carries no new information. The determinant is zero, `np.linalg.solve`
+it carries no new information. The determinant is zero, `np.linalg.solve()`
 raises a `LinAlgError`, and the `except` branch prints `Matrix is
 singular.`
 ````
@@ -192,7 +192,7 @@ We want to find the monthly total costs $R$, $E$, $I$ of the three items.
 1. Write the system of equations as $\mathbf{A} \cdot \vec{x} = \vec{b}$
    with $\vec{x} = (R,\ E,\ I)^\top$.
 2. Use the determinant to check solvability.
-3. Solve the system with `np.linalg.solve` and print the three costs.
+3. Solve the system with `np.linalg.solve()` and print the three costs.
 4. Run a check.
 
 Structure your code with IPO comments (input, processing, output).

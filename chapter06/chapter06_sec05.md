@@ -194,7 +194,7 @@ print(np.round(transform(T_WV, scan_point_V), 4))
 Write down your guess in a Markdown cell before you run the code.
 
 1. Where is the vehicle center, and in which direction of the warehouse does
-   the $x_V$-axis point? What yaw angle does the first `print` line output?
+   the $x_V$-axis point? What yaw angle does the first `print()` line output?
 2. What does `np.linalg.det(T_WV)` output? Explain your answer.
 3. The scanner reports an object at a distance of $2\,\text{m}$ at the angle
    $\varphi = 90°$. Where is it in the vehicle coordinate system? In which
@@ -239,13 +239,13 @@ Output:
 The third column of $\mathbf{T}_{WV}$ is the position of the vehicle center,
 i.e. $(6, 3)$. The first column contains the direction of the $x_V$-axis in
 warehouse coordinates, here $(0, -1)$. So the AGV points in the negative
-$y_W$-direction, toward the warehouse wall. As in Chapter 6.3, `np.arctan2`
+$y_W$-direction, toward the warehouse wall. As in Chapter 6.3, `np.arctan2()`
 receives first the $y$- and then the $x$-component of this direction and
 returns $\psi = -90°$. The determinant is 1, as for every homogeneous
 transformation matrix that only rotates and shifts.
 
 In the vehicle coordinate system, the object is at $(0, 2)$, i.e.
-$2\,\text{m}$ to the left of the vehicle center. `np.round` removes the tiny
+$2\,\text{m}$ to the left of the vehicle center. `np.round()` removes the tiny
 remainder of $\cos 90° \approx 6 \cdot 10^{-17}$. The second column $(1, 0)$
 shows that the $y_V$-axis points in the $x_W$-direction: if you face the
 negative $y_W$-direction, the positive $x_W$-direction is on your left. The
@@ -257,9 +257,9 @@ vehicle center, at $(8, 3)$.
 :class: tip
 The AGV is at $(4, 2)$ and points in the $y_W$-direction with $\psi = 90°$.
 In Chapter 6.1 we computed the conversion from warehouse to vehicle
-coordinates with `np.linalg.inv`. The following code contains three
+coordinates with `np.linalg.inv()`. The following code contains three
 attempts to build the inverse matrix from a rotation and a translation
-without `np.linalg.inv`:
+without `np.linalg.inv()`:
 
 ```python
 import numpy as np
@@ -324,7 +324,7 @@ True
 ```
 
 In a matrix product, the matrix on the right acts first. So `T_b` rotates
-first and then shifts, just like `transformation_matrix` itself. That is why
+first and then shifts, just like `transformation_matrix()` itself. That is why
 `T_a` and `T_b` are the same matrix, the tempting but wrong inverse from
 Chapter 6.1. `T_c` shifts first and then rotates. $\mathbf{T}_{WV}$ rotated
 first and shifted last. The inverse has to undo the steps in reverse order:
@@ -452,11 +452,11 @@ Write down your guess in a Markdown cell before you run the code.
 
 1. In roughly which direction of the warehouse does the AGV point during
    the whole drive? Which values do you expect in `psi_deg`? Keep in mind
-   that `np.arctan2` returns angles from $-180°$ to $180°$. Hint: the slope
+   that `np.arctan2()` returns angles from $-180°$ to $180°$. Hint: the slope
    $0.2$ corresponds to the angle $11.3°$.
 2. Sketch the path. Does the AGV turn left or right from segment to segment,
    and by how many degrees?
-3. Which values does the second `print` line output? Does the AGV really
+3. Which values does the second `print()` line output? Does the AGV really
    turn that far between path point 1 and path point 2? How can the value
    be corrected?
 4. Run the code and check your predictions.
@@ -497,7 +497,7 @@ The AGV drives to the left and therefore points roughly in the negative
 $x_W$-direction, i.e. at about $180°$. The first segment $(-1, 0.2)$ rises
 slightly, which gives $180° - 11.3° = 168.7°$. The second segment runs
 exactly to the left, $180°$. The third segment $(-1, -0.2)$ falls slightly.
-Its direction is at $180° + 11.3° = 191.3°$. Because `np.arctan2` only
+Its direction is at $180° + 11.3° = 191.3°$. Because `np.arctan2()` only
 returns values up to $180°$, we get $-168.7°$ instead. Both angles describe
 the same direction; they differ by a full turn.
 
@@ -537,7 +537,7 @@ station at $1\,\text{m/s}$.
    in degrees at which the target lies, measured from the $x_V$-axis. $d$
    and $\varphi$ are the polar coordinates from Chapter 6.1, only computed
    in the opposite direction. Hint: use the Pythagorean theorem and
-   `np.arctan2`.
+   `np.arctan2()`.
 2. For each AGV, compute $d$, $\varphi$ and the estimated time. Which AGV
    does the fleet manager send?
 3. Plot the three AGVs with the station and the warehouse map.
@@ -623,7 +623,7 @@ $-18.4°$, and $-18.4° - 180° = -198.4°$. That is the same direction as
 $161.6°$, but outside the range from $-180°$ to $180°$. As in
 Exercise 6.4, we would have to add $360°$; otherwise the fleet manager would
 calculate with a turn of more than $198°$. In vehicle coordinates, on the
-other hand, `np.arctan2` returns the angle directly in the correct range.
+other hand, `np.arctan2()` returns the angle directly in the correct range.
 ````
 
 ````{admonition} Exercise 6.6 (✩✩)

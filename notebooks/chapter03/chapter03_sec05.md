@@ -108,7 +108,7 @@ We want to find the monthly total costs $R$, $E$, $I$ of the three items.
 1. Write the system of equations as $\mathbf{A} \cdot \vec{x} = \vec{b}$
    with $\vec{x} = (R,\ E,\ I)^\top$.
 2. Use the determinant to check solvability.
-3. Solve the system with `np.linalg.solve` and print the three costs.
+3. Solve the system with `np.linalg.solve()` and print the three costs.
 4. Run a check.
 
 Structure your code with IPO comments (input, processing, output).

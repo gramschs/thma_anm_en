@@ -402,9 +402,9 @@ Plot the AGV at this path point with `limits=(3.5, 6, 1, 3.5)`.
 :class: tip
 :class: dropdown
 In the third section of Chapter 6.1, we converted the transfer station to
-vehicle coordinates with `np.linalg.inv`. In Part 3 of Chapter 6.2, we
+vehicle coordinates with `np.linalg.inv()`. In Part 3 of Chapter 6.2, we
 checked points with comparisons and `and` and collected distances in a list.
-Here both come together in the loop from Part 2. `np.argmin` gives the index
+Here both come together in the loop from Part 2. `np.argmin()` gives the index
 of the smallest gap.
 ```python
 # convert the rack corner to vehicle coordinates for each path point
@@ -557,7 +557,7 @@ $\mathbf{T}_{WS}$ in Chapter 6.2, by multiplying from the right:
 $$\mathbf{T}_{WV,\text{new}} = \mathbf{T}_{WV,\text{old}} \cdot \mathbf{T}_{\text{step}}.$$
 
 1. Start with the pose $(3, 1.2, 0°)$ at the start of the quarter circle and
-   apply the segment nine times in a loop. Use `np.allclose` to check
+   apply the segment nine times in a loop. Use `np.allclose()` to check
    whether the computed matrix matches the pose $(5, 3.2, 90°)$ at the end
    of the quarter circle.
 2. One drive wheel slips a little in the curve. We simplify the slip as
@@ -569,7 +569,7 @@ $$\mathbf{T}_{WV,\text{new}} = \mathbf{T}_{WV,\text{old}} \cdot \mathbf{T}_{\tex
    straight line in the aisle as a single segment of $3\,\text{m}$,
    `transformation_matrix(0, 3, 0)`, to both the computed and the true pose.
    How far apart are the computed and the true end positions? What yaw angle
-   does the controller compute? `np.arctan2` gives you the yaw angle from
+   does the controller compute? `np.arctan2()` gives you the yaw angle from
    the first column of the matrix, because it contains the direction of the
    $x_V$-axis.
 3. Answer without code: on the straight line, the wheel measurement is

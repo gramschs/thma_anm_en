@@ -82,7 +82,7 @@ print(f'{vehicle[___]} (year {vehicle["year"]}) weighs '
 ## Exercise D (✩✩)
 
 Complete the function and the call at the `___` places. The function
-`kmh_to_ms` should convert a speed from km/h to m/s by dividing by 3.6. Then
+`kmh_to_ms()` should convert a speed from km/h to m/s by dividing by 3.6. Then
 it is called in a loop for each measurement.
 
 ```python

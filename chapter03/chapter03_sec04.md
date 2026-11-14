@@ -69,7 +69,7 @@ $$\begin{pmatrix}
 ```{admonition} Part 2: Solve for a fixed insulation value
 :class: tip
 Create `A` and `b` as NumPy arrays for $R_C = 1.0\,\text{K/W}$. Check the
-determinant, solve with `np.linalg.solve`, and print the three interface
+determinant, solve with `np.linalg.solve()`, and print the three interface
 temperatures (in °C) and the heat flow. Verify the result with a check.
 ```
 

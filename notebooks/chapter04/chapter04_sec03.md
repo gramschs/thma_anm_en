@@ -15,7 +15,7 @@ structure carry the load at all?*
 
 ## Adding supports and solving the system of equations
 
-We reuse the swing set and the function `assemble_stiffness_matrix`
+We reuse the swing set and the function `assemble_stiffness_matrix()`
 from Chapter 4.1. The first cell again contains the given plotting
 function.
 
@@ -200,7 +200,7 @@ the row simply says $u_d = 0$. In the matrix printed in kN/mm, the ones
 appear as `0.`, because we multiply all entries by $10^{-6}$. The last
 output shows row 0 in N/m. The determinant is no longer zero, so the system
 is solvable. Because we only replaced rows, `K_supported` is no longer
-symmetric. For `np.linalg.solve` this does not matter.
+symmetric. For `np.linalg.solve()` this does not matter.
 
 The method `.copy()` is important. Without it, `K_supported` and `K` would
 refer to the same array, and we would overwrite the original stiffness
@@ -403,15 +403,15 @@ members.
 
 We add the supports by replacing the equations of the constrained degrees of
 freedom with $u_d = 0$. After that, the system of equations is solvable, and
-`np.linalg.solve` gives all displacements. Substituting them into
+`np.linalg.solve()` gives all displacements. Substituting them into
 $\mathbf{K} \cdot \vec{u}$ gives the support reactions at the supports. The
 member forces follow from the change in length of each member: positive
 means tension and negative means compression. For the design we compare the
 stress with the yield strength and also check all compression members for
 buckling.
 
-All steps are now contained in three functions: `assemble_stiffness_matrix`,
-`compute_displacements` and `compute_member_forces`. In the next chapter,
+All steps are now contained in three functions: `assemble_stiffness_matrix()`,
+`compute_displacements()` and `compute_member_forces()`. In the next chapter,
 working in pairs, we use them to analyze and evaluate the roof truss of a
 steel building under snow load.
 
@@ -424,7 +424,7 @@ steel building under snow load.
 2. When people swing, a lateral force of $1200\,\text{N}$ to the right acts
    at the apex in addition to the load. Create a new force vector
    `force_vector_side` and compute the displacements with
-   `compute_displacements`.
+   `compute_displacements()`.
 3. Answer without code: the apex moves farther sideways than downward, even
    though the lateral force is smaller than the load. Why?
 

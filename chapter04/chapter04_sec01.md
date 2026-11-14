@@ -526,7 +526,7 @@ $(i, j)$ and $(j, i)$.
 
 To add the blocks, we need a new tool, **slicing**. The expression
 `K[0:2, 2:4]` selects rows 0 and 1 and columns 2 and 3, i.e. a $2 \times 2$
-block. As with `range`, the upper bound is not included. Member 0 connects
+block. As with `range()`, the upper bound is not included. Member 0 connects
 node 0 to node 1. Node 0 occupies rows and columns 0 and 1, node 1 rows
 and columns 2 and 3. We first add the block of member 0 by hand.
 
@@ -624,7 +624,7 @@ member between node 0 and node 2, so these blocks are zero.
 ```
 
 Can we now simply solve $\mathbf{K} \cdot \vec{u} = \vec{F}$ with
-`np.linalg.solve`? We check solvability with the determinant, as in
+`np.linalg.solve()`? We check solvability with the determinant, as in
 Chapter 3.1. In addition, as a test, we shift the whole truss
 $1\,\text{mm}$ to the right.
 
@@ -704,7 +704,7 @@ We describe a plane truss with four data structures: the node coordinates, the
 support nodes, the member list and the force vector. Each node has two
 degrees of freedom; node $n$ occupies the indices $2n$ and $2n+1$. Each
 member acts like a spring with the stiffness $k = EA/L$ and gives a
-$2 \times 2$ stiffness block. The function `assemble_stiffness_matrix` uses
+$2 \times 2$ stiffness block. The function `assemble_stiffness_matrix()` uses
 slicing to add each block to the stiffness matrix $\mathbf{K}$, positive on
 the diagonal blocks and negative on the off-diagonal blocks. Without
 supports, $\mathbf{K}$ is singular, because the truss can move without any

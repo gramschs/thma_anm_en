@@ -60,8 +60,8 @@ $\psi$ (psi) between the $x_W$-axis and the $x_V$-axis are called the
 **pose** of the vehicle. As in Chapter 5.1, positive yaw angles rotate
 counterclockwise.
 
-First we run two cells: the given plotting function `plot_warehouse` and a
-cell with `transformation_matrix` and `transform` from Chapter 5.3 and the
+First we run two cells: the given plotting function `plot_warehouse()` and a
+cell with `transformation_matrix()` and `transform()` from Chapter 5.3 and the
 warehouse map. It also contains the `outline` of the AGV, which is
 $1.2\,\text{m}$ long and $0.8\,\text{m}$ wide. In vehicle coordinates, its
 corners are always in the same places, and the first two form the front
@@ -265,7 +265,7 @@ coordinates. Both views give the same numbers.
 1. Answer without code: a second AGV is at $(2, 5)$ with $\psi = 180°$. In
    which direction of the warehouse does its $x_V$-axis point? Where is its
    front left corner?
-2. Check your answer with `transformation_matrix` and `transform`. Plot both
+2. Check your answer with `transformation_matrix()` and `transform()`. Plot both
    vehicles with their coordinate systems in one figure.
 3. Answer without code: the first AGV drives $1\,\text{m}$ straight ahead.
    Which columns of $\mathbf{T}_{WV}$ change, and which stay the same? What
@@ -318,7 +318,7 @@ how we computed the gripper on its circle in Chapter 5.1.
 ```
 
 The obstacle from the beginning has $r = 1.5$ and $\varphi = 0$, so its
-vehicle coordinates are $(1.5, 0)$. `transform` expects one point per row, so
+vehicle coordinates are $(1.5, 0)$. `transform()` expects one point per row, so
 we write the single point with double square brackets as an array of shape
 `(1, 2)`.
 
@@ -431,7 +431,7 @@ determinant 1 and can always be inverted.
 ```
 
 So $\mathbf{T}_{VW} = \mathbf{T}_{WV}^{-1}$ converts from W to V. NumPy
-computes the inverse with `np.linalg.inv`. As a check,
+computes the inverse with `np.linalg.inv()`. As a check,
 $\mathbf{T}_{VW} \cdot \mathbf{T}_{WV}$ must give the identity matrix
 `np.eye(3)` from Chapter 5.1.
 
@@ -465,10 +465,10 @@ back. In doing so, the reverse rotation also rotates the translation vector.
    $y_W$-direction with $\psi = 90°$. Is the station at $(8, 2.5)$ in front
    of or behind the vehicle, to its left or to its right? How far in each
    case?
-2. Check your answer with `np.linalg.inv` and `transform`.
+2. Check your answer with `np.linalg.inv()` and `transform()`.
 3. Back to the original pose at $(4, 2)$ with $\psi = 30°$: it is tempting to
    simply write the inverse of $\mathbf{T}_{WV}$ as
-   `transformation_matrix(np.deg2rad(-30), -4, -2)`. Use `np.allclose` to
+   `transformation_matrix(np.deg2rad(-30), -4, -2)`. Use `np.allclose()` to
    check whether this is correct. Explain the result without code.
 ```
 
@@ -495,7 +495,7 @@ $0.5\,\text{m}$ further in the $y_W$-direction, i.e. $0.5\,\text{m}$ ahead,
 and $4\,\text{m}$ further in the $x_W$-direction. For a vehicle pointing in
 the $y_W$-direction, the positive $x_W$-direction is to the right. So the
 station is $4\,\text{m}$ to the right, and the calculation gives
-$(0.5, -4)$. The tempting inverse is wrong. `transformation_matrix` always
+$(0.5, -4)$. The tempting inverse is wrong. `transformation_matrix()` always
 rotates first and shifts afterward. `T_naive` therefore first undoes the
 rotation and then the translation. $\mathbf{T}_{WV}$, however, shifted last,
 so the inverse has to undo the translation first. As in Chapter 5.3, the
@@ -511,7 +511,7 @@ coordinates, and its columns contain the vehicle axes and the vehicle center.
 We convert scanner measurements to vehicle coordinates with
 $x = r\cos\varphi$ and $y = r\sin\varphi$. The opposite direction is handled
 by $\mathbf{T}_{VW} = \mathbf{T}_{WV}^{-1}$, which we compute with
-`np.linalg.inv`.
+`np.linalg.inv()`.
 
 In the project in Chapter 6.2, a second scanner sits at the front of the
 vehicle and brings a third coordinate system with it. As in Chapter 5.3, we

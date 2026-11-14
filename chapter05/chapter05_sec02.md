@@ -43,7 +43,7 @@ First run the following two cells. The first contains the given plotting
 function from Chapter 5.1. Two of its parameters were not needed there:
 `surroundings` draws areas such as the conveyor belt and the box, and `path`
 draws a sequence of gripper positions. The second cell contains the imports,
-the function `rotation_matrix` from Chapter 5.1 and the points from the
+the function `rotation_matrix()` from Chapter 5.1 and the points from the
 table.
 
 ```{code-cell} python
@@ -226,13 +226,13 @@ $y$-axis.
 
 ```{admonition} Part 2: Compute the placement angle
 :class: tip
-Instead of estimating, we try out all angles. Use `np.linspace` to create the
+Instead of estimating, we try out all angles. Use `np.linspace()` to create the
 angles from $0°$ to $180°$ in steps of $1°$. In a loop, compute the gripper
 position for each angle and, with the Pythagorean theorem, its distance to the
 center of the box. Store the distances in an array `distances` that you
-create beforehand with `np.zeros`.
+create beforehand with `np.zeros()`.
 
-`np.argmin` works like `np.argmax` from Chapter 2.4 but returns the index of
+`np.argmin()` works like `np.argmax()` from Chapter 2.4 but returns the index of
 the smallest value. Use it to determine the placement angle. How far from the
 center of the box is the gripper at that angle? Plot the arm in the place
 position with the center of the box as the target.
@@ -248,7 +248,7 @@ position with the center of the box as the target.
 As in the first section of Chapter 5.1, we rotate the gripper alone with
 `rotation_matrix(...) @ arm[1]`. For the distance, we form the difference
 vector to the center of the box and apply the Pythagorean theorem. How many
-values does `np.linspace` need for steps of $1°$ between $0°$ and $180°$?
+values does `np.linspace()` need for steps of $1°$ between $0°$ and $180°$?
 ```python
 angles_deg = np.linspace(0, 180, ___)
 distances = np.zeros(len(angles_deg))
@@ -343,7 +343,7 @@ pick position and the place position with the lid in one plot.
 ````{admonition} Hint Part 3
 :class: tip
 :class: dropdown
-Rotate the lid with `R_place` from Part 2. `np.min` and `np.max` from
+Rotate the lid with `R_place` from Part 2. `np.min()` and `np.max()` from
 Chapter 2.1 return the smallest and largest value of a column. The lid lies
 inside the box if all four comparisons are true.
 ```python
@@ -426,7 +426,7 @@ For the cycle time of the line, we need the length of the path that the
 gripper travels from the belt to the box. We approximate the circular arc
 with straight segments. To do this, write two functions:
 
-1. `gripper_path(num_points)` uses `np.linspace` to create evenly spaced
+1. `gripper_path(num_points)` uses `np.linspace()` to create evenly spaced
    angles from $0°$ to the placement angle and returns the gripper positions as
    an array of shape `(num_points, 2)`.
 2. `path_length(path)` adds up the straight-line distances between
@@ -449,7 +449,7 @@ arc?
 ````{admonition} Hint Part 4
 :class: tip
 :class: dropdown
-The loop from Part 2 already gives the gripper positions. In `gripper_path`,
+The loop from Part 2 already gives the gripper positions. In `gripper_path()`,
 store them in the rows of an array instead of the distances. In
 `path_length`, form a difference vector as in Part 2, now between point `k`
 and point `k + 1`. How many times does the loop have to run for this?
@@ -576,7 +576,7 @@ The rotation applied first therefore appears on the right.
 
 1. Compute the gripper position at the camera.
 2. Compute the product $\mathbf{R}_2 \cdot \mathbf{R}_1$ and use
-   `np.allclose` to compare it with $\mathbf{R}(140°)$.
+   `np.allclose()` to compare it with $\mathbf{R}(140°)$.
 3. Swap the order to $\mathbf{R}_1 \cdot \mathbf{R}_2$. Does the result
    change?
 4. Explain without code why the order does not matter here.

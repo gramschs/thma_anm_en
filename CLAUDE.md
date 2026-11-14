@@ -24,6 +24,19 @@ Notebook).
    `.md` wieder frisch aus dem Master und macht damit bereits eingefügte
    Lücken rückgängig.
 
+## Applets im Notebook
+
+Ein Applet (iframe aus `thma_anm_assets/interactive/...`, eingerahmt von
+`<!-- markdownlint-disable -->` und `<!-- markdownlint-enable -->`) ersetzt
+der Konverter durch das Standbild `pics/<applet>.png` und darunter einen Link
+"Interactive version: open the applet in the browser" mit der URL des iframes
+(samt `?lang=en`). `<applet>` ist der Dateiname des Applets ohne `.html`. Der
+Alternativtext kommt aus dem `title`-Attribut des iframes, sonst aus dem
+Dateinamen. Gibt es kein Standbild, bleibt nur der Link (Hinweis "note" in
+der Ausgabe des Konverters). Das Standbild entsteht per
+Puppeteer aus dem Applet mit `?standbild=1&lang=en` (Endzustand ohne
+Bedienelemente), Beispiel `chapter07/pics/chap07_sec01_ftf_meldungen.png`.
+
 ## Lücken-Markierung
 
 Kommentar `# TODO: ???` an der Stelle, an der Code entfernt wurde. Bei
@@ -63,6 +76,29 @@ Nummerierung. Vor dem Einfügen von Lücken den Inhalt kurz sichten.
 ✩-Aufgaben (Code vorhersagen) enthalten nach dem vorgegebenen Code immer den
 Satz "Write down your guess in a Markdown cell before you run the code." und
 enden mit "Run the code and check your predictions."
+
+Ab Kapitel 7 wird das Übungskapitel (H1 "N.M Exercises", in Kapitel 7 die
+`chapter07_sec03`) nicht als Notebook, sondern als PDF ohne Lösungen
+ausgegeben. Damit üben die Studierenden das Format von CA 3: Aufgaben auf
+Papier, gelöst lokal am PC ohne Internet. `build_notebooks.sh` erkennt das
+Kapitel an der Überschrift und ruft statt des Notebook-Konverters
+
+```code
+python3 convert_myst_to_latex.py --pdf chapterNN/chapterNN_secMM.md notebooks/chapterNN/chapterNN_secMM.tex
+```
+
+auf. Das geht auch einzeln, ohne die Lücken der Code-Along-Notebooks zu
+überschreiben. Satz wie in CA 2 (`../internal/exams/exam_2026ws/ca02`):
+Präambel `latex/exercises_preamble.tex`, Code in `code`-Boxen. Jede Aufgabe
+steht in einer `aufgabe`-Box mit Richtzeit rechts statt Punkten, gestaltet
+wie die Admonition `tip` im Buch (grüner Rand links, hellgrüne Kopfzeile mit
+Stift, weißer Inhalt). Eine Aufgabe wird nicht über zwei Seiten geteilt,
+außer sie hat mehr als 60 Zeilen im Master (dann `aufgabelang`, mit
+Hinweis "note"). Der Konverter setzt vorne den Abschnitt "How to
+Practice" mit drei Hinweisen zum Arbeiten ohne Internet ein. Nicht
+unterstützte Blöcke (Abbildungen, Tabellen, `hide-input`-Zellen) meldet er
+als "note". Langen vorgegebenen Code vermeiden, denn er muss abgetippt
+werden.
 
 ## Granularität
 

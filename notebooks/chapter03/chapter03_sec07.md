@@ -6,11 +6,11 @@ kernelspec:
 
 # Excursus: Runtime and Scaling
 
-This chapter is an optional excursus. So far we have used `np.linalg.solve`
+This chapter is an optional excursus. So far we have used `np.linalg.solve()`
 for systems with 3 or 6 unknowns. In engineering practice, a finite-element
 simulation produces systems with thousands to millions of unknowns. *How
 fast does the runtime grow with the system size, and where does
-`np.linalg.solve` reach its limits?*
+`np.linalg.solve()` reach its limits?*
 
 ## Generating random test systems
 
@@ -63,7 +63,7 @@ would not be enough for large $n$.
 
 `time.perf_counter()` returns a point in time in seconds. The difference
 between two calls is the elapsed time. We measure how long
-`np.linalg.solve` takes for various system sizes.
+`np.linalg.solve()` takes for various system sizes.
 
 ```{code-cell} python
 def measure_runtime(n):
@@ -83,7 +83,7 @@ for i, n in enumerate(n_values):
 
 The absolute times depend on the hardware and fluctuate somewhat from run
 to run. To study the scaling, we plot the times against the system size
-using `ax.loglog`: both axes are logarithmic. A power law
+using `ax.loglog()`: both axes are logarithmic. A power law
 $t \propto n^\alpha$ then appears as a straight line whose slope is the
 exponent $\alpha$. With `marker='o'` each measured point is additionally
 marked with a circle. For comparison we draw a reference line that grows
@@ -114,7 +114,7 @@ roughly with $n^3$.
 
 In log-log space, $\log t = \alpha \cdot \log n + \text{const}$. The
 exponent $\alpha$ is therefore the slope of a line through the points
-$(\log n,\ \log t)$. This slope is provided by `np.polyfit`. To use only
+$(\log n,\ \log t)$. This slope is provided by `np.polyfit()`. To use only
 the upper half of the points, we compute the middle index with the integer
 division `//`, which rounds the result down to a whole number.
 
@@ -135,7 +135,7 @@ print('theoretical value:  3.00')
 
 The measured exponent typically lies between about 2.5 and 3, and the exact
 number fluctuates from measurement to measurement. The theory predicts
-$O(n^3)$: internally, `np.linalg.solve` decomposes the matrix into a product
+$O(n^3)$: internally, `np.linalg.solve()` decomposes the matrix into a product
 of two triangular matrices (LU decomposition), and this step costs on the
 order of $n^3$ arithmetic operations. That the measured value often lies
 somewhat below 3 has a practical reason: for medium-sized systems, the
@@ -147,7 +147,7 @@ of $2^3 = 8$.
 
 ## Summary
 
-In theory, the runtime of `np.linalg.solve` grows with the third power of the
+In theory, the runtime of `np.linalg.solve()` grows with the third power of the
 system size, $O(n^3)$, because internally an LU decomposition is carried out.
 For medium-sized systems, the measured exponent is often somewhat smaller.
 For small and medium systems up to a few thousand unknowns, this is not a
@@ -161,7 +161,7 @@ mechanical engineering problem: the deformation of a truss.
 
 ### Mini-exercise 1
 
-1. Call `generate_linear_system(5, seed=0)` twice and use `np.allclose` to
+1. Call `generate_linear_system(5, seed=0)` twice and use `np.allclose()` to
    check whether both calls give the same matrix.
 2. Answer without code: why does it make sense, when measuring runtimes,
    to always use the same `seed`?
@@ -172,7 +172,7 @@ mechanical engineering problem: the deformation of a truss.
 
 ### Mini-exercise 2
 
-1. Plot the same data additionally with `ax.plot` instead of `ax.loglog`.
+1. Plot the same data additionally with `ax.plot()` instead of `ax.loglog()`.
 2. Answer without code: in which of the two plots is the scaling exponent
    easier to read off, and why?
 
@@ -186,7 +186,7 @@ mechanical engineering problem: the deformation of a truss.
    $n = 20\,000$, where $n_0$ and $t(n_0)$ come from the largest measured
    point (`n_values[-1]` and `t_values[-1]`).
 2. Answer without code: a finite-element simulation often has
-   $n = 10^6$ unknowns. Is `np.linalg.solve` suitable for that? Look up the
+   $n = 10^6$ unknowns. Is `np.linalg.solve()` suitable for that? Look up the
    terms *sparse matrix* and *iterative solver*.
 
 ```{code-cell} python

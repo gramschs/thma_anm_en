@@ -60,3 +60,157 @@ div.myst-code {
   width: 100% !important;
   height: 100% !important;
 }
+
+
+/* ===== APPLET ALS VORSCHAUBILD MIT VOLLBILD-OVERLAY =====
+   Für Applets mit stark wechselnder Höhe (z.B. Quiz). Ohne JavaScript:
+   <details class="applet-overlay">
+   <summary><img src="pics/..._vorschau.png" alt="..."></summary>
+   <div class="applet-container"><iframe ...></iframe></div>
+   </details>
+   Ein Klick auf das Bild öffnet das details-Element, das Applet liegt dann
+   über der ganzen Seite. Die Zusammenfassung wird zur Schließen-Taste. */
+
+details.applet-overlay {
+  overflow: visible !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Zu: nur das Vorschaubild, ohne Dropdown-Kopf und Pfeil */
+details.applet-overlay > summary {
+  position: relative;
+  display: block;
+  list-style: none;
+  max-width: 44rem;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0.75rem;
+}
+
+details.applet-overlay > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.applet-overlay .myst-dropdown-header-title > .float-right {
+  display: none;
+}
+
+details.applet-overlay > summary img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #d4d4d4;
+  border-radius: 0.75rem;
+  transition: filter 0.2s;
+}
+
+details.applet-overlay > summary:hover img,
+details.applet-overlay > summary:focus-visible img {
+  filter: brightness(0.92);
+}
+
+details.applet-overlay > summary:focus-visible {
+  outline: 3px solid #19a249;
+  outline-offset: 3px;
+}
+
+/* Play-Taste: dunkler Kreis (::before) mit weißem Dreieck (::after) */
+details.applet-overlay:not([open]) > summary::before,
+details.applet-overlay:not([open]) > summary::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+}
+
+details.applet-overlay:not([open]) > summary::before {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
+  transition: background 0.2s, transform 0.2s;
+}
+
+details.applet-overlay:not([open]) > summary::after {
+  width: 2rem;
+  height: 2.25rem;
+  background: #fff;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  /* optisch zentriert: Dreieck etwas nach rechts */
+  transform: translate(-38%, -50%);
+}
+
+details.applet-overlay:not([open]) > summary:hover::before,
+details.applet-overlay:not([open]) > summary:focus-visible::before {
+  background: #19a249;
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* Offen: Applet als Overlay über der ganzen Seite */
+html:has(details.applet-overlay[open]),
+html:has(details.applet-overlay[open]) body {
+  overflow: hidden;
+}
+
+details.applet-overlay[open] > .myst-dropdown-body {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  margin: 0;
+  padding: 3.75rem 0 0 !important;
+  background: rgba(17, 24, 39, 0.85);
+}
+
+details.applet-overlay[open] .applet-container {
+  height: 100%;
+  max-width: 56rem;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 0.75rem 0.75rem 0 0;
+  overflow: hidden;
+}
+
+details.applet-overlay .applet-container > div,
+details.applet-overlay .applet-container .relative.inline-block {
+  width: 100% !important;
+  height: 100% !important;
+  padding-bottom: 0 !important;
+}
+
+/* Offen: Zusammenfassung wird zur runden Schließen-Taste oben rechts,
+   bündig mit dem rechten Rand des Applets */
+details.applet-overlay[open] > summary {
+  position: fixed;
+  z-index: 1001;
+  top: 0.75rem;
+  right: max(0.75rem, calc(50vw - 28rem));
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: #fff !important;
+}
+
+details.applet-overlay[open] > summary:hover {
+  background: #e5e5e5 !important;
+}
+
+details.applet-overlay[open] .myst-dropdown-header-title {
+  display: none;
+}
+
+details.applet-overlay[open] > summary::after {
+  content: "\2715";
+  content: "\2715" / "Close";
+  display: block;
+  font-size: 1.25rem;
+  line-height: 2.5rem;
+  text-align: center;
+  color: #171717;
+}

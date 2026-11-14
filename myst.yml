@@ -69,7 +69,7 @@ project:
       - file: chapter07/chapter07_sec00.md
       - file: chapter07/chapter07_sec01.md
       - file: chapter07/chapter07_sec02.md
-#      - file: chapter07/chapter07_sec03.md
+      - file: chapter07/chapter07_sec03.md
 
 site:
   template: book-theme

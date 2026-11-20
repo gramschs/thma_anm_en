@@ -486,6 +486,7 @@ $\sqrt[3]{\text{eps}}$, i.e. $10^{-5}$ to $10^{-6}$, for the central
 difference quotient work well.
 
 The exercises in Chapter 7.3 review both chapters, including an emergency
-stop of an AGV. In Chapter 8.1, we search for the parameter of a model that
-best fits measured data. The derivative shows us the direction, and we
-compute it with the central difference quotient and the step size $10^{-6}$.
+stop of an AGV. In Chapter 8.1, we search for the order quantity at which the
+combined cost of ordering and holding is lowest. The derivative shows us the
+direction, and we compute it with the central difference quotient and the step
+size $10^{-6}$.

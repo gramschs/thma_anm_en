@@ -3,7 +3,8 @@
 #
 # Usage: ./build_notebooks.sh chapter01
 #
-# Copies chapterNN/*.md into notebooks/chapterNN, cleans the copies with
+# Copies chapterNN/*.md into notebooks/chapterNN (except the preparation page
+# chapterNN_sec00.md and its images, which get no notebook), cleans the copies with
 # convert_myst_to_notebook.py (drops learning objectives and solutions, turns
 # exercise/project admonitions into plain headings, replaces applets by their
 # still image pics/<applet>.png, if present, and a link to the online applet,
@@ -34,11 +35,19 @@ if [ ! -d "$source_dir" ]; then
 fi
 
 mkdir -p "$target_dir"
-cp "$source_dir"/*.md "$target_dir"/
+for md_file in "$source_dir"/*.md; do
+    # the preparation page (sec00, prerequisite quiz) gets no notebook
+    [[ "$(basename "$md_file")" == *_sec00.md ]] && continue
+    cp "$md_file" "$target_dir"/
+done
 
 if [ -d "$source_dir/pics" ]; then
-    mkdir -p "$target_dir/pics"
-    cp "$source_dir"/pics/* "$target_dir/pics/"
+    for pic in "$source_dir"/pics/*; do
+        # images of the preparation page (quiz preview) are not needed
+        [[ "$(basename "$pic")" == chap*_sec00_* ]] && continue
+        mkdir -p "$target_dir/pics"
+        cp "$pic" "$target_dir/pics/"
+    done
 fi
 
 for md_file in "$target_dir"/*.md; do

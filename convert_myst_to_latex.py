@@ -2,7 +2,8 @@
 
 Reads chapterNN/chapterNN_secMM.md with the H1 "N.M Exercises" and writes a
 LaTeX file in the style of the CA documents (latex/exercises_preamble.tex):
-every exercise in an aufgabe box with its approximate time on the right,
+every exercise in an aufgabe box on a new page, with its approximate time on
+the right,
 given code in code boxes, no solutions and no empty "# code cell" cells.
 With --pdf the file is compiled with lualatex (twice) and the PDF is put
 next to the .tex file. Constructs the converter does not know (figures,
@@ -163,7 +164,9 @@ def convert_fence(info, body, ctx):
             environment = 'aufgabelang'
             ctx.warn(f'{title} has more than {MAX_UNBROKEN_LINES} lines and '
                      'may be split across pages')
-        return [f'\\begin{{{environment}}}{{{inline(title)}}}{{{right}}}',
+        # every exercise starts on a new page
+        return ['\\clearpage',
+                f'\\begin{{{environment}}}{{{inline(title)}}}{{{right}}}',
                 *parse_blocks(content, ctx), f'\\end{{{environment}}}', '']
     if info == 'python':
         return box('code', body)

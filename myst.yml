@@ -70,6 +70,14 @@ project:
       - file: chapter07/chapter07_sec01.md
       - file: chapter07/chapter07_sec02.md
       - file: chapter07/chapter07_sec03.md
+    - title: 8. Gradient Descent
+      children:
+      - file: chapter08/chapter08_sec00.md
+      - file: chapter08/chapter08_sec01.md
+      - file: chapter08/chapter08_sec02.md
+      - file: chapter08/chapter08_sec03.md
+      - file: chapter08/chapter08_sec04.md
+      - file: chapter08/chapter08_sec05.md
 
 site:
   template: book-theme

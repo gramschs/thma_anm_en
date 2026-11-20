@@ -7,11 +7,10 @@ kernelspec:
 # Preparation
 
 In Chapters 7.1 and 7.2 we compute derivatives from measured values and from
-formulas. For this you need some math, Python and physics that you know from
-earlier semesters and chapters. Before the lecture, take the quiz on this page
-to check whether you are up to speed. It takes about ten minutes. For every
-topic where you make mistakes, you will find material to review below the
-quiz.
+formulas. For this, you need some math, Python and physics from earlier
+semesters and chapters. Before the lecture, take the quiz on this page to check
+whether you are up to speed. It takes about ten minutes. Below the quiz, you
+will find review material for any topics you had trouble with.
 
 ## What you should already know
 
@@ -61,6 +60,7 @@ upper right corner to close it.
 </summary>
 <div class="applet-container">
 <iframe
+  title="Prerequisite check for Chapter 7"
   src="https://gramschs.github.io/thma_anm_assets/interactive/chapter07/chap07_sec00_quiz.html?lang=en"
   width="100%"
   frameborder="0"

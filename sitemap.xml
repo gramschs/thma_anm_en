@@ -112,4 +112,22 @@
   <url>
     <loc>http://localhost:3000/chapter07-sec03</loc>
   </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec00</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec01</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec02</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec03</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec04</loc>
+  </url>
+  <url>
+    <loc>http://localhost:3000/chapter08-sec05</loc>
+  </url>
 </urlset>
